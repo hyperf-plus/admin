@@ -1,0 +1,14 @@
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (1, '通用验证', 'sms', 0, 'SMS_78725049', '欧瑞', '您的验证码是{验证码}，在5分钟内有效。如非本人操作请忽略本信息。', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (2, '注册成功', 'sms', 1, 'SMS_78725049', '欧瑞', '尊敬的{用户昵称}先生/女士，您在{商城名称}注册的账号 {用户账号} 已成为我商城会员。', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (3, '充值成功', 'sms', 2, 'SMS_78725049', '欧瑞', '尊敬的{用户昵称}，您已成功充值{充值金额}！如您还有疑问，请与客服人员联系。', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (4, '确认订单', 'sms', 3, 'SMS_78725049', '欧瑞', '尊敬的{用户昵称}，您在{商城名称}创建的订单已确认。订单号：{主订单号}，订单金额：{订单金额}', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (5, '付款成功', 'sms', 4, '', '', '', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (6, '下单成功', 'sms', 5, '', '', '', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (7, '订单发货', 'sms', 6, '', '', '', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (8, '通用验证', 'email', 0, '', '注册验证码', '您的验证码是{验证码}，在5分钟内有效。如非本人操作请忽略本信息。', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (9, '注册成功', 'email', 1, '', '注册成功', '尊敬的{用户昵称}先生/女士，您在{商城名称}注册的账号 {用户账号} 已成为我商城会员。', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (10, '充值成功', 'email', 2, '', '充值成功', '尊敬的{用户昵称}，您已成功充值{充值金额}！如您还有疑问，请与客服人员联系。', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (11, '确认订单', 'email', 3, '', '确认订单', '尊敬的{用户昵称}，您在{商城名称}创建的订单已确认。订单号：{主订单号}，订单金额：{订单金额}', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (12, '付款成功', 'email', 4, '', '', '', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (13, '下单成功', 'email', 5, '', '', '', 1);
+INSERT INTO `cs_notice_tpl`(`notice_tpl_id`, `name`, `code`, `type`, `sms_code`, `title`, `template`, `status`) VALUES (14, '订单发货', 'email', 6, '', '', '', 1);

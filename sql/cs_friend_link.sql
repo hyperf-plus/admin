@@ -1,0 +1,7 @@
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (29, '友情链接E', 'http://oruei.com', '', '_self', 50, 1);
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (32, 'CareyShopA', 'https://www.careyshop.cn', 'aliyun.oss.careyshop.cn/uploads/files/20190525/0f627dc9-d0a3-414e-8698-c9024ee5df68.gif?type=aliyun', '_self', 0, 1);
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (33, '友情链接F', 'http://oruei.com', 'aliyun.oss.careyshop.cn/uploads/files/20190525/c144914e-a69f-4eaa-a985-ba9aedc47308.jpg?type=aliyun', '_self', 10, 1);
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (36, 'CareyShopB', 'https://www.careyshop.cn', 'aliyun.oss.careyshop.cn/uploads/files/20190525/490fd98a-3498-45a4-a6e4-a4e8ba39055c.gif?type=aliyun', '_self', 1, 1);
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (43, '友情链接I', 'http://oruei.com', '', '_self', 50, 0);
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (47, '友情链接J', 'http://oruei.com', '', '_self', 50, 0);
+INSERT INTO `cs_friend_link`(`friend_link_id`, `name`, `url`, `logo`, `target`, `sort`, `status`) VALUES (51, '友情链接K', 'http://oruei.com', 'aliyun.oss.careyshop.cn/uploads/files/20190525/bb4580a1-4388-4881-88a5-8c95e21b1bb1.png?type=aliyun', '_blank', 15, 0);

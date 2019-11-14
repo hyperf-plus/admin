@@ -1,0 +1,14 @@
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (1, 1, 0.00, 1220.54, 445.15, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (2, 73, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (3, 74, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (4, 75, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (5, 76, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (6, 77, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (7, 78, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (8, 72, 999.00, 1323.54, 445.15, 400, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (9, 79, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (10, 80, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (11, 81, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (12, 82, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (13, 83, 0.00, 0.00, 0.00, 0, 0);
+INSERT INTO `cs_user_money`(`user_money_id`, `user_id`, `total_money`, `balance`, `lock_balance`, `points`, `lock_points`) VALUES (14, 84, 0.00, 0.00, 0.00, 0, 0);

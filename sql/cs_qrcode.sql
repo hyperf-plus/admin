@@ -1,0 +1,12 @@
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (2, 'testAAA', 'testaaa', 5, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (3, 'test', 'test', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (4, 'AAA', 'AAA', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (5, 'BBB1', 'bbb1', 5, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (6, 'ccc', 'ccc', 10, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (8, 'AAAAAA', 'AAAAAA', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (9, 'AAAAAAAbbbbbb', 'AAAAAAAbbbbbb', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (10, 'AAA', 'AAA', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (11, '1', '2', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (12, '2', '2', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (13, '3', 'test', 3, '');
+INSERT INTO `cs_qrcode`(`qrcode_id`, `name`, `text`, `size`, `logo`) VALUES (14, 'test', 'testAAABBBBBBB', 5, '');

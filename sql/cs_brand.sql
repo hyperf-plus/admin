@@ -1,0 +1,10 @@
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (2, 719, '雅培', 'yapei', '', '', '', '_self', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (4, 201, 'AOC', 'AOC', '', '', '', '_self', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (6, 1, '腾讯', 'tengxun', '', '', '', '_self', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (16, 3, '大王', 'da wang', '', '', '', '_self', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (18, 1, '百雀羚', 'bql', '', '', '', '_self', 50, 0);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (28, 132, '大金', 'd', '', '', '', '_blank', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (29, 130, '海信', 'h', '', '', '', '_blank', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (30, 123, '华为', 'h', '', '', '', '_blank', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (31, 195, '华为', 'h', '', 'careyshop.oruei.com/uploads/files/20190729/710bd7a8c4bfc202d33d050a36f78874.jpg?type=careyshop', '', '_blank', 50, 1);
+INSERT INTO `cs_brand`(`brand_id`, `goods_category_id`, `name`, `phonetic`, `description`, `logo`, `url`, `target`, `sort`, `status`) VALUES (32, 12, '华为', 'huawei', '', 'https://tongji.baidu.com/web/image/hp-feature-bg-1.png?__v=1562737426039', '', '_blank', 50, 1);
