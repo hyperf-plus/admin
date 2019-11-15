@@ -265,7 +265,6 @@ class Validate
             // 读取验证规则
             $rules = $this->rule;
         }
-
         // 分析验证规则
         $scene = $this->getScene($scene);
         if (is_array($scene)) {
@@ -282,9 +281,9 @@ class Validate
             }
         }
 
-
         foreach ($rules as $key => $item) {
             // field => rule1|rule2... field=>['rule1','rule2',...]
+
             if (is_numeric($key)) {
                 // [field,rule1|rule2,msg1|msg2]
                 $key = $item[0];
@@ -305,12 +304,17 @@ class Validate
                 $title = isset($this->field[$key]) ? $this->field[$key] : $key;
             }
 
+
             // 场景检测
             if (!empty($scene)) {
                 if ($scene instanceof \Closure && !call_user_func_array($scene, [$key, $data])) {
-
                     continue;
                 } elseif (is_array($scene)) {
+
+
+
+
+
                     if (!in_array($key, $array)) {
                         continue;
                     } elseif (isset($change[$key])) {
@@ -319,6 +323,7 @@ class Validate
                     }
                 }
             }
+
             // 获取数据 支持二维数组
             $value = $this->getDataValue($data, $key);
             // 字段验证

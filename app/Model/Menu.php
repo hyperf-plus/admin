@@ -7,12 +7,14 @@ use App\Exception\AuthRuleException;
 use App\Exception\RESTException;
 use App\Exception\ValidateException;
 use Hyperf\DbConnection\Db;
+use Hyperf\Utils\Str;
+use Prophecy\Doubler\Generator\TypeHintReference;
 
 class Menu extends BaseModel
 {
 
     protected $table = 'menu';
-
+    protected $primaryKey = 'menu_id';
     /**
      * 只读属性
      * @var array
@@ -26,7 +28,7 @@ class Menu extends BaseModel
      * 字段类型或者格式转换
      * @var array
      */
-    protected $type = [
+    protected $casts = [
         'menu_id' => 'integer',
         'parent_id' => 'integer',
         'type' => 'integer',
@@ -46,10 +48,8 @@ class Menu extends BaseModel
         if (empty($value) || !is_string($value)) {
             return $value;
         }
-
         $word = explode('/', $value);
-        $word = array_map(['think\\helper\\Str', 'snake'], $word);
-
+        $word = array_map([Str::class, 'snake'], $word);
         return implode('/', $word);
     }
 
@@ -71,20 +71,18 @@ class Menu extends BaseModel
         unset($data['menu_id']);
         empty($data['url']) ?: $data['url'] = $this->strToSnake($data['url']);
         if (!empty($data['url']) && 0 == $data['type']) {
-            $map['module'] = ['eq', $data['module']];
-            $map['type'] = ['eq', 0];
-            $map['url'] = ['eq', $data['url']];
+            $map[] = ['module', '=', $data['module']];
+            $map[] = ['type', '=', 0];
+            $map[] = ['url', '=', $data['url']];
             if (self::checkUnique($map)) {
                 return $this->setError('Url已存在');
             }
         }
-
-        if (false !== $this->allowField(true)->save($data)) {
-            Cache::clear('CommonAuth');
+        if ($this->forceFill($data)->save()) {
+            //TODO::   清理缓存 Cache::clear('CommonAuth');
             return $this->toArray();
         }
-
-        return false;
+        return $this->setError('添加失败');
     }
 
     /**
@@ -97,13 +95,8 @@ class Menu extends BaseModel
     public function getMenuItem($data)
     {
         $this->validateData($data, 'Menu.item');
-
-        $result = self::get($data['menu_id']);
-        if (false !== $result) {
-            return is_null($result) ? null : $result->toArray();
-        }
-
-        return false;
+        $result = self::find($data['menu_id']);
+        return empty($result) ? null : $result->toArray();
     }
 
     /**
@@ -115,55 +108,46 @@ class Menu extends BaseModel
      */
     public function setMenuItem($data)
     {
-        if (!$this->validateSetData($data, 'Menu.set')) {
-            return false;
-        }
-
-        $result = self::get($data['menu_id']);
+        $this->validateSetData($data, 'Menu.set');
+        $result = self::find($data['menu_id']);
         if (!$result) {
             return is_null($result) ? $this->setError('数据不存在') : false;
         }
-
         // 检测编辑后是否存在重复URL
         empty($data['url']) ?: $data['url'] = $this->strToSnake($data['url']);
-        isset($data['type']) ?: $data['type'] = $result->getAttr('type');
-        isset($data['url']) ?: $data['url'] = $result->getAttr('url');
-
+        isset($data['type']) ?: $data['type'] = $result->getAttribute('type');
+        isset($data['url']) ?: $data['url'] = $result->getAttribute('url');
         if (!empty($data['url']) && 0 == $data['type']) {
-            $map['menu_id'] = ['neq', $data['menu_id']];
-            $map['module'] = ['eq', $result->getAttr('module')];
-            $map['type'] = ['eq', 0];
-            $map['url'] = ['eq', $data['url']];
-
+            $map = [];
+            $map[] = ['menu_id', '!=', $data['menu_id']];
+            $map[] = ['module', '=', $result->getAttribute('module')];
+            $map[] = ['type', '=', 0];
+            $map[] = ['url', '=', $data['url']];
             if (self::checkUnique($map)) {
-                return $this->setError('Url已存在');
+                throw new RESTException('Url已存在');
             }
         }
-
         // 父菜单不能设置成自身或所属的子菜单
         if (isset($data['parent_id'])) {
             if ($data['parent_id'] == $data['menu_id']) {
-                return $this->setError('上级菜单不能设为自身');
+                throw new RESTException('上级菜单不能设为自身');
             }
-
-            $menuList = self::getMenuListData([], $result->getAttr('module'), $data['menu_id']);
+            $menuList = self::getMenuListData([], $result->getAttribute('module'), $data['menu_id']);
             if (false === $menuList) {
-                return $this->setError('菜单获取失败');
+                throw new RESTException('菜单获取失败');
             }
 
             foreach ($menuList as $value) {
                 if ($data['parent_id'] == $value['menu_id']) {
-                    return $this->setError('上级菜单不能设为自身的子菜单');
+                    throw new RESTException('上级菜单不能设为自身的子菜单');
                 }
             }
         }
-
-        if (false !== $result->allowField(true)->save($data)) {
-            Cache::clear('CommonAuth');
+        if ($result->forceFill($data)->save()) {
+            //TODO:: 清理缓存  Cache::clear('CommonAuth');
             return $result->toArray();
         }
-
-        return false;
+        throw new RESTException('修改失败');
     }
 
     /**
@@ -175,13 +159,12 @@ class Menu extends BaseModel
      * @param int $level 菜单深度
      * @param array $filter 过滤'is_navi'与'status'
      * @return array|false
-     * @throws
+     * @throws AuthRuleException
      */
     public static function getMenuListData($menuAuth, $module, $menuId = 0, $isLayer = false, $level = null, $filter = null)
     {
         // 缓存名称
         $treeCache = 'MenuTree:' . $module;
-
         // 搜索条件
         $joinMap = '';
         $map = [];
@@ -196,7 +179,6 @@ class Menu extends BaseModel
             $joinMap .= sprintf(' AND s.%s = %d', $key, $value);
             $treeCache .= $key . $value;
         }
-//
         $result = Db::table('menu as m')
             ->leftJoin('menu as s', 's.parent_id', '=', 'm.menu_id')
             ->where($map)
@@ -284,24 +266,24 @@ class Menu extends BaseModel
      */
     public function delMenuItem($data)
     {
-        if (!$this->validateData($data, 'Menu.del')) {
-            return false;
+        try {
+            $this->validateData($data, 'Menu.del');
+        } catch (ValidateException $e) {
+            throw new RESTException($e->getMessage());
         }
 
-        $result = self::get($data['menu_id']);
+        $result = self::find($data['menu_id']);
         if (!$result) {
-            return is_null($result) ? $this->setError('数据不存在') : false;
+            throw new RESTException('数据不存在');
         }
-
-        $menuList = self::getMenuListData([], $result->getAttr('module'), $data['menu_id'], true);
-        if (false === $menuList) {
-            return false;
+        try {
+            $menuList = self::getMenuListData([], $result->getAttribute('module'), $data['menu_id'], true);
+        } catch (AuthRuleException $e) {
+            throw new RESTException($e->getMessage());
         }
-
         $delList = array_column($menuList, 'menu_id');
         self::destroy($delList);
-        Cache::clear('CommonAuth');
-
+        // TODO:: 清理缓存  Cache::clear('CommonAuth');
         return ['children' => $delList];
     }
 
@@ -313,15 +295,16 @@ class Menu extends BaseModel
      */
     public function getMenuIdNavi($data)
     {
-        if (!$this->validateData($data, 'Menu.navi')) {
-            return false;
+        try {
+            $this->validateData($data, 'Menu.navi');
+        } catch (ValidateException $e) {
+            throw new RESTException($e->getMessage());
         }
 
         $isLayer = !is_empty_parm($data['is_layer']) ? (bool)$data['is_layer'] : true;
         $filter['is_navi'] = 1;
         $filter['status'] = 1;
         $data['menu_id'] = isset($data['menu_id']) ?: 0;
-
         return self::getParentList(request()->module(), $data['menu_id'], $isLayer, $filter);
     }
 
@@ -353,17 +336,16 @@ class Menu extends BaseModel
      */
     public function setMenuNavi($data)
     {
-        if (!$this->validateData($data, 'Menu.nac')) {
-            return false;
-        }
+        $this->validateData($data, 'Menu.nac');
 
         $map['menu_id'] = ['in', $data['menu_id']];
-        if (false !== $this->save(['is_navi' => $data['is_navi']], $map)) {
-            Cache::clear('CommonAuth');
-            return true;
+        $result = self::whereIn('menu_id', $data['menu_id'])->get();
+        foreach ($result as $item) {
+            $item->is_navi = $data['is_navi'];
+            $item->save();
         }
-
-        return false;
+        //TODO:: 清理缓存 Cache::clear('CommonAuth');
+        return true;
     }
 
     /**
@@ -371,19 +353,24 @@ class Menu extends BaseModel
      * @access public
      * @param array $data 外部数据
      * @return bool
+     * @throws RESTException
      */
     public function setMenuSort($data)
     {
-        if (!$this->validateData($data, 'Menu.sort')) {
-            return false;
+        try {
+            $this->validateData($data, 'Menu.sort');
+        } catch (ValidateException $e) {
+            throw new RESTException($e->getMessage());
         }
-
-        $map['menu_id'] = ['eq', $data['menu_id']];
-        if (false !== $this->save(['sort' => $data['sort']], $map)) {
-            Cache::clear('CommonAuth');
+        $result = self::find($data['menu_id']);
+        if (empty($result)) {
+            throw new RESTException('数据不存在！');
+        }
+        $result->sort = $data['sort'];
+        if ($result->save()) {
+            //TODO:: 清理缓存 Cache::clear('CommonAuth');
             return true;
         }
-
         return false;
     }
 
@@ -396,21 +383,18 @@ class Menu extends BaseModel
      */
     public function setMenuIndex($data)
     {
-        if (!$this->validateData($data, 'Menu.index')) {
-            return false;
+        try {
+            $this->validateData($data, 'Menu.index');
+        } catch (ValidateException $e) {
+            throw new RESTException($e->getMessage());
         }
-
         $list = [];
         foreach ($data['menu_id'] as $key => $value) {
+            self::where('menu_id', $value)->update(['sort' => $key + 1]);
             $list[] = ['menu_id' => $value, 'sort' => $key + 1];
         }
-
-        if (false !== $this->isUpdate()->saveAll($list)) {
-            Cache::clear('CommonAuth');
-            return true;
-        }
-
-        return false;
+        //TODO:: 清理缓存 Cache::clear('CommonAuth');
+        return true;
     }
 
     /**
@@ -425,22 +409,26 @@ class Menu extends BaseModel
     public static function getParentList($module, $menuId, $isLayer = false, $filter = null)
     {
         // 搜索条件
-        $map['module'] = ['eq', $module];
-
+        $map[] = ['module', '=', $module];
         // 过滤'is_navi'与'status'
         foreach ((array)$filter as $key => $value) {
             if ($key != 'is_navi' && $key != 'status') {
                 continue;
             }
-
-            $map[$key] = $value;
+            $map[] = [$key, '=', $value];
         }
 
-        $list = self::cache(true, null, 'CommonAuth')->where($map)->column(null, 'menu_id');
-        if ($list === false) {
-            Cache::clear('CommonAuth');
-            return false;
+        //select  缓存，从缓存中取出。。
+        $listObj = self::where($map)->get();
+        $list = [];
+        foreach ($listObj as $item) {
+            $list[$item->getAttribute('menu_id')] = $item;
         }
+//        if ($list === false) {
+        // TODO::清理缓存
+//            Cache::clear('CommonAuth');
+//            return false;
+//        }
 
         // 判断是否根据url获取
         if (isset($filter['url'])) {
@@ -461,16 +449,12 @@ class Menu extends BaseModel
             if (!isset($list[$menuId])) {
                 break;
             }
-
             $result[] = $list[$menuId];
-
             if ($list[$menuId]['parent_id'] <= 0) {
                 break;
             }
-
             $menuId = $list[$menuId]['parent_id'];
         }
-
         return array_reverse($result);
     }
 
@@ -483,22 +467,22 @@ class Menu extends BaseModel
      */
     public function setMenuStatus($data)
     {
-        if (!$this->validateData($data, 'Menu.status')) {
-            return false;
+        try {
+            $this->validateData($data, 'Menu.status');
+        } catch (ValidateException $e) {
+            throw new RESTException($e->getMessage());
         }
-
-        $result = self::get($data['menu_id']);
+        $result = self::find($data['menu_id']);
         if (!$result) {
-            return is_null($result) ? $this->setError('数据不存在') : false;
+            throw new RESTException('数据不存在');
         }
 
-        if ($result->getAttr('status') == $data['status']) {
-            return $this->setError('状态未改变');
+        if ($result->getAttribute('status') == $data['status']) {
+            throw new RESTException('状态未改变');
         }
 
         // 获取当前菜单模块名
-        $module = $result->getAttr('module');
-
+        $module = $result->getAttribute('module');
         // 如果是启用,则父菜单也需要启用
         $parent = [];
         if ($data['status'] == 1) {
@@ -513,19 +497,16 @@ class Menu extends BaseModel
         if (false === $children) {
             return false;
         }
-
         $parent = array_column($parent, 'menu_id');
         $children = array_column($children, 'menu_id');
+        $result->status = $data['status'];
 
-        $map['menu_id'] = ['in', array_merge($parent, $children)];
-        $map['status'] = ['eq', $result->getAttr('status')];
 
-        if (false !== $this->save(['status' => $data['status']], $map)) {
-            Cache::clear('CommonAuth');
+        if ($result->save()) {
+            //TODO:: 清理缓存 Cache::clear('CommonAuth');
             return ['parent' => $parent, 'children' => $children, 'status' => (int)$data['status']];
         }
-
-        return false;
+        throw new RESTException('更新失败，状态未改变');
     }
 
     /**
@@ -537,8 +518,10 @@ class Menu extends BaseModel
      */
     public function getMenuList($data)
     {
-        if (!$this->validateData($data, 'Menu.list')) {
-            return false;
+        try {
+            $this->validateData($data, 'Menu.list');
+        } catch (ValidateException $e) {
+            throw new RESTException($e->getMessage());
         }
 
         $menuId = isset($data['menu_id']) ? $data['menu_id'] : 0;
@@ -548,7 +531,6 @@ class Menu extends BaseModel
         $filter = null;
         is_empty_parm($data['is_navi']) ?: $filter['is_navi'] = $data['is_navi'];
         is_empty_parm($data['status']) ?: $filter['status'] = $data['status'];
-
         return self::getMenuListData([], $data['module'], $menuId, $isLayer, $level, $filter);
     }
 
@@ -588,18 +570,30 @@ class Menu extends BaseModel
      */
     public static function getUrlMenuList($module, $status = 1)
     {
-        // 缓存名称
-        $key = 'urlMenuList' . $module . $status;
+
 
         $map['module'] = ['eq', $module];
         $map['status'] = ['eq', $status];
+        $result = self::where('module', $module)->where('status', $status)->get();
 
-        $result = self::cache($key, null, 'CommonAuth')->where($map)->column(null, 'url');
-        if (!$result) {
-            Cache::rm($key);
-            return false;
+        $data = [];
+        foreach ($result as $item) {
+            $data[$item->getAttribute('url')] = $item;
         }
+        return $data;
 
-        return $result;
+        /*        // 缓存名称
+                $key = 'urlMenuList' . $module . $status;
+
+                $map['module'] = ['eq', $module];
+                $map['status'] = ['eq', $status];
+
+                $result = self::cache($key, null, 'CommonAuth')->where($map)->column(null, 'url');
+                if (!$result) {
+                    //TODO:: 清理缓存 Cache::clear('CommonAuth');
+                    Cache::rm($key);
+                    return false;
+                }
+                return $result;*/
     }
 }

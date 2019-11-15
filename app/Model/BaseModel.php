@@ -178,7 +178,6 @@ class BaseModel extends Model
      */
     public function validateSetData(&$data, $name, $scene = '', $pk = 'id')
     {
-
         if (strpos($name, '.')) {
             list($name, $scene) = explode('.', $name);
         }
@@ -186,6 +185,7 @@ class BaseModel extends Model
          * @var Validate $validate
          */
         $class = 'app\\Validate\\' . $name;
+
         if (class_exists($class)) {
             $validate = new $class;
         } else {
@@ -213,8 +213,7 @@ class BaseModel extends Model
             }
         }
         unset($key, $value);
-        $validate->rule($rule);
-        $validate->scene($scene)->check($data, []);
+        $validate->scene($scene)->check($data, $rule);
         return true;
     }
 
@@ -229,8 +228,7 @@ class BaseModel extends Model
     public function valid111ateSetData(&$data, $name, $scene = '')
     {
         !mb_strpos($name, '.', null, 'utf-8') ?: list($name, $scene) = explode('.', $name);
-        $validate = validate($name);
-
+        $validate = new validate($name);
         if (!$validate->hasScene($scene)) {
             return $this->setError($name . '场景不存在');
         }
@@ -278,7 +276,7 @@ class BaseModel extends Model
             return true;
         }
         $count = self::where($map)->count();
-        if (is_numeric($count) && $count >= 0) {
+        if ($count <= 0) {
             return false;
         }
         return true;

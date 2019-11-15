@@ -53,9 +53,17 @@ class AdminBase extends Controller
         $response['status'] = 200;
         $response['message'] = 'success';
         $response['data'] = [];
+
+        $params =$this->request->all();
+        unset($params['appkey']);
+        unset($params['token']);
+        unset($params['timestamp']);
+        unset($params['format']);
+        unset($params['method']);
+        unset($params['sign']);
         try {
             if (method_exists($CLASS, $callback[0])) {
-                $result = call_user_func([$CLASS, $callback[0]], $this->request->all());
+                $result = call_user_func([$CLASS, $callback[0]],$params );
             } else {
                 throw new SystemException('method成员方法不存在');
             }
