@@ -2,9 +2,13 @@
 thinkphp版本文档地址 https://www.careyshop.cn/
 #### 目前已完成
 ##### 1 管理员管理（全部功能）
+![](./screenshot/管理员管理.png)
 ##### 2 权限分配
 ######     1、权限组管理
+![](./screenshot/用户组.png)
 ######     2、菜单管理
+![](./screenshot/菜单管理.png)
+
 
 更新表
 
@@ -16,3 +20,9 @@ thinkphp版本文档地址 https://www.careyshop.cn/
     
     ALTER TABLE `new_admin`.`cs_menu` 
     ADD COLUMN `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间' ;
+
+
+
+
+
+
