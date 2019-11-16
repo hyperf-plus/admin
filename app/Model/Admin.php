@@ -144,7 +144,7 @@ class Admin extends BaseModel
         }
         $adminId = $result->getAttribute('admin_id');
         $groupId = $result->getAttribute('group_id');
-        $tokenDb = new Token();
+        $tokenDb = make(Token::class);
         $tokenResult = $tokenDb->setToken($adminId, $groupId, 1, $data['username'], $data['platform']);
         return ['admin' => $result->toArray(), 'token' => $tokenResult];
     }

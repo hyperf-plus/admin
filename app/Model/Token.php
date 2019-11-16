@@ -3,7 +3,10 @@
 namespace App\Model;
 
 
-use Hyperf\Database\Model\Model;
+use App\Constants\Constants;
+use App\Util\Jwt\Jwt;
+use App\Util\Jwt\JwtData;
+use Hyperf\Di\Annotation\Inject;
 use PDepend\Source\Parser\TokenException;
 
 class Token extends BaseModel
@@ -11,6 +14,14 @@ class Token extends BaseModel
     public $timestamps = false;
     protected $table = 'token';
     protected $primaryKey = 'token_id';
+
+
+    /**
+     * @Inject()
+     * @var Jwt $jwt
+     */
+    protected $jwt;
+
     /**
      * 只读属性
      * @var array
@@ -47,6 +58,7 @@ class Token extends BaseModel
         'refresh_expires' => 'integer',
     ];
 
+
     /**
      * 产生Token
      * @access public
@@ -60,42 +72,42 @@ class Token extends BaseModel
      */
     public function setToken($id, $group, $type, $username, $platform)
     {
-        $code = uuid(16);
-        $token = user_md5(sprintf('%d%d%s', $id, $type, $code));
-        $expires = time() + (30 * 24 * 60 * 60); // 30天
+        $curr_time = time();
+        $expires = $curr_time + 7200;
+        $refresh_expires = $expires + (1 * 24 * 60 * 60);
+        try {
+            $payload = new JwtData();
+            $payload->setScope(Constants::SCOPE_ROLE);
+            $payload->setIssuer($username);
+            $payload->setJwtData([
+                'id' => $id,
+                'group' => $group
+            ]);
+            $payload->setExpiration($expires);
+            $payload->setSubject(env('JWT_NAME'));
+            $payload->setIssuedAt($curr_time);
+            $payload->offsetSet("jti", $id);   //该JWT的签发者
+            $token = $this->jwt->getToken($payload->toArray());
+            $payload->setScope(Constants::SCOPE_REFRESH);
+            $payload->setExpiration($refresh_expires);
+            $refresh = $this->jwt->getToken($payload->toArray());
+            // 准备数据
+            $data = [
+                'client_id' => $id,
+                'group_id' => $group,
+                'username' => $username,
+                'client_type' => $type,
+                'platform' => $platform,
+                'token' => $token,
+                'token_expires' => $expires,
+                'refresh' => $refresh,
+                'refresh_expires' => $refresh_expires,
+            ];
+            return $data;
+        } catch (\Exception $e) {
+            throw new TokenException($e->getMessage());
+        }
 
-        // 准备数据
-        $data = [
-            'client_id' => $id,
-            'group_id' => $group,
-            'username' => $username,
-            'client_type' => $type,
-            'platform' => $platform,
-            'code' => $code,
-            'token' => $token,
-            'token_expires' => $expires,
-            'refresh' => user_md5(uuid(32) . $token),
-            'refresh_expires' => $expires + (1 * 24 * 60 * 60),
-        ];
-        $map = [];
-        // 搜索条件
-        $map['client_id'] = $id;
-        $map['client_type'] = $type;
-        $map['platform'] = $platform;
-        /**
-         * @var Model $result
-         */
-        $result = $this->where($map)->first();
-        if (false === $result) {
-            throw new TokenException('Token不存在');
-        }
-        if ($result && false !== $this->where($map)->update($data)) {
-            return $result->setHidden(['username', 'platform'])->toArray();
-        }
-        if (false !== $this->forceFill($data)->save($map)) {
-            return $this->setHidden(['username', 'platform'])->toArray();
-        }
-        throw new TokenException('Token生成错误');
     }
 
     /**

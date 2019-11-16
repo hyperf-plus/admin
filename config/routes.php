@@ -11,4 +11,5 @@ declare(strict_types=1);
  */
 
 //use Hyperf\HttpServer\Router\Router;
-//Router::addRoute(['GET', 'POST','PUT','DELETE'],'api/:version/:controller', 'api/:version.:controller/index');
+//
+//Router::addRoute(['GET', 'POST','PUT','DELETE'],'api/:version/:controller', 'api/:version/:controller');

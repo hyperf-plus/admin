@@ -5,12 +5,8 @@ namespace App\Controller;
 
 use App\Exception\StatusException;
 use App\Exception\SystemException;
-use Hyperf\DbConnection\Db;
-use Hyperf\HttpServer\Annotation\AutoController;
-use Psr\Http\Message\RequestInterface;
 
 /**
- * 权限管理
  * Class AuthController
  * @package App\Controller
  */
@@ -18,7 +14,7 @@ class AdminBase extends Controller
 {
 
     /**
-     * 方法路由器
+     * s     * 方法路由器
      * @var array
      */
     private static $route;
@@ -48,13 +44,13 @@ class AdminBase extends Controller
         // 路由定义中如果数组[1]不存在,则表示默认对应model模型
         $class = "\app\Model" . $class;
         if (!class_exists($class)) throw new SystemException('模块不存在', 500);
-        $CLASS = new $class;
+        $CLASS = make($class);
         $response = [];
         $response['status'] = 200;
         $response['message'] = 'success';
         $response['data'] = [];
 
-        $params =$this->request->all();
+        $params = $this->request->all();
         unset($params['appkey']);
         unset($params['token']);
         unset($params['timestamp']);
@@ -62,12 +58,12 @@ class AdminBase extends Controller
         unset($params['method']);
         unset($params['sign']);
         try {
-            if (method_exists($CLASS, $callback[0])) {
-                $result = call_user_func([$CLASS, $callback[0]],$params );
+            if (method_exists($class, $callback[0])) {
+                $result = call_user_func([$CLASS, $callback[0]], $params);
             } else {
                 throw new SystemException('method成员方法不存在');
             }
-            if (is_array($result)){
+            if (is_array($result)) {
                 $response['data'] = (array)$result;
             }
         } catch (\Throwable $e) {

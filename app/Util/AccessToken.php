@@ -4,10 +4,8 @@
 namespace App\Util;
 
 use App\Constants\Constants;
-use App\Exception\InvalidConfigException;
 use App\Exception\LoginException;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\JWT;
+use App\Util\Jwt\Jwt;
 use InvalidArgumentException;
 
 class AccessToken
@@ -24,26 +22,25 @@ class AccessToken
 
     public function encode(array $payload): string
     {
-        return JWT::encode($payload, self::$app_key, self::$alg);
+        return JWT::getToken($payload);
     }
 
     public function decode(string $jwt): array
     {
         try {
-            $decode = JWT::decode($jwt, self::$app_key, [self::$alg]);
-
+            $decode = JWT::verifyToken($jwt);
             return (array)$decode;
         } catch (ExpiredException $exception) {
             //过期token
-            throw new LoginException('token过期！', -1);
+            throw new LoginException('token过期！', 500);
         } catch (InvalidArgumentException $exception) {
             //参数错误
-            throw new LoginException('token参数非法！', -1);
+            throw new LoginException('token参数非法！', 500);
         } catch (\UnexpectedValueException $exception) {
             //token无效
-            throw new LoginException('token无效！', -1);
+            throw new LoginException('token无效！', 500);
         } catch (\Exception $exception) {
-            throw new LoginException($exception->getMessage(), -1);
+            throw new LoginException($exception->getMessage(), 500);
         }
     }
 
@@ -51,29 +48,28 @@ class AccessToken
      * 创建token
      * @return string
      */
-    public function createToken(Payload $payload)
+    public function createToken($data)
     {
-        $token = $this->encode($payload->toArray());
-
+        $token = $this->encode($data);
         return $token;
     }
 
     public function checkToken(string $token): Payload
     {
         if (empty($token)) {
-            throw new LoginException('token不能为空！', -1);
+            throw new LoginException('token不能为空！', 500);
         }
 
         $decode = $this->decode($token);
 
         if (is_null($decode)) {
-            throw new LoginException('token无效！', -1);
+            throw new LoginException('token无效！', 500);
         }
 
         $jwt = new Payload($decode);
 
         if (Constants::SCOPE_ROLE !== $jwt->scopes) {
-            throw new LoginException('token参数非法！', -2);
+            throw new LoginException('token参数非法！', 500);
         }
 
         return $jwt;
@@ -83,19 +79,19 @@ class AccessToken
     public function checkRefreshToken(string $refresh)
     {
         if (empty($refresh)) {
-            throw new LoginException('token不能为空！', -1);
+            throw new LoginException('token不能为空！', 500);
         }
 
         $decode = $this->decode($refresh);
 
         if (is_null($decode)) {
-            throw new LoginException('token无效！', -1);
+            throw new LoginException('token无效！', 500);
         }
 
         $jwt = new Payload($decode);
 
         if (Constants::SCOPE_REFRESH !== $jwt->scopes) {
-            throw new LoginException('refresh-token参数非法！', -2);
+            throw new LoginException('refresh-token参数非法！', 500);
         }
 
         return $jwt->toArray();
@@ -115,11 +111,11 @@ class AccessToken
         $jwt = $this->decode($refresh);
 
         if (is_null($jwt)) {
-            throw new LoginException('refresh-token参数有误！', -2);
+            throw new LoginException('refresh-token参数有误！', 500);
         }
 
         if (Constants::SCOPE_REFRESH !== $jwt['scopes']) {
-            throw new LoginException('refresh-token参数非法！', -2);
+            throw new LoginException('refresh-token参数非法！', 500);
         }
 
         $data = $jwt['data'];

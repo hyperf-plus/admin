@@ -14,9 +14,6 @@ class CorsMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        Context::override(ServerRequestInterface::class, function () use ($request) {
-            return $request->withHeader('Content-Type', 'application/json');
-        });
         $response = Context::get(ResponseInterface::class);
         $response = $response->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Credentials', 'true')

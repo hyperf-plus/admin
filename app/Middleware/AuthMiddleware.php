@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Constants\Constants;
 use App\Exception\LoginException;
-use App\Util\AccessToken;
 use App\Util\Auth;
+use App\Util\Jwt\Jwt;
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\Utils\Context;
+use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 
 /**
  * 权限验证中间件
@@ -38,6 +39,12 @@ class AuthMiddleware implements MiddlewareInterface
      */
     protected $response;
 
+    /**
+     * @Inject()
+     * @var Jwt
+     */
+    protected $jwt;
+
     public function __construct(ContainerInterface $container, HttpResponse $response, RequestInterface $request)
     {
         $this->container = $container;
@@ -50,45 +57,50 @@ class AuthMiddleware implements MiddlewareInterface
         //检查节点
         //检查TOKEN
         $cur_node = $this->request->getUri()->getPath();
+        $method = $this->request->all()['method'] ?? '';
+        if ($method == 'login.admin.user' && $cur_node == '/api/v1/admin') {
+            return $handler->handle($request);//交给下个一个中间件处理
+        }
 
         foreach (Auth::ignores() as $ignore) {
             if ($ignore === $cur_node) {
                 return $handler->handle($request);//交给下个一个中间件处理
             }
         }
-
-        $token = $this->request->header('token')??'';
-
+        $token = $this->request->all()['token'] ?? '';
         try {
             //todo 检查token
-            $instance = new AccessToken();
-            $jwt = $instance->checkToken($token);
+            $jwt = $this->jwt->verifyToken($token);
         } catch (LoginException $exception) {
             return $this->response->json(
                 [
                     'code' => $exception->getCode(),
-                    'msg' => $exception->getMessage(),
+                    'message' => $exception->getMessage(),
                     'data' => []
                 ]
             );
         }
-
-        $admin = (array)($jwt->data);
-
-        //todo 检查用户与节点权限
-        if ('admin' !== $admin['user_name'] && !Auth::checkNode($admin['role_id'], $cur_node)) {
+        if ($jwt['scope'] != Constants::SCOPE_ROLE) {
             return $this->response->json(
                 [
-                    'code' => '1',
-                    'msg' => '您没有访问改节点的权限！',
+                    'code' => 500,
+                    'message' => 'token类型错误！',
                     'data' => []
                 ]
             );
         }
-
-        $request = $request->withAttribute('admin', $admin);
-        Context::set(ServerRequestInterface::class, $request);
-
+        $admin = $jwt['data'] ?? [];
+        //todo 检查用户与节点权限
+        if (Auth::checkNode($admin['group'], $cur_node)) {
+            return $this->response->json(
+                [
+                    'code' => 500,
+                    'message' => '您没有访问改节点的权限！',
+                    'data' => []
+                ]
+            );
+        }
+        //Context::set(ServerRequestInterface::class, $request);
         return $handler->handle($request);//交给下个一个中间件处理
     }
 }
