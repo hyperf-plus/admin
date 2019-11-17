@@ -115,9 +115,6 @@ class AuthRule extends BaseModel
             $map[] = ['rule_id', '!=', $data['rule_id']];
             $map[] = ['module', '=', $data['module']];
             $map[] = ['group_id', '=', $data['group_id']];
-
-
-            p($map);
             if (self::checkUnique($map)) {
                 throw new RESTException('当前模块下已存在相同用户组');
             }
