@@ -5,6 +5,7 @@ namespace App\Model;
 
 use App\Exception\AuthRuleException;
 use App\Exception\LoginException;
+use App\Exception\RESTException;
 use Hyperf\Database\Model\Model;
 
 class AuthRule extends BaseModel
@@ -21,11 +22,15 @@ class AuthRule extends BaseModel
         'group_id',
     ];
 
+    protected $hidden = [
+        'is_delete'
+    ];
+
     /**
      * 字段类型或者格式转换
      * @var array
      */
-    protected $type = [
+    protected $casts = [
         'rule_id' => 'integer',
         'group_id' => 'integer',
         'menu_auth' => 'array',
@@ -44,28 +49,23 @@ class AuthRule extends BaseModel
      */
     public function addAuthRuleItem($data)
     {
-        if (!$this->validateData($data, 'AuthRule')) {
-            return false;
-        }
-
+        $this->validateData($data, 'AuthRule');
         // 避免无关字段
         unset($data['rule_id']);
         !empty($data['menu_auth']) ?: $data['menu_auth'] = [];
         !empty($data['log_auth']) ?: $data['log_auth'] = [];
 
-        $map['module'] = ['eq', $data['module']];
-        $map['group_id'] = ['eq', $data['group_id']];
+        $map['module'] = $data['module'];
+        $map['group_id'] = $data['group_id'];
 
         if (self::checkUnique($map)) {
             return $this->setError('当前模块下已存在相同用户组');
         }
-
-        if (false !== $this->allowField(true)->save($data)) {
-            Cache::clear('CommonAuth');
+        if ($this->forceFill($data)->save()) {
+            CacheCLear('CommonAuth');
             return $this->toArray();
         }
-
-        return false;
+        return [];
     }
 
     /**
@@ -77,15 +77,11 @@ class AuthRule extends BaseModel
      */
     public function getAuthRuleItem($data)
     {
-        if (!$this->validateData($data, 'AuthRule.get')) {
-            return false;
-        }
-
-        $result = self::get($data['rule_id']);
+        $this->validateData($data, 'AuthRule.get');
+        $result = self::find($data['rule_id']);
         if (false !== $result) {
             return is_null($result) ? null : $result->toArray();
         }
-
         return false;
     }
 
@@ -98,10 +94,7 @@ class AuthRule extends BaseModel
      */
     public function setAuthRuleItem($data)
     {
-        if (!$this->validateSetData($data, 'AuthRule.set')) {
-            return false;
-        }
-
+        $this->validateSetData($data, 'AuthRule.set');
         // 数组字段特殊处理
         if (isset($data['menu_auth']) && '' == $data['menu_auth']) {
             $data['menu_auth'] = [];
@@ -112,27 +105,29 @@ class AuthRule extends BaseModel
         }
 
         // 获取原始数据
-        $result = self::get($data['rule_id']);
+        $result = self::find($data['rule_id']);
         if (!$result) {
-            return is_null($result) ? $this->setError('数据不存在') : false;
+            throw new RESTException('数据不存在');
         }
 
         if (!empty($data['module'])) {
-            $map['rule_id'] = ['neq', $data['rule_id']];
-            $map['module'] = ['eq', $data['module']];
-            $map['group_id'] = ['eq', $result->getAttr('group_id')];
+            $map = [];
+            $map[] = ['rule_id', '!=', $data['rule_id']];
+            $map[] = ['module', '=', $data['module']];
+            $map[] = ['group_id', '=', $data['group_id']];
 
+
+            p($map);
             if (self::checkUnique($map)) {
-                return $this->setError('当前模块下已存在相同用户组');
+                throw new RESTException('当前模块下已存在相同用户组');
             }
         }
 
-        if (false !== $result->allowField(true)->save($data)) {
-            Cache::clear('CommonAuth');
+        if ($result->forceFill($data)->save()) {
+            CacheClear('CommonAuth');
             return $result->toArray();
         }
-
-        return false;
+        throw new RESTException('保存失败');
     }
 
     /**
@@ -140,16 +135,13 @@ class AuthRule extends BaseModel
      * @access public
      * @param array $data 外部数据
      * @return bool
+     * @throws \App\Exception\ValidateException
      */
     public function delAuthRuleList($data)
     {
-        if (!$this->validateData($data, 'AuthRule.del')) {
-            return false;
-        }
-
+        $this->validateData($data, 'AuthRule.del');
         self::destroy($data['rule_id']);
-        Cache::clear('CommonAuth');
-
+        CacheClear('CommonAuth');
         return true;
     }
 
@@ -162,43 +154,29 @@ class AuthRule extends BaseModel
      */
     public function getAuthRuleList($data)
     {
-        if (!$this->validateData($data, 'AuthRule.list')) {
-            return false;
-        }
-
-        $result = self::all(function ($query) use ($data) {
+        $this->validateData($data, 'AuthRule.list');
+        $db = self::where(function ($query) use ($data) {
             // 搜索条件
-            $map = [];
-            empty($data['group_id']) ?: $map['group_id'] = ['eq', $data['group_id']];
-            is_empty_parm($data['module']) ?: $map['module'] = ['eq', $data['module']];
-            is_empty_parm($data['status']) ?: $map['status'] = ['eq', $data['status']];
+            empty($data['group_id']) ?: $query->where('group_id', $data['group_id']);
+            is_empty_parm($data['module']) ?: $query->where('module', $data['module']);
+            is_empty_parm($data['status']) ?: $query->where('status', $data['status']);
 
-            // 排序方式
-            $orderType = !empty($data['order_type']) ? $data['order_type'] : 'asc';
-
-            // 排序的字段
-            $orderField = !empty($data['order_field']) ? $data['order_field'] : 'rule_id';
-
-            // 排序处理
-            $order['sort'] = 'asc';
-            $order[$orderField] = $orderType;
-
-            if (!empty($data['order_field'])) {
-                $order = array_reverse($order);
-            }
-
-            $query
-                ->cache(true, null, 'CommonAuth')
-                ->where($map)
-                ->order($order);
         });
-
-        if (false === $result) {
-            Cache::clear('CommonAuth');
-            return false;
+        // 排序方式
+        $orderType = !empty($data['order_type']) ? $data['order_type'] : 'asc';
+        // 排序的字段
+        $orderField = !empty($data['order_field']) ? $data['order_field'] : 'rule_id';
+        // 排序处理
+        $order = [];
+        $order['sort'] = 'asc';
+        $order[$orderField] = $orderType;
+        if (!empty($data['order_field'])) {
+            $order = array_reverse($order);
         }
-
-        return $result->toArray();
+        foreach ($order as $sort => $type) {
+            $db->orderBy($sort, $type);
+        }
+        return $db->get()->toArray();
     }
 
     /**
@@ -206,20 +184,20 @@ class AuthRule extends BaseModel
      * @access public
      * @param array $data 外部数据
      * @return bool
+     * @throws \App\Exception\ValidateException
      */
     public function setAuthRuleStatus($data)
     {
-        if (!$this->validateData($data, 'AuthRule.status')) {
-            return false;
-        }
+        $this->validateData($data, 'AuthRule.status');
+        $result = self::whereIn('rule_id', $data['rule_id'])->get();
 
-        $map['rule_id'] = ['in', $data['rule_id']];
-        if (false !== $this->save(['status' => $data['status']], $map)) {
-            Cache::clear('CommonAuth');
-            return true;
+        foreach ($result as $item) {
+            //TODO:: 这里要判断用户是否有操作该组的权限
+            $item->status = $data['status'];
+            $item->save();
         }
-
-        return false;
+        CacheClear('CommonAuth');
+        return true;
     }
 
     /**
@@ -227,19 +205,17 @@ class AuthRule extends BaseModel
      * @access public
      * @param array $data 外部数据
      * @return bool
+     * @throws \App\Exception\ValidateException
      */
     public function setAuthRuleSort($data)
     {
-        if (!$this->validateData($data, 'AuthRule.sort')) {
-            return false;
-        }
-
-        $map['rule_id'] = ['eq', $data['rule_id']];
-        if (false !== $this->save(['sort' => $data['sort']], $map)) {
-            Cache::clear('CommonAuth');
+        $this->validateData($data, 'AuthRule.sort');
+        $result = self::find($data['rule_id']);
+        $result->sort = $data['sort'];
+        if ($result->save()) {
+            CacheClear('CommonAuth');
             return true;
         }
-
         return false;
     }
 
@@ -252,21 +228,15 @@ class AuthRule extends BaseModel
      */
     public function setAuthRuleIndex($data)
     {
-        if (!$this->validateData($data, 'AuthRule.index')) {
-            return false;
+        $this->validateData($data, 'AuthRule.index');
+        foreach ($data['rule_id'] as $key => $rule_id) {
+            //TODO::这里要检测是否有此条数据的权限
+            $item = self::find($rule_id);
+            $item->sort = $key + 1;
+            $item->save();
         }
-
-        $list = [];
-        foreach ($data['rule_id'] as $key => $value) {
-            $list[] = ['rule_id' => $value, 'sort' => $key + 1];
-        }
-
-        if (false !== $this->isUpdate()->saveAll($list)) {
-            Cache::clear('CommonAuth');
-            return true;
-        }
-
-        return false;
+        CacheClear('CommonAuth');
+        return true;
     }
 
     /**
@@ -297,14 +267,14 @@ class AuthRule extends BaseModel
         foreach ($result as $value) {
             // 默认将所有获取到的编号都归入数组
             if (!empty($value['menu_auth'])) {
-                $menuAuth = array_merge($menuAuth, json_decode($value['menu_auth'], true));
+                $menuAuth = array_merge($menuAuth, (array)$value['menu_auth']);
 //                // 游客组需要将权限加入白名单列表
 //                if (AUTH_GUEST == $value['group_id']) {
 //                    $whiteList = array_merge($whiteList, $value['menu_auth']);
 //                }
             }
             if (!empty($value['log_auth'])) {
-                $logAuth = array_merge($logAuth, json_decode($value['log_auth'], true));
+                $logAuth = array_merge($logAuth, (array)$value['log_auth']);
             }
         }
         return [

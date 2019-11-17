@@ -8,7 +8,6 @@ use App\Exception\RESTException;
 use App\Exception\ValidateException;
 use Hyperf\DbConnection\Db;
 use Hyperf\Utils\Str;
-use Prophecy\Doubler\Generator\TypeHintReference;
 
 class Menu extends BaseModel
 {
@@ -80,6 +79,7 @@ class Menu extends BaseModel
         }
         if ($this->forceFill($data)->save()) {
             //TODO::   清理缓存 Cache::clear('CommonAuth');
+            CacheClear('CommonAuth');
             return $this->toArray();
         }
         return $this->setError('添加失败');
@@ -94,6 +94,7 @@ class Menu extends BaseModel
      */
     public function getMenuItem($data)
     {
+
         $this->validateData($data, 'Menu.item');
         $result = self::find($data['menu_id']);
         return empty($result) ? null : $result->toArray();
@@ -145,6 +146,7 @@ class Menu extends BaseModel
         }
         if ($result->forceFill($data)->save()) {
             //TODO:: 清理缓存  Cache::clear('CommonAuth');
+            CacheClear('CommonAuth');
             return $result->toArray();
         }
         throw new RESTException('修改失败');
@@ -284,6 +286,7 @@ class Menu extends BaseModel
         $delList = array_column($menuList, 'menu_id');
         self::destroy($delList);
         // TODO:: 清理缓存  Cache::clear('CommonAuth');
+        CacheClear('CommonAuth');
         return ['children' => $delList];
     }
 
@@ -345,6 +348,7 @@ class Menu extends BaseModel
             $item->save();
         }
         //TODO:: 清理缓存 Cache::clear('CommonAuth');
+        CacheClear('CommonAuth');
         return true;
     }
 
@@ -369,6 +373,7 @@ class Menu extends BaseModel
         $result->sort = $data['sort'];
         if ($result->save()) {
             //TODO:: 清理缓存 Cache::clear('CommonAuth');
+            CacheClear('CommonAuth');
             return true;
         }
         return false;
@@ -394,6 +399,7 @@ class Menu extends BaseModel
             $list[] = ['menu_id' => $value, 'sort' => $key + 1];
         }
         //TODO:: 清理缓存 Cache::clear('CommonAuth');
+        CacheClear('CommonAuth');
         return true;
     }
 
@@ -503,18 +509,19 @@ class Menu extends BaseModel
 
 
         if ($result->save()) {
-            //TODO:: 清理缓存 Cache::clear('CommonAuth');
+            CacheClear('CommonAuth');
             return ['parent' => $parent, 'children' => $children, 'status' => (int)$data['status']];
         }
         throw new RESTException('更新失败，状态未改变');
     }
+
 
     /**
      * 获取菜单列表
      * @access public
      * @param array $data 外部数据
      * @return array|false
-     * @throws ValidateException
+     * @throws RESTException
      */
     public function getMenuList($data)
     {
@@ -523,7 +530,6 @@ class Menu extends BaseModel
         } catch (ValidateException $e) {
             throw new RESTException($e->getMessage());
         }
-
         $menuId = isset($data['menu_id']) ? $data['menu_id'] : 0;
         $isLayer = !is_empty_parm($data['is_layer']) ? (bool)$data['is_layer'] : true;
         $level = isset($data['level']) ? $data['level'] : null;
@@ -549,8 +555,7 @@ class Menu extends BaseModel
             throw new RESTException($e->getMessage());
         }
         // 获取当前登录账号对应的权限数据
-        //get_client_group()
-        $ruleResult = AuthRule::getMenuAuthRule($data['module'], 1);
+        $ruleResult = AuthRule::getMenuAuthRule($data['module'], get_client_group());
         if (empty($ruleResult['menu_auth'])) {
             return [];
         }
@@ -570,12 +575,13 @@ class Menu extends BaseModel
      */
     public static function getUrlMenuList($module, $status = 1)
     {
-
-
         $map['module'] = ['eq', $module];
         $map['status'] = ['eq', $status];
         $result = self::where('module', $module)->where('status', $status)->get();
-
+        if (!$result) {
+            CacheClear('CommonAuth');
+            return [];
+        }
         $data = [];
         foreach ($result as $item) {
             $data[$item->getAttribute('url')] = $item;
@@ -590,7 +596,6 @@ class Menu extends BaseModel
 
                 $result = self::cache($key, null, 'CommonAuth')->where($map)->column(null, 'url');
                 if (!$result) {
-                    //TODO:: 清理缓存 Cache::clear('CommonAuth');
                     Cache::rm($key);
                     return false;
                 }

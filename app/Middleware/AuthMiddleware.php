@@ -6,11 +6,13 @@ namespace App\Middleware;
 
 use App\Constants\Constants;
 use App\Exception\LoginException;
-use App\Util\Auth;
+use App\Model\Entity\User;
+use App\Service\Auth;
 use App\Util\Jwt\Jwt;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
+use Hyperf\Utils\Context;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -44,6 +46,11 @@ class AuthMiddleware implements MiddlewareInterface
      * @var Jwt
      */
     protected $jwt;
+    /**
+     * @Inject()
+     * @var Auth
+     */
+    protected $Auth;
 
     public function __construct(ContainerInterface $container, HttpResponse $response, RequestInterface $request)
     {
@@ -54,7 +61,14 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        //检查节点
+        $response = Context::get(ResponseInterface::class);
+        $response = $response->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Credentials', 'true')
+            ->withHeader('Access-Control-Allow-Headers', 'DNT,Keep-Alive,User-Agent,Cache-Control,Content-Type,Authorization');
+        Context::set(ResponseInterface::class, $response);
+        if ($request->getMethod() == 'OPTIONS') {
+            return $response;
+        }
         //检查TOKEN
         $cur_node = $this->request->getUri()->getPath();
         $method = $this->request->all()['method'] ?? '';
@@ -62,12 +76,12 @@ class AuthMiddleware implements MiddlewareInterface
             return $handler->handle($request);//交给下个一个中间件处理
         }
 
-        foreach (Auth::ignores() as $ignore) {
+        foreach ($this->Auth->ignores() as $ignore) {
             if ($ignore === $cur_node) {
                 return $handler->handle($request);//交给下个一个中间件处理
             }
         }
-        $token = $this->request->all()['token'] ?? '';
+        $token = $this->request->header('Authorization') ?? '';
         try {
             //todo 检查token
             $jwt = $this->jwt->verifyToken($token);
@@ -90,8 +104,12 @@ class AuthMiddleware implements MiddlewareInterface
             );
         }
         $admin = $jwt['data'] ?? [];
+        $model = $jwt['iss'] ?? '';
         //todo 检查用户与节点权限
-        if (Auth::checkNode($admin['group'], $cur_node)) {
+        $method = $this->request->all()['method'] ?? '';
+        Context::set(User::class, new User(['userId' => $admin['id'],'groupId' => $admin['group'] ]));
+
+        if (!$this->Auth->checkAuth($model, $admin['group'], $cur_node, $method)) {
             return $this->response->json(
                 [
                     'code' => 500,

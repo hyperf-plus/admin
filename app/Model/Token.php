@@ -78,7 +78,7 @@ class Token extends BaseModel
         try {
             $payload = new JwtData();
             $payload->setScope(Constants::SCOPE_ROLE);
-            $payload->setIssuer($username);
+            $payload->setIssuer('api');
             $payload->setJwtData([
                 'id' => $id,
                 'group' => $group
@@ -86,8 +86,8 @@ class Token extends BaseModel
             $payload->setExpiration($expires);
             $payload->setSubject(env('JWT_NAME'));
             $payload->setIssuedAt($curr_time);
-            $payload->offsetSet("jti", $id);   //该JWT的签发者
             $token = $this->jwt->getToken($payload->toArray());
+
             $payload->setScope(Constants::SCOPE_REFRESH);
             $payload->setExpiration($refresh_expires);
             $refresh = $this->jwt->getToken($payload->toArray());

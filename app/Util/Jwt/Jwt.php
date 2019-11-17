@@ -39,8 +39,6 @@ class Jwt
      */
     public static function getToken(array $payload)
     {
-
-
         if (is_array($payload)) {
             $base64header = self::base64UrlEncode(json_encode(self::$header, JSON_UNESCAPED_UNICODE));
             $base64payload = self::base64UrlEncode(json_encode($payload, JSON_UNESCAPED_UNICODE));
@@ -59,36 +57,36 @@ class Jwt
      */
     public static function verifyToken(string $Token)
     {
-        $tokens = explode('.', $Token);
+        $tokens = explode(' ', $Token);
+        if (count($tokens) != 2)
+            throw new ExpiredException('token不能为空', 500);
+        $tokens = explode('.', $tokens[1]);
         if (count($tokens) != 3)
-            throw new ExpiredException();
-
+            throw new ExpiredException('token不存在', 500);
         list($base64header, $base64payload, $sign) = $tokens;
-
         //获取jwt算法
         $base64decodeheader = json_decode(self::base64UrlDecode($base64header), JSON_OBJECT_AS_ARRAY);
         if (empty($base64decodeheader['alg']))
-            return false;
+            throw new ExpiredException('token 错误', 500);
 
         //签名验证
-        if (self::signature($base64header . '.' . $base64payload, env('JWT_SECRET'), $base64decodeheader['alg']) !== $sign)
-            return false;
+        if (self::signature($base64header . '.' . $base64payload, env('JWT_SECRET'), $base64decodeheader['alg']) !== $sign) throw new ExpiredException('token签名错误', 500);
 
         $payload = json_decode(self::base64UrlDecode($base64payload), JSON_OBJECT_AS_ARRAY);
 
         //签发时间大于当前服务器时间验证失败
         if (isset($payload['iat']) && $payload['iat'] > time()) {
-            throw new ExpiredException();
+            throw new ExpiredException('token已失效', 500);
         }
 
         //过期时间小宇当前服务器时间验证失败
         if (isset($payload['exp']) && $payload['exp'] < time()) {
-            throw new ExpiredException();
+            throw new ExpiredException('token已失效', 500);
         }
 
         //该nbf时间之前不接收处理该Token
         if (isset($payload['nbf']) && $payload['nbf'] > time()) {
-            throw new ExpiredException();
+            throw new ExpiredException('token未生效', 500);
         }
 
         return $payload;

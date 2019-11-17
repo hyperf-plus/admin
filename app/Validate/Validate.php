@@ -111,6 +111,70 @@ class Validate
         $this->field = array_merge($this->field, $field);
     }
 
+
+    /**
+     * 日期是否在合理范围内
+     * @access public
+     * @param  array $args 参数
+     * @return bool
+     */
+    public function betweenTime(...$args)
+    {
+        if (strtotime($args[0]) >= 0 && strtotime($args[0]) <= 2147472000) {
+            return true;
+        }
+
+        return $args[4] . '不在合理日期范围内';
+    }
+
+    /**
+     * 某个字段的值是否小于某个字段(日期)
+     * @access public
+     * @param  array $args 参数
+     * @return bool
+     */
+    public function beforeTime(...$args)
+    {
+        if (!isset($args[2][$args[1]])) {
+            return $this->getField($args[1]) . '不能为空';
+        }
+
+        if (strtotime($args[0]) <= strtotime($args[2][$args[1]])) {
+            return true;
+        }
+
+        return $args[4] . '不能大于 ' . $this->getField($args[1]);
+    }
+    /**
+     * 获取某个字段的描述
+     * @access public
+     * @param  string $field 参数
+     * @return bool
+     */
+    public function getField($field)
+    {
+        return isset($this->field[$field]) ? $this->field[$field] : $field;
+    }
+    /**
+     * 某个字段的值是否大于某个字段(日期)
+     * @access public
+     * @param  array $args 参数
+     * @return bool
+     */
+    public function afterTime(...$args)
+    {
+        if (!isset($args[2][$args[1]])) {
+            return $this->getField($args[1]) . '不能为空';
+        }
+
+        if (strtotime($args[0]) >= strtotime($args[2][$args[1]])) {
+            return true;
+        }
+
+        return $args[4] . '不能小于 ' . $this->getField($args[1]);
+    }
+
+
     /**
      * 实例化验证
      * @access public

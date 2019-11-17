@@ -54,12 +54,13 @@ class AuthRule  extends Validate
     protected $scene = [
         'set'    => [
             'rule_id' => 'require|integer|gt:0',
-            'module'=> '',
-            'name'=> '',
-            'menu_auth'=> '',
-            'log_auth'=> '',
-            'sort'=> '',
-            'status'=> '',
+            'module',
+            'name',
+            'menu_auth',
+            'group_id',
+            'log_auth',
+            'sort',
+            'status',
         ],
         'get'    => [
             'rule_id' => 'require|integer|gt:0',

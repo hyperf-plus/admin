@@ -1,7 +1,35 @@
 <?php
+
+use Hyperf\Utils\Context;
+
 function getClientIp()
 {
     return '127.0.0.1';
+}
+
+
+/**
+ * @param $key
+ * @param mixed ...$param
+ */
+function CacheClear($key, ...$param)
+{
+
+
+}
+
+
+/**
+ * @return \App\Model\Entity\User|mixed|null
+ */
+function getUserInfo()
+{
+    return Context::get(\App\Model\Entity\User::class);
+}
+
+function get_client_group()
+{
+    return getUserInfo()->getGroupId() ?? 0;
 }
 
 function is_client_admin()
@@ -19,7 +47,7 @@ function get_client_id()
 if (!function_exists('is_empty_parm')) {
     /**
      * 判断是否为空参数
-     * @param  mixed $parm
+     * @param mixed $parm
      * @return bool
      */
     function is_empty_parm(&$parm)
@@ -59,6 +87,8 @@ function uuid($length)
 
 function p($val, $title = null, $starttime = '')
 {
+
+
     print_r('[ ' . date("Y-m-d H:i:s") . ']:');
     if ($title != null) {
         print_r("[" . $title . "]:");

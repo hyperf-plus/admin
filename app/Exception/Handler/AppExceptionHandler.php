@@ -15,6 +15,7 @@ namespace App\Exception\Handler;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\Utils\Context;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -38,10 +39,7 @@ class AppExceptionHandler extends ExceptionHandler
             'status'  => $throwable->getCode(),
             'message' => $throwable->getMessage(),
         ];
-        return $response->withStatus(200)
-            ->withHeader('Access-Control-Allow-Origin:','*')
-            ->withHeader('Access-Control-Allow-Methods',"GET, POST, OPTIONS, HEAD")
-            ->withHeader('content-type', 'application/json; charset=utf-8')->withBody(new SwooleStream(json_encode($result,256)));
+        return $response->withStatus(200)->withBody(new SwooleStream(json_encode($result,256)));
     }
 
     public function isValid(Throwable $throwable): bool

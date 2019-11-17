@@ -30,6 +30,7 @@ class AdminBase extends Controller
      */
     public function index()
     {
+
         $class = str_replace("App\\Controller\\Api\\v1", '', static::class);
         // 获取控制器方法路由
         if (!isset(self::$route[$class])) {
@@ -42,14 +43,13 @@ class AdminBase extends Controller
         $result = null;
         $callback = self::$route[$class][$method];
         // 路由定义中如果数组[1]不存在,则表示默认对应model模型
-        $class = "\app\Model" . $class;
-        if (!class_exists($class)) throw new SystemException('模块不存在', 500);
+        $class = "App\Model" . $class;
+        if (!class_exists($class, false)) throw new SystemException('模块不存在', 500);
         $CLASS = make($class);
         $response = [];
         $response['status'] = 200;
         $response['message'] = 'success';
         $response['data'] = [];
-
         $params = $this->request->all();
         unset($params['appkey']);
         unset($params['token']);
@@ -72,6 +72,13 @@ class AdminBase extends Controller
             $response['message'] = $e->getMessage();
         }
         //处理完成，这里可以增加日志记录功能
+
+
+        // 记录日志
+//            $logError = $response['message'];
+//            self::$auth->saveLog($this->getAuthUrl(), $this->request, $result, get_called_class(), $logError);
+
+
         return $response;
     }
 }

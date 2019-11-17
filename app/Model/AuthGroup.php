@@ -58,18 +58,13 @@ class AuthGroup extends BaseModel
      */
     public function addAuthGroupItem($data)
     {
-        if (!$this->validateData($data, 'AuthGroup')) {
-            return false;
-        }
-
+        $this->validateData($data, 'AuthGroup');
         // 避免无关字段
         unset($data['group_id'], $data['system']);
-
-        if (false !== $this->allowField(true)->save($data)) {
-            Cache::clear('CommonAuth');
+        if ($this->forceFill($data)->save()) {
+            CacheClear('CommonAuth');
             return $this->toArray();
         }
-
         return false;
     }
 
@@ -93,6 +88,7 @@ class AuthGroup extends BaseModel
         }
         if ($result->guard(['group_id'])->fill($data)->save()) {
             //TODO:: CommonAuth Cache::clear('CommonAuth');
+            CacheClear('CommonAuth');
             return $result->toArray();
         }
 
@@ -154,6 +150,7 @@ class AuthGroup extends BaseModel
         $result->delete();
         $result->hasAuthRule()->delete();
         //TODO:: CommonAuth  Cache::clear('CommonAuth');
+        CacheClear('CommonAuth');
         return true;
     }
 
@@ -208,6 +205,7 @@ class AuthGroup extends BaseModel
             $item->status = $data['status'];
             $item->save();
         }
+        CacheClear('CommonAuth');
         // TODO:: CommonAuth  Cache::clear('CommonAuth');
         return true;
     }

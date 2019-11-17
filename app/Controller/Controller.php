@@ -13,8 +13,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Kernel\Http\Response;
+use App\Model\Entity\User;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\Context;
 use Psr\Container\ContainerInterface;
 
 abstract class Controller
@@ -33,12 +35,17 @@ abstract class Controller
      * @var ResponseInterface
      */
     public $response;
+    /**
+     * @var User
+     */
+    public $user;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->request = $container->get(RequestInterface::class);
         $this->response = $container->get(Response::class);
+        $this->user = $container->get(User::class);
     }
 
     public function isPost()

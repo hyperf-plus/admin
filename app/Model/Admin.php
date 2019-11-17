@@ -221,9 +221,10 @@ class Admin extends BaseModel
             }
         }
         if (isset($data['group_id'])) {
-            //TODO::存在组，需要更新权限缓存
+            CacheClear('CommonAuth');
+            //TODO::存在组，Token失效
             //Cache::clear('token:admin_' . $data['client_id']);
-            // $this->hasToken()->where(['client_id' => $data['client_id'], 'client_type' => 1])->delete();
+            //$this->hasToken()->where(['client_id' => $data['client_id'], 'client_type' => 1])->delete();
         }
         $map = [];
         $map[] = ['admin_id', '=', $data['client_id']];
@@ -253,6 +254,7 @@ class Admin extends BaseModel
             $item->save();
             //TODO::存在组，需要更新权限缓存
             // Cache::clear('token:admin_' . $value);
+            CacheClear('CommonAuth');
             $item->hasToken()->where('client_type', 1)->delete();
         }
         return true;

@@ -4,12 +4,14 @@ namespace App\Model;
 
 use App\Exception\LoginException;
 use App\Exception\ValidateException;
+use App\Service\CacheEventService;
 use App\Validate\Validate;
 use Generator;
 use Hyperf\Database\ConnectionInterface;
 use Hyperf\Database\Query\Builder;
 use Hyperf\Database\Query\Expression;
 use Hyperf\DbConnection\Model\Model;
+use Hyperf\Di\Annotation\Inject;
 
 
 /**
@@ -49,6 +51,7 @@ use Hyperf\DbConnection\Model\Model;
  */
 class BaseModel extends Model
 {
+
     /**
      * 自动验证数据
      * @access protected
@@ -185,7 +188,6 @@ class BaseModel extends Model
          * @var Validate $validate
          */
         $class = 'app\\Validate\\' . $name;
-
         if (class_exists($class)) {
             $validate = new $class;
         } else {
@@ -203,6 +205,7 @@ class BaseModel extends Model
             }
         }
         unset($key, $item);
+
         foreach ($rule as $key => $value) {
             $field = is_string($key) ? $key : $value;
             if ($field == $pk) {
@@ -216,52 +219,6 @@ class BaseModel extends Model
         $validate->scene($scene)->check($data, $rule);
         return true;
     }
-
-    /**
-     * 根据传入参数进行验证
-     * @access public
-     * @param array $data 待验证数据
-     * @param string $name 验证器
-     * @param string $scene 场景
-     * @return bool
-     */
-    public function valid111ateSetData(&$data, $name, $scene = '')
-    {
-        !mb_strpos($name, '.', null, 'utf-8') ?: list($name, $scene) = explode('.', $name);
-        $validate = new validate($name);
-        if (!$validate->hasScene($scene)) {
-            return $this->setError($name . '场景不存在');
-        }
-
-        $rule = $validate->getSetScene($scene);
-        foreach ($data as $key => $item) {
-            if (!in_array($key, $rule, true) && !array_key_exists($key, $rule)) {
-                unset($data[$key]);
-                continue;
-            }
-        }
-        unset($key, $item);
-
-        $pk = $this->getPk();
-        foreach ($rule as $key => $value) {
-            $field = is_string($key) ? $key : $value;
-            if ($field == $pk) {
-                continue;
-            }
-
-            if (!array_key_exists($field, $data)) {
-                unset($rule[$key]);
-            }
-        }
-        unset($key, $value);
-
-        if (!$validate->scene($scene, $rule)->check($data, [], $scene)) {
-            return $this->setError((string)$validate->getError());
-        }
-
-        return true;
-    }
-
 
     /**
      * 检测是否存在相同值
