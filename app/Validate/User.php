@@ -1,16 +1,6 @@
 <?php
-/**
- * @copyright   Copyright (c) http://careyshop.cn All rights reserved.
- *
- * CareyShop    账号管理验证器
- *
- * @author      zxm <252404501@qq.com>
- * @date        2017/3/31
- */
 
 namespace App\Validate;
-
-
 class User  extends Validate
 {
     /**
@@ -124,4 +114,16 @@ class User  extends Validate
             'password',
         ],
     ];
+
+    public function unique($value, $rule, $data, $field, $title)
+    {
+        if (empty($data)) {
+            return true;
+        }
+        $count = \App\Model\User::where($field, $value)->count();
+        if (is_numeric($count) && $count > 0) {
+            return false;
+        }
+        return true;
+    }
 }

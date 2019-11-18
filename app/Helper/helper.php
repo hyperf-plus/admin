@@ -1,6 +1,11 @@
 <?php
 
+use App\Model\Entity\User;
+use Hyperf\Cache\Listener\DeleteListenerEvent;
+use Hyperf\Contract\ConfigInterface;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Context;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 function getClientIp()
 {
@@ -14,17 +19,23 @@ function getClientIp()
  */
 function CacheClear($key, ...$param)
 {
-
-
+    if (!ApplicationContext::hasContainer()) {
+        throw new \RuntimeException('The application context lacks the container.');
+    }
+    $container = ApplicationContext::getContainer();
+    if (!$container->has(EventDispatcherInterface::class)) {
+        throw new \RuntimeException('ConfigInterface is missing in container.');
+    }
+    return $container->get(EventDispatcherInterface::class)->dispatch(new DeleteListenerEvent($key, $param));
 }
 
 
 /**
- * @return \App\Model\Entity\User|mixed|null
+ * @return User |mixed|null
  */
 function getUserInfo()
 {
-    return Context::get(\App\Model\Entity\User::class);
+    return Context::get(User::class);
 }
 
 function get_client_group()
@@ -44,6 +55,26 @@ function get_client_id()
 }
 
 
+if (!function_exists('string_to_byte')) {
+    /**
+     * 字符计量大小转换为字节大小
+     * @param string $var 值
+     * @param int $dec 小数位数
+     * @return int
+     */
+    function string_to_byte($var, $dec = 2)
+    {
+        preg_match('/(^[0-9\.]+)(\w+)/', $var, $info);
+        $size = $info[1];
+        $suffix = mb_strtoupper($info[2], 'utf-8');
+
+        $a = array_flip(['B', 'KB', 'MB', 'GB', 'TB', 'PB']);
+        $b = array_flip(['B', 'K', 'M', 'G', 'T', 'P']);
+
+        $pos = array_key_exists($suffix, $a) && $a[$suffix] !== 0 ? $a[$suffix] : $b[$suffix];
+        return round($size * pow(1024, $pos), $dec);
+    }
+}
 if (!function_exists('is_empty_parm')) {
     /**
      * 判断是否为空参数

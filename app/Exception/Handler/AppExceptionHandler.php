@@ -39,7 +39,7 @@ class AppExceptionHandler extends ExceptionHandler
             'status'  => $throwable->getCode(),
             'message' => $throwable->getMessage(),
         ];
-        return $response->withStatus(200)->withBody(new SwooleStream(json_encode($result,256)));
+        return $response->withStatus($throwable->getCode())->withBody(new SwooleStream(json_encode($result,256)));
     }
 
     public function isValid(Throwable $throwable): bool

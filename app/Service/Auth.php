@@ -17,35 +17,7 @@ use Hyperf\Cache\Annotation\Cacheable;
 
 class Auth
 {
-    /**
-     * 菜单权限
-     * @var array
-     */
-    private $menuAuth = [];
-
-    /**
-     * 白名单列表
-     * @var array
-     */
-    private $whiteList = [];
-
-    /**
-     * 日志权限
-     * @var array
-     */
-    private $logAuth = [];
-
-    /**
-     * 菜单数据
-     * @var array
-     */
-    private $menuList = [];
-
-    /**
-     * 权限验证实例
-     * @var object
-     */
-    protected static $auth = [];
+    private static $auth = [];
 
     /**
      * 忽略节点
@@ -53,62 +25,11 @@ class Auth
      */
     public function ignores()
     {
-        return ['/admin/login/index', '/admin/login/refreshToken'];
+        return ['/admin/login/index', '/Test/index', '/api/v1/upload', '/admin/login/refreshToken'];
     }
 
     /**
-     * 验证权限
-     * @access public
-     * @param string $url Url(模块/控制器/操作名)
-     * @return bool
-     */
-    public function check($url)
-    {
-        // 获取权限数据
-        $rule = AuthRule::getMenuAuthRule($module, $groupId);
-        if ($rule) {
-            $this->menuAuth = $rule['menu_auth'];
-            $this->logAuth = $rule['log_auth'];
-            $this->whiteList = $rule['white_list'];
-        }
-        // 获取菜单数据
-        $menu = Menu::getUrlMenuList($module);
-        if ($menu && is_array($menu)) {
-            $this->menuList[$groupId] = $menu;
-        }
-
-
-        /**
-         * 不能直接返回,否则后台的权限勾选失去了意义
-         * 而且部分API并不适合混用
-         */
-//        // 超级管理员直接返回
-//        if (AUTH_SUPER_ADMINISTRATOR == get_client_group()) {
-//            return true;
-//        }
-
-        // 转为小写
-        $url = mb_strtolower($url, 'utf-8');
-
-        // 核心数据是否存在
-        if (empty($this->menuAuth) || empty($this->menuList)) {
-            return false;
-        }
-
-        if (!isset($this->menuList[$url])) {
-            return false;
-        }
-
-        $menuId = $this->menuList[$url]['menu_id'];
-        if (in_array($menuId, $this->menuAuth)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @Cacheable(prefix="CommonAuth", ttl=9000, value="_#{module}_#{groupId}", listener="CommonAuth-update")
+     * @Cacheable(prefix="CommonAuth", ttl=9000, value="_#{module}_#{groupId}", listener="CommonAuth")
      * @param string $module
      * @param int $groupId
      * @return mixed
@@ -126,14 +47,12 @@ class Auth
             $auth['white_list'] = $rule['white_list'];
         }
         // 获取菜单数据
-
         $menu = Menu::getUrlMenuList($module);
         if ($menu && is_array($menu)) {
             $auth['menu_list'] = $menu;
         }
         return $auth;
     }
-
 
     /**
      * 验证Auth
@@ -146,7 +65,7 @@ class Auth
      */
     public function checkAuth(string $model, int $group, string $node, string $method)
     {
-        $key = $model.$group;
+        $key = $model . $group;
         // 初始化规则模块
         if (!isset(self::$auth[$key])) {
             self::$auth[$key] = make(\App\Model\Entity\Auth::class, [$this->getAuth($model, $group)]);
@@ -240,6 +159,6 @@ class Auth
      */
     private function getAuthUrl($controller, $method)
     {
-        return trim(sprintf('%s/%s', $controller, $method),'/');
+        return trim(sprintf('%s/%s', $controller, $method), '/');
     }
 }

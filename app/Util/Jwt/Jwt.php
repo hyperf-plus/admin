@@ -59,15 +59,15 @@ class Jwt
     {
         $tokens = explode(' ', $Token);
         if (count($tokens) != 2)
-            throw new ExpiredException('token不能为空', 500);
+            throw new ExpiredException('token不能为空', 401);
         $tokens = explode('.', $tokens[1]);
         if (count($tokens) != 3)
-            throw new ExpiredException('token不存在', 500);
+            throw new ExpiredException('token不存在', 401);
         list($base64header, $base64payload, $sign) = $tokens;
         //获取jwt算法
         $base64decodeheader = json_decode(self::base64UrlDecode($base64header), JSON_OBJECT_AS_ARRAY);
         if (empty($base64decodeheader['alg']))
-            throw new ExpiredException('token 错误', 500);
+            throw new ExpiredException('token 错误', 401);
 
         //签名验证
         if (self::signature($base64header . '.' . $base64payload, env('JWT_SECRET'), $base64decodeheader['alg']) !== $sign) throw new ExpiredException('token签名错误', 500);
@@ -76,17 +76,17 @@ class Jwt
 
         //签发时间大于当前服务器时间验证失败
         if (isset($payload['iat']) && $payload['iat'] > time()) {
-            throw new ExpiredException('token已失效', 500);
+            throw new ExpiredException('token已失效', 401);
         }
 
         //过期时间小宇当前服务器时间验证失败
         if (isset($payload['exp']) && $payload['exp'] < time()) {
-            throw new ExpiredException('token已失效', 500);
+            throw new ExpiredException('token已失效', 401);
         }
 
         //该nbf时间之前不接收处理该Token
         if (isset($payload['nbf']) && $payload['nbf'] > time()) {
-            throw new ExpiredException('token未生效', 500);
+            throw new ExpiredException('token未生效', 401);
         }
 
         return $payload;

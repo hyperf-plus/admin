@@ -75,9 +75,9 @@ class AuthMiddleware implements MiddlewareInterface
         if ($method == 'login.admin.user' && $cur_node == '/api/v1/admin') {
             return $handler->handle($request);//交给下个一个中间件处理
         }
-
         foreach ($this->Auth->ignores() as $ignore) {
             if ($ignore === $cur_node) {
+
                 return $handler->handle($request);//交给下个一个中间件处理
             }
         }

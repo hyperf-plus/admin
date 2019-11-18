@@ -29,9 +29,9 @@ class Admin extends AdminBase
     {
         return [
             // 验证账号是否合法
-            'check.admin.username' => ['checkAdminName', 'app\common\service\Admin'],
+            'check.admin.username' => ['checkAdminName', 'App\Service\Admin'],
             // 验证账号昵称是否合法
-            'check.admin.nickname' => ['checkAdminNick', 'app\common\service\Admin'],
+            'check.admin.nickname' => ['checkAdminNick', 'App\Service\Admin'],
             // 添加一个账号
             'add.admin.item' => ['addAdminItem'],
             // 编辑一个账号
