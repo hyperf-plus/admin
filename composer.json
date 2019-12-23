@@ -43,6 +43,7 @@
     "overtrue/wechat": ">4.2",
     "ext-json": "*",
     "mzh/hyperf-validate": "~0.1.0",
+    "mzh/hyperf-jwt": "~0.1.0",
     "ext-redis": "*"
   },
   "require-dev": {
