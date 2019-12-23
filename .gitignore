@@ -1,0 +1,13 @@
+/phpstan.neon
+/phpunit.xml
+/deploy.test.yml
+/README.md
+/vendor/
+/composer.lock
+/.idea/
+/runtime/
+app/Service/WeChatService.php
+app/Model/WeChatFans.php
+app/Model/MemberInfo.php
+app/Middleware/TenantMiddleware.php
+app/Middleware/OauthMiddleware.php
