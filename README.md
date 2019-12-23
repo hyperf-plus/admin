@@ -3,6 +3,30 @@ thinkphp 版本文档地址 https://www.careyshop.cn/
 
 ## 本项目在php74下开发 因为PHP74增加了新语法和支持定义变量类型，用起来比较方便，所以不打算兼容php7.4以下版本，只把定义的类型给去掉了，如果低版本使用，请自行修改XXXSevice 内的新语法 ??= 的部分
 
+#使用方法
+
+```
+    git clone https://github.com/lphkxd/hyperf-admin.git
+
+    #进入目录
+    cd hyperf-admin/
+
+    #更新项目
+    composer update -vvv 
+
+    #导入数据库 install/内的sql数据库
+    #配置根目录下 .env 数据库和redis信息
+
+    #运行项目
+    php bin/hyperf.php
+
+    #访问
+    http://127.0.0.1:9501/index.html
+
+```
+
+
+
 #### 目前已完成
 ##### 1 管理员管理 增删改查全部功能
 ![](./screenshot/管理员管理.png)
