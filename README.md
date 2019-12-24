@@ -2,7 +2,7 @@
 thinkphp 版本文档地址 https://www.careyshop.cn/
 
 ### 演示
-    演示地址：https://shop.sh.cn
+    演示地址：https://shop.sh.cn/
     用户名:admin
     密码:admin888
     请不要更改密码
