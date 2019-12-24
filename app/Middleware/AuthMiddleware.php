@@ -44,13 +44,13 @@ class AuthMiddleware implements MiddlewareInterface
      * @Value("jwt.auth_prefix")
      * @var string
      */
-    private $auth_prefix;
+    private $auth_prefix = 'auth:';
 
     /**
      * @Value("jwt.auth_log_prefix")
      * @var string
      */
-    private $auth_log_prefix;
+    private $auth_log_prefix = 'auth_log:';
 
     public static $ignore = ['api/v1/admin/login', 'api/v1/admin/refresh_token', 'api/v1/admin/logout'];
 
@@ -95,6 +95,7 @@ class AuthMiddleware implements MiddlewareInterface
         $userInfo->setGroupId($user['g']);
         $userInfo->setType($user['t']);
         Context::set(UserInfo::class, $userInfo);
+
         if (!$this->check($userInfo->getGroupId(), $currUrl)) {
             throw new PermissionDeniedException('您无权限', 403);
         }
