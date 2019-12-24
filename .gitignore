@@ -12,3 +12,4 @@ app/Model/MemberInfo.php
 app/Middleware/TenantMiddleware.php
 app/Middleware/OauthMiddleware.php
 /app/Library/
+.env
