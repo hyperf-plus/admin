@@ -1,6 +1,8 @@
 ##本项目根据careyshop后台管理系统 前端基于d2admin，后端基于thinkphp5开发，从thinkphp移植到hyperf  
 thinkphp 版本文档地址 https://www.careyshop.cn/
 
+演示地址：https://shop.sh.cn 用户名密码默认不用填写
+
 ## 本项目在php74下开发 因为PHP74增加了新语法和支持定义变量类型，用起来比较方便，所以不打算兼容php7.4以下版本，只把定义的类型给去掉了，如果低版本使用，请自行修改XXXSevice 内的新语法 ??= 的部分
 
 欢迎加入hyperf-admin交流群，群聊号码：512465490
