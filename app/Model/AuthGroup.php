@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model;
 
 use Hyperf\Database\Query\Builder;
-use Mzh\Validate\Annotations\Validation;
 
 class AuthGroup extends Model
 {

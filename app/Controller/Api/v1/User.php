@@ -9,8 +9,6 @@ use App\Service\UserService;
 use App\Traits\GetFastAction;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
-use Hyperf\HttpServer\Annotation\Middleware;
-use App\Middleware\OauthMiddleware;
 
 /**
  * Middleware(OauthMiddleware::class)

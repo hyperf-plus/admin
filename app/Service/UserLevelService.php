@@ -3,17 +3,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Model\Admin;
 use App\Model\Token;
 use App\Model\UserLevel;
-use Exception;
-use Hyperf\Di\Annotation\Inject;
-use Mzh\JwtAuth\Jwt;
 use Mzh\JwtAuth\JwtData;
 use Mzh\Validate\Annotations\Validation;
-use Mzh\Validate\Exception\ValidateException;
-use Mzh\Validate\Validate\Validate;
-use PDepend\Source\Parser\TokenException;
 
 class UserLevelService
 {

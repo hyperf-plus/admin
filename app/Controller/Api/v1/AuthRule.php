@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\v1;
 
+use App\Annotations\AuthUpEvict;
 use App\Controller\AbstractController;
 use App\Service\AuthRuleService;
 use App\Traits\GetFastAction;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
-use Mzh\JwtAuth\Annotations\AuthUpEvict;
 
 /**
  * @package App\Controller\Api\v1

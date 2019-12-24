@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use Closure;
 use Hyperf\Database\Model\Builder;
-use Hyperf\Database\Schema\Blueprint;
-use Hyperf\Database\Schema\Schema;
 use Hyperf\DbConnection\Model\Model as BaseModel;
 use Hyperf\ModelCache\Cacheable;
 use Hyperf\ModelCache\CacheableInterface;

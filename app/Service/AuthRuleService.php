@@ -4,12 +4,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Model\AuthRule;
-use App\Model\Menu;
 use Exception;
-use Hyperf\Database\Query\Builder;
-use Hyperf\Database\Schema\Blueprint;
-use Hyperf\Database\Schema\Schema;
-use Hyperf\DbConnection\Db;
 use Hyperf\Utils\Str;
 use Mzh\Validate\Annotations\Validation;
 
@@ -30,12 +25,12 @@ class AuthRuleService
             if (isset($data['status']) && $data['status'] != '') $query->where('status', $data['status']);
         });
         // 排序方式
-        $data['order_type'] ??=  'asc';
+        $data['order_type'] ??= 'asc';
         // 排序的字段
-        $data['order_field'] ??=  'rule_id';
+        $data['order_field'] ??= 'rule_id';
         // 排序处理
         $db->orderBy('sort', 'asc');
-        $db->orderBy( $data['order_field'], $data['order_type']);
+        $db->orderBy($data['order_field'], $data['order_type']);
         return $db->get()->toArray();
     }
 

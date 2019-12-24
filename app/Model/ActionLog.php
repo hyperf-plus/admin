@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Service\MenuService;
-use Hyperf\Cache\Annotation\Cacheable;
 
 class ActionLog extends Model
 {

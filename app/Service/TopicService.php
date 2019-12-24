@@ -3,15 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Model\ActionLog;
-use App\Model\AuthRule;
-use App\Model\Menu;
 use App\Model\Topic;
-use Exception;
-use Hyperf\Database\Schema\Blueprint;
-use Hyperf\Database\Schema\Schema;
-use Hyperf\DbConnection\Db;
-use Hyperf\Utils\Str;
 use Mzh\Validate\Annotations\Validation;
 
 class TopicService

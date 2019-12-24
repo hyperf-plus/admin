@@ -5,8 +5,6 @@ namespace App\Controller\Api\v1;
 
 use App\Controller\AbstractController;
 use App\Service\ActionLogService;
-use App\Service\AuthGroupService;
-use App\Service\AuthRuleService;
 use App\Traits\GetFastAction;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;

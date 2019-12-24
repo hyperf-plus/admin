@@ -4,14 +4,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Model\AuthGroup;
-use App\Model\AuthRule;
-use App\Model\Menu;
 use Exception;
-use Hyperf\Database\Query\Builder;
-use Hyperf\Database\Schema\Blueprint;
-use Hyperf\Database\Schema\Schema;
-use Hyperf\DbConnection\Db;
-use Mzh\Validate\Annotations\Validation;
 
 class AuthGroupService
 {

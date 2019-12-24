@@ -4,9 +4,6 @@ namespace App\Model;
 
 use App\Exception\AddException;
 use App\Exception\RESTException;
-use Hyperf\DbConnection\Db;
-use mysql_xdevapi\Exception;
-use Symfony\Component\Mime\Exception\AddressEncoderException;
 
 class UserLevel extends Model
 {

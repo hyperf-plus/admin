@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace App\Validate;
 
-use Hyperf\DbConnection\Db;
 use Mzh\Validate\Validate\Validate;
 
 class ArticleCatValidation extends Validate

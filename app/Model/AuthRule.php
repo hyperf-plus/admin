@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use Mzh\Validate\Annotations\Validation;
-
 class AuthRule extends Model
 {
 

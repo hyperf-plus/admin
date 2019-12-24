@@ -12,13 +12,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Model;
-use Exception;
-use Hyperf\Database\Query\Builder;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Mzh\Validate\Validate\Validate;
 use Psr\Container\ContainerInterface;
 
 abstract class AbstractController

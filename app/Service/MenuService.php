@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Annotations\AuthUpEvict;
 use App\Model\AuthRule;
 use App\Model\Menu;
 use Exception;
 use Hyperf\DbConnection\Db;
 use Hyperf\Utils\Str;
-use Mzh\JwtAuth\Annotations\AuthUpEvict;
 use Mzh\Validate\Annotations\Validation;
 
 class MenuService

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use Hyperf\Database\Query\Builder;
 use Mzh\JwtAuth\Auth;
 
 class Menu extends Model

@@ -8,16 +8,16 @@ use App\Entity\UserInfo;
 use App\Model\AuthGroup;
 use App\Service\ActionLogService;
 use Hyperf\Config\Annotation\Value;
-use Mzh\JwtAuth\Exception\PermissionDeniedException;
-use \Redis;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Utils\Context;
+use Mzh\JwtAuth\Exception\PermissionDeniedException;
 use Mzh\JwtAuth\Jwt;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Redis;
 
 class AuthMiddleware implements MiddlewareInterface
 {

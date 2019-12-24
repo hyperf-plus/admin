@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Model\Member;
-use Hyperf\Utils\Context;
-
 class UserInfo extends EntityBean
 {
     protected int $groupId = 0;

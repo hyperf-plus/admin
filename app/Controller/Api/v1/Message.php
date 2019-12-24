@@ -9,8 +9,6 @@ use App\Traits\GetFastAction;
 use Exception;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\AutoController;
-use Hyperf\HttpServer\Annotation\Controller;
-use Hyperf\HttpServer\Annotation\GetMapping;
 use Mzh\Validate\Annotations\RequestValidation;
 
 /**

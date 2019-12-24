@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 
-use Hyperf\Utils\Context;
-
 class EntityBean
 {
     public function __construct($array = [])
