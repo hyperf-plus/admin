@@ -1,6 +1,6 @@
 {
   "name": "hyperf/hyperf-skeleton",
-  "type": "project",
+  "type": "php",
   "keywords": [
     "php",
     "swoole",
