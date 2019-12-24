@@ -52,7 +52,7 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private $auth_log_prefix;
 
-    public static $ignore = ['/api/v1/admin/login', '/api/v1/admin/refresh_token', '/api/v1/admin/logout'];
+    public static $ignore = ['api/v1/admin/login', 'api/v1/admin/refresh_token', 'api/v1/admin/logout'];
 
     public function __construct(ContainerInterface $container)
     {
@@ -78,7 +78,7 @@ class AuthMiddleware implements MiddlewareInterface
         if ($request->getMethod() == 'OPTIONS') {
             return $response;
         }
-        $currUrl = $request->getUri()->getPath();
+        $currUrl = strtolower(trim($request->getUri()->getPath(), '/'));
         if (in_array($currUrl, self::$ignore)) {
             $result = $handler->handle($request);
             # 记录日志
@@ -100,7 +100,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
         $result = $handler->handle($request);
         # 记录日志  检测是否有权限写日志
-        if ($this->redis->hExists($this->auth_log_prefix . $userInfo->getGroupId(), strtolower(trim($currUrl, '/')))) {
+        if ($this->redis->hExists($this->auth_log_prefix . $userInfo->getGroupId(), $currUrl)) {
             $this->recordLog($request, $result);
         };
         return $result;
@@ -139,7 +139,7 @@ class AuthMiddleware implements MiddlewareInterface
 
     private function check($groupId, $url)
     {
-        return $this->redis->hExists($this->auth_prefix . $groupId, strtolower(trim($url, '/')));
+        return $this->redis->hExists($this->auth_prefix . $groupId, $url);
     }
 
 }
