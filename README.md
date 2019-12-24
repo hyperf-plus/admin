@@ -27,6 +27,8 @@ thinkphp 版本文档地址 https://www.careyshop.cn/
 
 ```
 
+#### 由于权限验证是由redis缓存校验的，在您需要编编辑用户组、权限的时候需要注解  * @AuthUpEvict() 默认系统编辑权限的地方已经处理，可以自动更新缓存，具体使用方法可以参考相关代码
+#### 数据验证组件由 https://github.com/great-zh/hyperf-validate 提供，具体使用方法可以参考 hyperf-validate
 
 
 #### 目前已完成
