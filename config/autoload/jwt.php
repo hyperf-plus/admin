@@ -30,5 +30,15 @@ return [
     'refresh_ttl' => env('JWT_TTL', 3600 * 24 * 15),
 
     # jwt的hearder加密算法  目前仅支持对称加密
-    'alg' => env('JWT_ALG', 'HS256')
+    'alg' => env('JWT_ALG', 'HS256'),
+
+    # Redis缓存前缀
+    'cache_prefix' => env('JWT_AUTH_PREFIX', 'jwt:'),
+
+    # Redis auth授权表缓存前缀
+    'auth_prefix' => env('JWT_AUTH_PREFIX', 'auth:'),
+
+    # Redis auth_log授权表缓存前缀
+    'auth_log_prefix' => env('JWT_AUTH_LOG_PREFIX', 'auth_log:')
+
 ];

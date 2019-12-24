@@ -7,6 +7,7 @@ namespace App\Middleware;
 use App\Entity\UserInfo;
 use App\Model\AuthGroup;
 use App\Service\ActionLogService;
+use Hyperf\Config\Annotation\Value;
 use Mzh\JwtAuth\Exception\PermissionDeniedException;
 use \Redis;
 use Hyperf\HttpServer\Router\Dispatched;
@@ -38,6 +39,18 @@ class AuthMiddleware implements MiddlewareInterface
      * @var Jwt
      */
     public $jwt;
+
+    /**
+     * @Value("jwt.auth_prefix")
+     * @var string
+     */
+    private $auth_prefix;
+
+    /**
+     * @Value("jwt.auth_log_prefix")
+     * @var string
+     */
+    private $auth_log_prefix;
 
     public static $ignore = ['/api/v1/admin/login', '/api/v1/admin/refresh_token', '/api/v1/admin/logout'];
 
@@ -87,7 +100,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
         $result = $handler->handle($request);
         # 记录日志  检测是否有权限写日志
-        if ($this->redis->hExists(Jwt::PREFIX_LOG . $userInfo->getGroupId(), strtolower(trim($currUrl, '/')))) {
+        if ($this->redis->hExists($this->auth_log_prefix . $userInfo->getGroupId(), strtolower(trim($currUrl, '/')))) {
             $this->recordLog($request, $result);
         };
         return $result;
@@ -119,14 +132,14 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $list = AuthGroup::getGroupAuthUrl();
         foreach ($list as $groupId => $item) {
-            $this->redis->hMSet(Jwt::PREFIX . $groupId, $item['menu']);
-            $this->redis->hMSet(Jwt::PREFIX_LOG . $groupId, $item['log']);
+            $this->redis->hMSet($this->auth_prefix . $groupId, $item['menu']);
+            $this->redis->hMSet($this->auth_log_prefix . $groupId, $item['log']);
         }
     }
 
     private function check($groupId, $url)
     {
-        return $this->redis->hExists(Jwt::PREFIX . $groupId, strtolower(trim($url, '/')));
+        return $this->redis->hExists($this->auth_prefix . $groupId, strtolower(trim($url, '/')));
     }
 
 }
