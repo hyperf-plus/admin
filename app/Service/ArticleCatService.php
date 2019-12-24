@@ -24,7 +24,7 @@ class ArticleCatService
         $data['is_navi'] ??= null;
         $data['is_layer'] ??= true;
         $data['level'] ??= null;
-        $db = Db::table('Article')->groupBy('article_cat_id')->select([
+        $db = Db::table('article')->groupBy('article_cat_id')->select([
             'article_cat_id',
             Db::raw('count(*) as num')
         ]);
