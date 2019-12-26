@@ -51,9 +51,11 @@ class ActionLogService
      * @param string $result 处理结果
      * @param string $class 手动输入当前类
      * @param int $status
+     * @param $ip
+     * @param $time
      * @return bool
      */
-    public function recordLog(UserInfo $client, string $url, array $param, string $result, string $class, int $status, $ip)
+    public function recordLog(UserInfo $client, string $url, array $param, string $result, string $class, $ip, $time)
     {
         // 转为小写
         $url = mb_strtolower($url, 'utf-8');
@@ -67,6 +69,7 @@ class ActionLogService
             'params' => $param,
             'result' => $res,
             'ip' => $ip,
+            'execution_time' => $time,
             'status' => (isset($res['status']) ? $res['status'] : 500) != 200,
         ];
         try {

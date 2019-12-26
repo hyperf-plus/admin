@@ -70,6 +70,9 @@ class AuthMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+
+        $time = microtime(true);
+
         $response = Context::get(ResponseInterface::class);
         $response = $response->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Credentials', 'true')
@@ -82,7 +85,8 @@ class AuthMiddleware implements MiddlewareInterface
         if (in_array($currUrl, self::$ignore)) {
             $result = $handler->handle($request);
             # 记录日志
-            $this->recordLog($request, $result);
+            $time = microtime(true) - $time;
+            $this->recordLog($request, $result, $time);
             return $result;
         }
 
@@ -102,7 +106,8 @@ class AuthMiddleware implements MiddlewareInterface
         $result = $handler->handle($request);
         # 记录日志  检测是否有权限写日志
         if ($this->redis->hExists($this->auth_log_prefix . $userInfo->getGroupId(), $currUrl)) {
-            $this->recordLog($request, $result);
+            $time = microtime(true) - $time;
+            $this->recordLog($request, $result, $time);
         };
         return $result;
     }
@@ -110,8 +115,9 @@ class AuthMiddleware implements MiddlewareInterface
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $result
+     * @param $time
      */
-    private function recordLog(ServerRequestInterface $request, ResponseInterface $result)
+    private function recordLog(ServerRequestInterface $request, ResponseInterface $result, $time = 0)
     {
         /** @var Dispatched $router */
         $router = $request->getAttribute(Dispatched::class);
@@ -125,7 +131,7 @@ class AuthMiddleware implements MiddlewareInterface
             } else {
                 $resData = $result->getBody()->getContents();
             }
-            $this->logService->recordLog(getUserInfo(), $url, $reqData, $resData, $class, $result->getStatusCode(), getClientIp());
+            $this->logService->recordLog(getUserInfo(), $url, $reqData, $resData, $class, getClientIp(), $time);
         }
     }
 
