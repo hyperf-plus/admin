@@ -10,7 +10,7 @@ class ActionLog extends Model
     public $timestamps = true;
     protected $table = 'action_log';
     protected $primaryKey = 'action_log_id';
-    protected $fillable = ['client_type', 'user_id', 'username', 'path', 'module', 'params', 'result', 'ip', 'status'];
+    protected $fillable = ['client_type', 'user_id', 'username', 'path', 'module', 'params', 'result', 'ip', 'execution_time', 'status'];
 
     protected $appends = ['action'];
 
