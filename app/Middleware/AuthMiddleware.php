@@ -131,7 +131,8 @@ class AuthMiddleware implements MiddlewareInterface
             } else {
                 $resData = $result->getBody()->getContents();
             }
-            $this->logService->recordLog(getUserInfo(), $url, $reqData, $resData, $class, getClientIp(), $time);
+            $spent = sprintf('%.4f', round($time * 1000, 1));
+            $this->logService->recordLog(getUserInfo(), $url, $reqData, $resData, $class, getClientIp(), $spent);
         }
     }
 
