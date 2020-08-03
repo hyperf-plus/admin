@@ -9,7 +9,7 @@
     "microservice",
     "middleware"
   ],
-  "description": "A coroutine framework that focuses on hyperspeed and flexible, specifically use for build microservices and middlewares.",
+  "description": "无需VUE前端可实现快速开发各种表单 后台可视化生成控制器、模型、验证器、View代码等",
   "require": {
     "php": ">=7.4",
     "ext-swoole": ">=4.5",
