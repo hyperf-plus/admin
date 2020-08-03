@@ -1,5 +1,5 @@
 {
-  "name": "mzh/hyperf-admin",
+  "name": "mzh/hyperf-admin-plugin",
   "type": "project",
   "keywords": [
     "php",
@@ -14,16 +14,13 @@
   "require": {
     "php": ">=7.4",
     "ext-swoole": ">=4.5",
-    "hyperf/cache": "~2.0.0",
     "hyperf/command": "~2.0.0",
     "hyperf/config": "~2.0.0",
     "hyperf/db-connection": "~2.0.0",
     "hyperf/framework": "~2.0.0",
-    "hyperf/guzzle": "~2.0.0",
     "hyperf/http-server": "~2.0.0",
     "hyperf/logger": "~2.0.0",
     "hyperf/memory": "~2.0.0",
-    "hyperf/process": "~2.0.0",
     "hyperf/redis": "~2.0.0",
     "mzh/hyperf-jwt": "^0.1.5",
     "mzh/hyperf-helper": "^0.1.0",
@@ -35,14 +32,10 @@
     "nette/php-generator": "^3.3"
   },
   "require-dev": {
-    "swoole/ide-helper": "^4.5",
-    "friendsofphp/php-cs-fixer": "^2.14",
     "mockery/mockery": "^1.0",
     "doctrine/common": "^2.9",
     "phpstan/phpstan": "^0.12",
-    "hyperf/devtool": "~2.0.0",
-    "hyperf/testing": "~2.0.0",
-    "hyperf/watcher": "dev-master"
+    "hyperf/devtool": "~2.0.0"
   },
   "suggest": {
     "ext-openssl": "Required to use HTTPS.",
@@ -53,7 +46,6 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "app/",
       "Mzh\\Admin\\": "src/",
       "Mzh\\DevTools\\": "dev-src/"
     },
@@ -68,7 +60,11 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "extra": [],
+  "extra": {
+    "hyperf": {
+      "config": "Mzh\\Admin\\ConfigProvider"
+    }
+  },
   "scripts": {
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
