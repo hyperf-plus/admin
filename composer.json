@@ -1,6 +1,6 @@
 {
   "name": "mzh/hyperf-admin-plugin",
-  "type": "project",
+  "type": "library",
   "keywords": [
     "php",
     "swoole",
@@ -10,7 +10,6 @@
     "middleware"
   ],
   "description": "A coroutine framework that focuses on hyperspeed and flexible, specifically use for build microservices and middlewares.",
-  "license": "Apache-2.0",
   "require": {
     "php": ">=7.4",
     "ext-swoole": ">=4.5",
