@@ -5,7 +5,7 @@
 ### 后台可视化生成控制器、模型、验证器、View代码等
 ### 后台表单、列表生成
 
-### 安装
+### 安装 (开发中，暂时不要使用)
 ```
  composer require mzh/hyperf-admin-plugin
 ```
