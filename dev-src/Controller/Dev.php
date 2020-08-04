@@ -135,7 +135,7 @@ class Dev
         if ($data['make_type'] == 'maker' || $data['make_type'] == 'controller') {
             /** @var ControllerMaker $ctl_maker */
             $ctl_maker = make(ControllerMaker::class);
-            $controller_name = $ctl_maker->make($data['controller_name'], $model_class, $validate_class, $view_class, $data['controller_path'], $data);
+            $controller_name = $ctl_maker->make($data['controller_name']??'', $model_class, $validate_class, $view_class, $data['controller_path'], $data);
             if ($controller_name === false) {
                 throw new \Exception('Controller创建失败');
             }

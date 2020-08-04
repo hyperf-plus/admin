@@ -39,12 +39,12 @@ class ControllerMaker extends AbstractMaker
      */
     public function make($controller_name, $model_class, $validate_class, $view_class, $path, $config)
     {
-        $swagger_name = $controller_name . '模块';
         #是否为单独创建控制器？
         if ($config['make_type'] == 'maker') {
             $arr = explode('\\', $model_class);
             $model_name = end($arr);
             $controller_name = $model_name;
+            $swagger_name = $controller_name . '模块';
         } else {
             if (!$this->checkClassExists($validate_class, $controller_name)) {
                 $validate_class = '';
@@ -57,6 +57,7 @@ class ControllerMaker extends AbstractMaker
             if (!$this->checkClassExists($view_class, $controller_name)) {
                 $view_class = '';
             }
+            $swagger_name = $controller_name;
         }
         $class_namespace = $this->pathToNamespace($path);
 
