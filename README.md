@@ -9,7 +9,22 @@
  composer require mzh/hyperf-admin-plugin
 ```
 
-#### 本项目在hyperf-admin/hyperf-admin基础上优化、并简化处理，搭配验证器，swagger文档，让您开发后台更加迅速、开箱即用
+#### 开发计划
+- [x] 模型、控制器、验证器、UI界面生成  
+- [x] 接口协议标准化处理
+- [x] 系统配置
+- [x] Swagger注解生成  
+- [x] 脚手架工具  
+- [x] 菜单管理  
+- [x] 角色管理
+- [ ] 用户管理
+- [ ] 权限管理
+- [ ] 微信开放平台对接
+- [ ] 微信公众号、小程序对接
+- [ ] 多租户模式
+- [ ] ...
+
+#### 本项目在 https://hyperf-admin.github.io/hyperf-admin/#/ 基础上优化、并简化处理，搭配验证器，swagger文档，让您开发后台更加迅速、开箱即用
 
 ![Image 注解](./screenshot/1.png)
 ![Image 文档](./screenshot/2.png)
@@ -50,4 +65,131 @@
     10: _delete_after       删除后       
     11: _state_before       状态更新前       
     12: _state_after       状态更新后       
+
+
+#### 例子 
+```php
+<?php 
+declare(strict_types = 1);
+namespace App\Controller\Api;
+
+use Mzh\Admin\Controller\AbstractController;
+use Mzh\Admin\Traits\GetApiBatchDel;
+use Mzh\Admin\Traits\GetApiCreate;
+use Mzh\Admin\Traits\GetApiDelete;
+use Mzh\Admin\Traits\GetApiList;
+use Mzh\Admin\Traits\GetApiRowChange;
+use Mzh\Admin\Traits\GetApiSort;
+use Mzh\Admin\Traits\GetApiState;
+use Mzh\Admin\Traits\GetApiUpdate;
+use Mzh\Swagger\Annotation\ApiController;
+use Mzh\Swagger\Annotation\Body;
+use Mzh\Swagger\Annotation\DeleteApi;
+use Mzh\Swagger\Annotation\GetApi;
+use Mzh\Swagger\Annotation\PostApi;
+use Mzh\Swagger\Annotation\PutApi;
+use Mzh\Swagger\Annotation\Query;
+
+/**
+ * @ApiController(tag="GroupUser")
+ */
+class GroupUser
+{
+    use GetApiList;
+    use GetApiCreate;
+    use GetApiUpdate;
+    use GetApiSort;
+    use GetApiState;
+    use GetApiDelete;
+    use GetApiBatchDel;
+    use GetApiRowChange;
+    use GetApiList;
+    use GetApiUpdate;
+    use GetApiCreate;
+    use GetApiSort;
+    use GetApiDelete;
+    use GetApiBatchDel;
+
+    /**
+     * 列表查询前操作，这里可用于筛选条件添加、也可在此做权数据权限二次验证等
+     */
+    public function _list_before(\Mzh\Helper\DbHelper\QueryHelper &$query)
+    {
+    }
+
+    /**
+     * 列表查询后操作，这里可用于列表数据二次编辑
+     */
+    public function _list_after(&$list)
+    {
+    }
+
+    /**
+     * 更新前操作，这里可以处理提交的参数
+     * 这里的参数是已经经过验证器验证的
+     * 也可在此做权数据权限二次验证等
+     */
+    public function _update_before(&$data)
+    {
+    }
+
+    /**
+     * 创建前操作，这里可以处理提交的参数
+     * 这里的参数是已经经过验证器验证的
+     * 也可在此做权数据权限二次验证等
+     */
+    public function _create_before(&$data)
+    {
+    }
+
+    /**
+     * 创建后操作，这里可以修改返回的值、例如隐藏字段等操作
+     */
+    public function _create_after(&$data)
+    {
+    }
+
+    /**
+     * 排序前操作
+     * 也可在此做权数据权限二次验证等
+     */
+    public function _sort_before(&$data)
+    {
+    }
+
+    /**
+     * 删除前操作
+     * 也可在此做权数据权限二次验证等
+     */
+    public function _delete_before($id, &$data)
+    {
+    }
+
+    /**
+     * 删除后操作，这里可以修改返回的值
+     */
+    public function _delete_after(&$data)
+    {
+    }
+
+    /**
+     * 排序前操作
+     * 也可在此做权数据权限二次验证等
+     */
+    public function _state_before(&$data)
+    {
+    }
+
+    /**
+     * 状态修改后操作，例如删除缓存等
+     */
+    public function _state_after(&$data)
+    {
+    }
+}
+```
+
+##### 通过以上代码，可以生成如下接口
+![Image 文档](./screenshot/5.png)
+
 
