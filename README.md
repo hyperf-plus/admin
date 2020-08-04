@@ -8,6 +8,53 @@
 ```
  composer require mzh/hyperf-admin-plugin
 ```
+发布依赖项目配置
+```
+ php bin/hyperf.php vendor:publish mzg/hyperf-swagger
+ php bin/hyperf.php vendor:publish mzg/hyperf-jwt
+```
+
+#### 2配置 
+    在 config/autoload/dependencies.php 中 增加以下配置
+```php
+    return [
+        \Hyperf\HttpServer\Router\DispatcherFactory::class => \Mzh\Swagger\DispathcerFactory::class,
+    ];
+```
+
+#### 体验 
+```
+git clone https://github.com/lphkxd/admin-demo.git   #克隆demo代码
+
+cd admin-demo #进入目录
+
+composer update   #更新依赖
+
+        !! 注意会覆盖现有数据 !!
+        !! 注意会覆盖现有数据 !!
+        !! 注意会覆盖现有数据 !!
+        
+        完成后配置数据库然后执行  php bin/hyperf.php admin:install 
+        执行后会生成以下表
+        如果有以下表的，请自行备份！
+      
+         - auth_group
+         - auth_rule
+         - config
+         - front_routes
+         - role_menus
+         - roles
+         - user
+         - user_role
+
+     后台地址  http://127.0.0.1:9501/system/index.html
+  Swagger文档地址 http://127.0.0.1:9501/swagger/index
+
+```
+#### 访问
+ 
+  Swagger文档地址 http://127.0.0.1:9501/swagger/index
+
 
 #### 开发计划
 - [x] 模型、控制器、验证器、UI界面生成  
@@ -210,4 +257,15 @@ class GroupUser
 ##### 通过以上代码，可以生成如下接口
 ![Image 文档](./screenshot/5.png)
 
+### 依赖 & 参考
 
+-   前端
+    -   [Hyperf-admin](https://github.com/hyperf-admin/hyperf-admin)
+    -   [Vue](https://github.com/vuejs/vue)
+    -   [ElementUI](https://github.com/ElemeFE/element)
+    -   [FormCreate](http://www.form-create.com/v2/guide)
+    -   [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
+    -   [Vue 渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)
+-   后端
+    -   [Hyperf](http://hyperf.wiki/)
+    -   [Swoole](http://wiki.swoole.com)
