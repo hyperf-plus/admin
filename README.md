@@ -22,36 +22,15 @@
     ];
 ```
 
-#### 体验 
+#### 体验  请点击 https://github.com/lphkxd/admin-demo.git
 ```
 git clone https://github.com/lphkxd/admin-demo.git   #克隆demo代码
 
 cd admin-demo #进入目录
 
-composer update   #更新依赖
-
-        !! 注意会覆盖现有数据 !!
-        !! 注意会覆盖现有数据 !!
-        !! 注意会覆盖现有数据 !!
-        
-        完成后配置数据库然后执行  php bin/hyperf.php admin:install 
-        执行后会生成以下表
-        如果有以下表的，请自行备份！
-      
-         - auth_group
-         - auth_rule
-         - config
-         - front_routes
-         - role_menus
-         - roles
-         - user
-         - user_role
-
-     后台地址  http://127.0.0.1:9501/system/index.html
-  Swagger文档地址 http://127.0.0.1:9501/swagger/index
 
 ```
-#### 访问
+#### Swagger文档地址
  
   Swagger文档地址 http://127.0.0.1:9501/swagger/index
 
