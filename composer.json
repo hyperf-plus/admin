@@ -21,7 +21,7 @@
     "hyperf/logger": "~2.0.0",
     "hyperf/memory": "~2.0.0",
     "hyperf/redis": "~2.0.0",
-    "mzh/hyperf-jwt": "^0.1.5",
+    "mzh/hyperf-jwt": "~0.1.0",
     "mzh/hyperf-helper": "~0.1.0",
     "mzh/hyperf-swagger": "~1.0.0",
     "hyperf/model-cache": "~2.0",
