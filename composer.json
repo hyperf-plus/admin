@@ -49,7 +49,7 @@
       "Mzh\\DevTools\\": "dev-src/"
     },
     "files": [
-      "app/Helper/Helper.php"
+      "src/Helper/Helper.php"
     ]
   },
   "autoload-dev": {
