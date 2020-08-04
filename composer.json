@@ -22,13 +22,13 @@
     "hyperf/memory": "~2.0.0",
     "hyperf/redis": "~2.0.0",
     "mzh/hyperf-jwt": "^0.1.5",
-    "mzh/hyperf-helper": "^0.1.0",
-    "mzh/hyperf-swagger": "^1.0.0",
-    "hyperf/model-cache": "^2.0",
-    "hyperf/session": "^2.0",
+    "mzh/hyperf-helper": "~0.1.0",
+    "mzh/hyperf-swagger": "~1.0.0",
+    "hyperf/model-cache": "~2.0",
+    "hyperf/session": "~2.0",
     "ext-json": "*",
-    "hyperf/constants": "^2.0",
-    "nette/php-generator": "^3.3"
+    "hyperf/constants": "~2.0",
+    "nette/php-generator": "~3.3"
   },
   "require-dev": {
     "mockery/mockery": "^1.0",
