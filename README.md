@@ -10,8 +10,8 @@
 ```
 发布依赖项目配置
 ```
- php bin/hyperf.php vendor:publish mzg/hyperf-swagger
- php bin/hyperf.php vendor:publish mzg/hyperf-jwt
+ php bin/hyperf.php vendor:publish mzh/hyperf-swagger
+ php bin/hyperf.php vendor:publish mzh/hyperf-jwt
 ```
 
 #### 2配置 
