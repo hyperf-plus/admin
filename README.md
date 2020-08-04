@@ -116,6 +116,23 @@ class GroupUser
      */
     public function _list_before(\Mzh\Helper\DbHelper\QueryHelper &$query)
     {
+        $query->addData('pid', 0); #追加搜索条件数据
+        #以上条件实际输出为  $db->where('pid',0)
+
+        $query->equal('module#tab_id,pid');  #设置查询条件 module、pid以完全匹配   tab_id为接收参数别名
+        #以上条件实际输出为  $db->where('module',$data['tab_id'])->where('pid',$data['pid'])
+
+
+        $query->like('name'); # 设置模糊查询条件  name
+        #以上条件实际输出为  $db->whereLike('name','%'.$data['name'].'%')
+
+        $query->timeBetween('create_time'); # 设置时间范围查询
+        #以上条件实际输出为  $db->whereBetween('create_time', [$begin, $after])
+
+        $query->in('id,user_id');           #如果请求参数中有 id，user_id 则自动设置条件
+        #以上条件实际输出为  $db->whereIn('id',$data['id'])->whereIn('user_id',$data['id'])
+        
+        #通过以上操作，可轻松在钩子内实现筛选条件处理，
     }
 
     /**
