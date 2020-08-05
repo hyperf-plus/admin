@@ -112,14 +112,13 @@ trait GetApiBase
         if (!empty($this->service)) {
             return $this->service;
         }
-        if (property_exists($this, 'validateClass') && $this->validateClass) {
-            $this->service = new $this->validateClass;
+        if (property_exists($this, 'serviceClass') && $this->serviceClass) {
+            $this->service = new $this->serviceClass;
             return $this->service;
         }
         $model = class_basename(__CLASS__);
         $path = "\\App\\Service\\__CLASS__Service";
         $this->service = $this->getClass($model, $path);
-
         if (!$this->service) {
             $path = "\\Mzh\\Admin\\Service\\__CLASS__Service";
             $this->service = $this->getClass($model, $path);
