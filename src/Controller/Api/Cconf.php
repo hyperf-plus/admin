@@ -90,19 +90,16 @@ class Cconf
         if (empty($conf)) {
             throw new BusinessException(1000, '数据不存在！');
         }
-        $newOpenApi = $this->request->post('open_api', []);
-        foreach (array_diff($newOpenApi, $conf->value['open_api']) as $url) {
-            p('新增');
-            p($url);
-            getContainer(Auth::class)->setIgnore($url);
+        if ($name == 'permissions') {
+            $newOpenApi = $this->request->post('open_api', []);
+            foreach (array_diff($newOpenApi, $conf->value['open_api']) as $url) {
+                getContainer(Auth::class)->setIgnore($url);
+            }
+            #动态删除
+            foreach (array_diff($conf->value['open_api'], $newOpenApi) as $url) {
+                getContainer(Auth::class)->removeIgnore($url);
+            }
         }
-        #动态删除
-        foreach (array_diff($conf->value['open_api'], $newOpenApi) as $url) {
-            p('删除');
-            p($url);
-            getContainer(Auth::class)->removeIgnore($url);
-        }
-
 
         $conf->fill(['value' => $this->request->all()])->save();
         return $this->json('保存成功！');
