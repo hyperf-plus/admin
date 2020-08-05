@@ -9,10 +9,8 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Mzh\Admin\Exception\BusinessException;
 use Mzh\Admin\Exception\ValidateException;
-use MZH\Admin\Service\ServiceInterface;
 use Mzh\Admin\Views\UiViewInterface;
 use Mzh\Helper\DbHelper\QueryHelper;
-use Mzh\Validate\Validate\Validate;
 
 trait GetApiBase
 {
@@ -49,18 +47,20 @@ trait GetApiBase
         }
         if (property_exists($this, 'modelClass') && $this->modelClass) {
             $this->model = new $this->modelClass;
+            return $this->model;
         }
-        if (empty($this->model)) {
-            $model = class_basename(__CLASS__);
-            /** * @var Model $model ; */
-            /** * @var Validate $validate ; */
-            $class = "\\Mzh\\Admin\\Model\\" . $model;
-            if (!class_exists($class)) {
-                throw new ValidateException(1000, $model . '模型不存在，请先创建db模型！');
-            }
-            $this->model = make($class);
+        $model = class_basename(__CLASS__);
+        $path = "\\App\\Model\\__CLASS__";
+        $this->model = $this->getClass($model, $path);
+        if (!$this->model) {
+            $path = "\\Mzh\\Admin\\Model\\__CLASS__";
+            $this->model = $this->getClass($model, $path);
+        }
+        if (!$this->model) {
+            throw new ValidateException(1000, $model . 'Model不存在，请先创建');
         }
         return $this->model;
+
     }
 
     protected function getView(): UiViewInterface
@@ -70,15 +70,17 @@ trait GetApiBase
         }
         if (property_exists($this, 'viewClass') && $this->viewClass) {
             $this->view = new $this->viewClass;
+            return $this->view;
         }
-        if (empty($this->view)) {
-            $model = class_basename(__CLASS__);
-            /** * @var Validate $validate ; */
-            $class = "\\Mzh\\Admin\\Views\\" . $model . "View";
-            if (!class_exists($class)) {
-                throw new ValidateException(1000, $model . 'View不存在，请先创建' . $class . '！');
-            }
-            $this->view = new $class;
+        $view = class_basename(__CLASS__);
+        $path = "\\App\\Views\\__CLASS__View";
+        $this->view = $this->getClass($view, $path);
+        if (!$this->view) {
+            $path = "\\Mzh\\Admin\\Views\\__CLASS__View";
+            $this->view = $this->getClass($view, $path);
+        }
+        if (!$this->view) {
+            throw new ValidateException(1000, $view . 'View不存在，请先创建');
         }
         return $this->view;
     }
@@ -90,29 +92,53 @@ trait GetApiBase
         }
         if (property_exists($this, 'validateClass') && $this->validateClass) {
             $this->validate = new $this->validateClass;
+            return $this->validate;
         }
-        if (empty($this->validate)) {
-            $model = class_basename(__CLASS__);
-            /** * @var Validate $validate ; */
-            $class = "\\Mzh\\Admin\\Validate\\" . $model . "Validation";
-            if (!class_exists($class)) {
-                throw new ValidateException(1000, $model . '验证器不存在，请先创建验证器' . $class . '！');
-            }
-            $this->validate = new $class;
+        $model = class_basename(__CLASS__);
+        $path = "\\App\\Validate\\__CLASS__Validation";
+        $this->validate = $this->getClass($model, $path);
+        if (!$this->validate) {
+            $path = "\\Mzh\\Admin\\Validate\\__CLASS__Validation";
+            $this->validate = $this->getClass($model, $path);
+        }
+        if (!$this->validate) {
+            throw new ValidateException(1000, $model . 'Validation不存在，请先创建');
         }
         return $this->validate;
     }
 
     protected function getService()
     {
-        if ($this->service instanceof ServiceInterface) {
+        if (!empty($this->service)) {
             return $this->service;
         }
-        if ($this->serviceClass) {
-            $this->service = make($this->serviceClass);
+        if (property_exists($this, 'validateClass') && $this->validateClass) {
+            $this->service = new $this->validateClass;
+            return $this->service;
+        }
+        $model = class_basename(__CLASS__);
+        $path = "\\App\\Service\\__CLASS__Service";
+        $this->service = $this->getClass($model, $path);
+
+        if (!$this->service) {
+            $path = "\\Mzh\\Admin\\Service\\__CLASS__Service";
+            $this->service = $this->getClass($model, $path);
+        }
+        if (!$this->service) {
+            throw new ValidateException(1000, $model . 'Service不存在，请先创建');
         }
         return $this->service;
     }
+
+    private function getClass($model, $path)
+    {
+        $class = str_replace('__CLASS__', $model, $path);
+        if (class_exists($class)) {
+            return make($class);
+        }
+        return null;
+    }
+
 
     /**
      * 数据回调处理机制
@@ -123,14 +149,33 @@ trait GetApiBase
      */
     protected function callback($name, &$one = [], &$two = [])
     {
-        $paths = explode('/', $this->request->getUri()->getPath());
+        $pathArr = explode('/', $this->request->getUri()->getPath());
+        $paths = end($pathArr);
+        if (is_numeric($paths)) {
+            $paths = strtolower($this->request->getMethod());
+            switch ($paths) {
+                case 'put':
+                    $paths = $this->getAction(current(array_slice($pathArr, -2, 1)));
+                    break;
+            }
+        }
         if (is_callable($name)) return call_user_func($name, $this, $one, $two);
-        foreach ([$name, "_" . end($paths) . "{$name}"] as $method) {
+        foreach ([$name, "_" . $paths . "{$name}"] as $method) {
             if (method_exists($this, $method) && false === $this->$method($one, $two)) {
                 return false;
             }
         }
         return true;
+    }
+
+    private function getAction($act)
+    {
+        $arr = [
+            'rowchange' => 'rowchange',
+            'sort' => 'sort',
+            'state' => 'state'
+        ];
+        return $arr[$act] ?? 'update';
     }
 
     protected function json($data = [], $msg = '')
@@ -176,8 +221,8 @@ trait GetApiBase
     protected function _create(array $data = [], $model = null, $validate = null)
     {
         // data 数据已经按照验证器过滤。已去掉多余数据，可以直接使用
-        $data = $this->_checkData($data, $validate, trim(__FUNCTION__, '_'));
         $this->callback('_before', $data);
+        $data = $this->_checkData($data, $validate, trim(__FUNCTION__, '_'));
         if (empty($model)) $model = $this->getModel();
         $Created = $model::create($data);
         $this->callback('_after', $Created);
@@ -193,6 +238,7 @@ trait GetApiBase
         if (empty($pk)) $pk = $model->getKeyName();
         $data = $this->request->all();
         if (!isset($data[$pk]) || (isset($data[$pk]) && empty($data[$pk]))) {
+            unset($data[$pk]);
             return $this->_create($data, $model, $validate);
         } else {
             return $this->_update($data[$pk], $data, $model, $pk, $validate);
@@ -210,10 +256,10 @@ trait GetApiBase
     protected function _update($pkVal = null, array $data = [], $model = null, $pk = null, $validate = null)
     {
         // data 数据已经按照验证器过滤。已去掉多余数据，可以直接使用
+        $this->callback('_before', $data);
         $data = $this->_checkData($data, $validate, trim(__FUNCTION__, '_'));
         if (empty($model)) $model = $this->getModel();
         if (empty($pk)) $pk = $model->getKeyName();
-        $this->callback('_before', $data);
         if ($pkVal === null && empty($data[$pk])) {
             throw new ValidateException(1000, $pk . '不能为空');
         }
@@ -296,7 +342,7 @@ trait GetApiBase
             $model = $model->where($pk, $val);
         }
         if ($model->delete()) {
-            $this->callback('_after', $val);
+            $this->callback('_after', $val, $model);
             return true;
         }
         throw new BusinessException(1000, '删除失败');
@@ -375,5 +421,25 @@ trait GetApiBase
         } catch (ValidateException $exception) {
             return 'id';
         }
+    }
+
+    protected function isPost(): bool
+    {
+        return strtolower($this->request->getMethod()) == 'post';
+    }
+
+    protected function isGet(): bool
+    {
+        return strtolower($this->request->getMethod()) == 'get';
+    }
+
+    protected function isPut(): bool
+    {
+        return strtolower($this->request->getMethod()) == 'put';
+    }
+
+    protected function isDelete(): bool
+    {
+        return strtolower($this->request->getMethod()) == 'delete';
     }
 }

@@ -8,7 +8,7 @@ use Mzh\Validate\Validate\Validate;
 class UserValidation extends Validate
 {
     protected $rule = [
-        'username' => 'require|integer|gt:0',
+        'username' => 'require',
         'realname' => 'max:255',
         'password' => 'max:255',
         'mobile' => 'max:255',
@@ -49,6 +49,7 @@ class UserValidation extends Validate
 
     protected $scene = [
         'detail' => ['username'],
+        'login' => ['username', 'password'],
         'update' => [
             'realname',
             'password',
@@ -69,8 +70,9 @@ class UserValidation extends Validate
         'list' => ['limit', 'page'],
         'menu' => ['limit', 'page', 'tab_id'],
         'sort' => ['username', 'sort'],
-        'status' => [0 => 'username', 'status' => 'require|in:0,1'],
+        'status' => ['username', 'status' => 'require|in:0,1'],
         'create' => [
+            'username',
             'realname',
             'password',
             'mobile',

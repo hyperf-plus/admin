@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Mzh\Admin\Middleware;
 
-use App\Constants\ErrorCode;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Exception\NotFoundException;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Utils\Context;
+use Mzh\Admin\Entity\UserInfo;
 use Mzh\Admin\Exception\UserLoginException;
 use Mzh\Admin\Library\Auth;
 use Mzh\Helper\Session\Session;
@@ -56,7 +56,7 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function __construct(Jwt $jwt, ConfigInterface $config, ContainerInterface $container, SessionInterface $session)
     {
-        //$this->auth = $container->get(Auth::class);
+        $this->auth = $container->get(Auth::class);
         $this->session = $session;
         $this->jwt = $jwt;
         $this->config = $config;
@@ -87,18 +87,13 @@ class AuthMiddleware implements MiddlewareInterface
         if (!$router->isFound()) {
             throw new NotFoundException('接口不存在');
         }
-
-        $url = $request->getMethod() . '::' . $router->handler->route;
-        p($url);
-
-        $response = $handler->handle($request);
-        return $response;
-
-
-        $currUrl = strtolower($router->handler->route);
+        $currUrl = $request->getMethod() . '::' . $router->handler->route;
         $security = $this->auth->isSecurity($currUrl);
-        $token = $request->getHeaderLine('authorization');
+        $token = $request->getHeaderLine('x-token');
         $token = trim($token);
+
+     return $handler->handle($request);
+
         #如果不验证权限、token也为空，则直接处理
         if ($security == false && empty($token)) {
             try {
@@ -116,19 +111,19 @@ class AuthMiddleware implements MiddlewareInterface
         try {
             $user = $this->jwt->verifyToken($token);
         } catch (TokenValidException $validException) {
-            throw new UserLoginException(ErrorCode::USER_TOKEN_INVALID);
+            throw new UserLoginException(1000, 'token无效');
         }
-        $session = new Session($this->handler, (string)$user->getAudience());
+        $session = new Session($this->handler, $user->getIssuer() . ':' . (string)$user->getAudience());
         $session->start();
         #检测用户授权信息
         /** @var UserInfo $userInfo */
         $userInfo = $session->get(UserInfo::class);
         if (!$userInfo instanceof UserInfo) {
-            throw new UserLoginException(ErrorCode::USER_NO_LOGIN);
+            throw new UserLoginException(1003, 'token无效！');
         }
-//       if (!$this->auth->check($userInfo->getGroupId(), $currUrl) && $security) {
-//            throw new UserLoginException(ErrorCode::USER_NO_ACCESS);
-//        }
+        if (!$this->auth->hasPermission($userInfo->getUserId(), $currUrl)) {
+            throw new UserLoginException(1005, '您无权限');
+        }
         Context::set(SessionInterface::class, $session);
         try {
             $response = $handler->handle($request);

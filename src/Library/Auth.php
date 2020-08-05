@@ -6,70 +6,78 @@ namespace Mzh\Admin\Library;
 use Hyperf\Di\Annotation\AnnotationCollector;
 use Hyperf\HttpServer\Annotation\Mapping;
 use Hyperf\HttpServer\Router\DispatcherFactory;
+use Mzh\Admin\Model\Admin\FrontRoutes;
 use Mzh\Admin\Model\AuthRule;
-use Mzh\Admin\Model\Menu;
+use Mzh\Admin\Service\AuthService;
+use Mzh\Admin\Service\ConfigService;
 
 class Auth
 {
     private $authMenu = [];
-    private $ignore = [];
+    private $ignore = [
+        'POST::/api/user/login'
+    ];
 
     public function __construct()
     {
         $this->restart();
     }
 
-    public function check($groupId, $url)
+    public function hasPermission($userId, $url)
     {
-        $accessUrl = $this->getMenuAuth($groupId);
-        if (isset($accessUrl[$groupId]['menu']) && in_array(strtolower($url), $accessUrl[$groupId]['menu'], true)) {
-            return true;
+        $roles = $this->getUserRole($userId);
+        $menuAuth = $this->loadMenuAuth();
+        foreach ($roles as $role) {
+            if (in_array($url, ($menuAuth[$role] ?? []))) {
+                return true;
+            }
         }
         return false;
     }
 
-    public function getMenuAuth($groupId = 0, $reload = false)
+    public function loadMenuAuth($reload = false)
     {
-        if (!empty($this->authMenu) || !$reload) return $this->authMenu;
-        $result = AuthRule::query()->where(function ($query) use ($groupId) {
-            $query->where('status', 1);
-            if ($groupId > 0) $query->where('group_id', $groupId);
-        })->get(['menu_auth', 'log_auth', 'group_id'])->toArray();
-        $rule = [];
+        if (!$reload && !empty($this->authMenu)) {
+            return $this->authMenu;
+        }
+        $result = AuthRule::query()->where('status', 1)->get(['menu_auth', 'id'])->toArray();
+        $rules = [];
         foreach ($result as $item) {
             //规则
-            $group = $item['group_id'];
-            $list = Menu::query()->whereIn('menu_id', $item['menu_auth'])->where('url', '!=', '')->get(['url', 'menu_id']);
-            $menu = [];
-            if (!$list->isEmpty()) {
-                $data = [];
-                foreach ($list as $menu) {
-                    $data[] = strtolower($menu['url']);
-                }
-                $menu = $data;
+            $role_id = $item['id'];
+            $auth = (array)$item['menu_auth'];
+            $ids = [];
+            foreach ($auth as $tmp) {
+                foreach ($tmp as $value) if (is_numeric($value)) $ids[] = $value;
             }
-            if (!isset($rule[$group]['menu'])) $rule[$group]['menu'] = [];
-            $rule[$group]['menu'] = array_merge($rule[$group]['menu'], $menu);
-            unset($data, $menu);
-            $log_list = Menu::query()->whereIn('menu_id', $item['log_auth'])->where('url', '!=', '')->get(['url', 'menu_id']);
-            $menu = [];
-            if (!$log_list->isEmpty()) {
-                $data = [];
-                foreach ($log_list as $menu) {
-                    $data[] = strtolower($menu['url']);
-                }
-                $menu = $data;
+            $ids = array_values(array_unique($ids));
+            $list = FrontRoutes::query()->whereIn('id', $ids)->where('permission', '!=', '')->get(['permission'])->toArray();
+            foreach ($list as $value) {
+                if (empty($value['permission'])) continue;
+                if (!isset($rules[$role_id])) $rules[$role_id] = [];
+                $rule = array_merge($rules[$role_id], $value['permission']);
+                $rules[$role_id] = array_unique($rule);
             }
-            if (!isset($rule[$group]['log'])) $rule[$group]['log'] = [];
-            $rule[$group]['log'] = array_merge($rule[$group]['log'], $menu);
-            unset($data, $menu);
         }
-        $this->authMenu = $rule;
+        $this->authMenu = $rules;
         return $this->authMenu;
+    }
+
+    /**
+     * @param $url
+     */
+    public function removeIgnore($url)
+    {
+        if (in_array($url, $this->ignore)) {
+            unset($this->ignore[array_search($url, $this->ignore)]);
+        }
     }
 
     public function setIgnore($url)
     {
+        if (in_array($url, $this->ignore)) {
+            return;
+        }
         $this->ignore[] = $url;
     }
 
@@ -90,16 +98,28 @@ class Auth
         $this->ignore = [];
         $this->authMenu = [];
         #更新权限菜单
-        $this->getMenuAuth(0, true);
+        $this->loadMenuAuth(true);
         $security = true;
-        foreach ($list->getData() as $meta) {
-            foreach ($meta as $key => $routers) {
-                foreach ($routers as $url => $router) {
-                    list($className, $methodName) = $router->callback;
-                    if (empty($className)) {
-                        list($className, $methodName) = explode('@', $router->callback);
+        foreach ($list->getData() as $routes_data) {
+            foreach ($routes_data as $http_method => $routes) {
+                $route_list = [];
+                if (isset($routes[0]['routeMap'])) {
+                    foreach ($routes as $map) {
+                        array_push($route_list, ...$map['routeMap']);
                     }
+                } else {
+                    $route_list = $routes;
+                }
+                foreach ($route_list as $route => $v) {
+                    // 过滤掉脚手架页面配置方法
+                    $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
+                    if (!is_array($callback)) {
+                        continue;
+                    }
+                    $route = is_string($route) ? rtrim($route) : rtrim($v[0]->route);
+                    list($className, $methodName) = $callback;
                     $metadata = AnnotationCollector::get($className);
+                    $security = true;
                     foreach ($metadata['_m'][$methodName] ?? [] as $item) {
                         if ($item instanceof Mapping) {
                             $security = $item->security;
@@ -107,11 +127,38 @@ class Auth
                         }
                     }
                     if (!$security) {
-                        #该节点无需验证权限，添加导忽略列表
+                        $url = "$http_method::{$route}";
                         $this->setIgnore($url);
                     }
                 }
             }
         }
+
+        #从数据库配置中取出白名单接口
+        $permissions = ConfigService::getConfig('permissions');
+        foreach ($permissions['open_api'] ?? [] as $url) {
+            $this->setIgnore($url);
+        }
+
+        #从数据库配置中取出必须验证权限的接口
+        foreach ($permissions['user_open_api'] ?? [] as $url) {
+            $this->removeIgnore($url);
+        }
+    }
+
+    private function getUserRole($userId)
+    {
+        $roles = json_decode(redis()->get('userRole:User' . $userId), true);
+        if (empty($roles)) {
+            $roles = make(AuthService::class)->getUserRoleIds($userId);
+            redis()->set('userRole:User' . $userId, json_encode($roles));
+        }
+        return $roles;
+    }
+
+    private function getUserRoleAuth($userId)
+    {
+
+
     }
 }

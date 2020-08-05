@@ -101,12 +101,14 @@ trait GetApiUI
     public function form()
     {
         $record = [];
+        $edit = false;
         $id = $this->request->query($this->getPk(), 0);
         if ($id > 0) {
             $record = $this->_detail($id);
+            $edit = true;
         }
         $this->callback('response_before', $id, $record);
-        $form = $this->formOptionsConvert([], false, true, false, $record);
+        $form = $this->formOptionsConvert([], false, $edit, false, $record);
         return $this->json(array_merge($this->formResponse($id, $form)));
     }
 

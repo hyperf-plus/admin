@@ -259,7 +259,6 @@ class MenuView implements UiViewInterface
                 },
                 'rowActions' => [
                     [
-                        'text' => '编辑',
                         'type' => 'form',
                         'target' => '/menu/form?id={id}',
                         'formUi' => [
@@ -270,6 +269,20 @@ class MenuView implements UiViewInterface
                         ],
                         'props' => [
                             'type' => 'primary',
+                            'size' => 'mini',
+                            "icon" => 'el-icon-edit',
+                            "circle" => true,
+                        ],
+                    ],
+                    [
+                        'type' => 'api',
+                        'target' => 'delete:/menu/{id}',
+                        'props' => [
+                            'type' => 'danger',
+                            'size' => 'mini',
+                            'nativeType' => 'button',
+                            "icon" => 'el-icon-delete',
+                            "circle" => true,
                         ],
                     ],
                     [
@@ -284,14 +297,6 @@ class MenuView implements UiViewInterface
                         ],
                         'props' => [
                             'type' => 'success',
-                        ],
-                    ],
-                    [
-                        'text' => '删除',
-                        'type' => 'api',
-                        'target' => 'delete:/menu/{id}',
-                        'props' => [
-                            'type' => 'danger',
                         ],
                     ],
                 ],
@@ -340,6 +345,7 @@ class MenuView implements UiViewInterface
                     ],
                     [
                         'field' => 'is_menu',
+                        'type' => 'switch',
                         'enum' => [
                             0 => 'info',
                             1 => 'success',

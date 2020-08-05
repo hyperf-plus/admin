@@ -3,31 +3,73 @@ declare(strict_types=1);
 
 namespace Mzh\Admin\Service;
 
+use Hyperf\Di\Annotation\Inject;
+use Hyperf\Utils\Context;
+use Mzh\Admin\Entity\UserInfo;
+use Mzh\Admin\Exception\BusinessException;
+use Mzh\Admin\Exception\UserLoginException;
 use Mzh\Admin\Model\Admin\FrontRoutes;
+use Mzh\Admin\Model\Admin\User;
+use Mzh\Admin\Model\UserRole;
 use Mzh\Helper\DbHelper\GetQueryHelper;
+use Mzh\JwtAuth\Jwt;
+use Mzh\JwtAuth\JwtBuilder;
 
-class UserService implements ServiceInterface
+class UserService
 {
     use GetQueryHelper;
 
-    public function create(array $data)
-    {
-        // TODO: Implement create() method.
-    }
+    /**
+     * @Inject()
+     * @var Jwt
+     */
+    protected $jwt;
 
-    public function set($id, array $data)
+    /**
+     * @param $username
+     * @param $password
+     * @return array
+     */
+    public function manage_login($username, $password)
     {
-        // TODO: Implement set() method.
-    }
+        // 根据账号获取
+        $result = User::query()->where('username', $username)->first();
+        if (empty($result)) {
+            throw new UserLoginException(1000, '账号不存在');
+        }
+        if ($result->status !== 1) {
+            throw new UserLoginException(1000, '用户已被禁用');
+        }
+        if (!hash_equals($result->getAttribute('password'), User::passwordHash($password))) {
+            throw new BusinessException(1000, '账号或密码错误');
+        }
+        $user_id = $result->id;
+        $role = UserRole::query()->where('user_id', $user_id)->count();
+        if ($role == 0) {
+            throw new BusinessException(1000, '此账户未配置权无法登陆，请联系管理员！');
+        }
+        $result['login_time'] = get_current_date();
+        $result['login_ip'] = getClientIp();
+        $result->save();
+        $userInfo = new UserInfo($result->toArray());
+        Context::set(UserInfo::class, $userInfo);
 
-    public function get($id)
-    {
-        // TODO: Implement get() method.
-    }
+        $jwtBuilder = new JwtBuilder();
+        $jwtBuilder->setIssuer('admin');
+        $jwtBuilder->setAudience($user_id);
+        //这里用简写，来减少加密后密文大小
+        $jwtBuilder->setJwtData(['user_id' => $user_id]);
+        $jwtBuilder->setExpiration(time() + 3600);
+        $tokenObj = $this->jwt->createToken($jwtBuilder);
 
-    public function list($where, $page = 1, $size = 20)
-    {
-        // TODO: Implement list() method.
+        session(UserInfo::class, $userInfo, $jwtBuilder->getIssuer() . ':' . $userInfo->getUserId());
+        return [
+            'id' => $userInfo->getUserId(),
+            'mobile' => $userInfo->getMobile(),
+            'name' => $userInfo->getUsername(),
+            'avatar' => $userInfo->getAvatar(),
+            'token' => $tokenObj->getToken(),
+        ];
     }
 
     public function menu($where)

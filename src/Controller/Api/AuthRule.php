@@ -38,13 +38,7 @@ class AuthRule extends AbstractController
         if (strtolower($this->request->getMethod()) == 'get') {
             return;
         }
-        $ids = [];
-        if (is_array($data['permissions'])) {
-            foreach ($data['permissions'] as $item) {
-                foreach ($item as $value) if (is_numeric($value)) $ids[] = $value;
-            }
-            $data['menu_auth'] = array_values(array_unique($ids));
-        }
+
     }
 
 

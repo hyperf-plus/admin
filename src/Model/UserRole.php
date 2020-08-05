@@ -26,7 +26,7 @@ class UserRole extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'user_id', 'role_id', 'create_at', 'update_at'];
+    protected $fillable = ['id', 'user_id', 'role_id'];
     /**
      * The attributes that should be cast to native types.
      *

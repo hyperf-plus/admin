@@ -1,5 +1,6 @@
-<?php 
-declare(strict_types = 1);
+<?php
+declare(strict_types=1);
+
 namespace Mzh\Admin\Model\Admin;
 
 use Hyperf\Database\Model\Model;
@@ -66,4 +67,9 @@ class User extends Model
         'avatar' => 'string',
         'avatar_small' => 'string',
     ];
+
+    public static function passwordHash($password)
+    {
+        return sha1(md5($password) . md5(config('password.salt', 'admin')));
+    }
 }

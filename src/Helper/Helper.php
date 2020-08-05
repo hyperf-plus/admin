@@ -1,15 +1,29 @@
 <?php
 
 
-use App\Entity\UserInfo;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Mzh\Admin\Entity\UserInfo;
 
-if (!function_exists('RequestInterface')) {
+if (!function_exists('request')) {
     function request(): RequestInterface
     {
         return getContainer(RequestInterface::class);
+    }
+}
+
+if (!function_exists('get_current_date')) {
+    function get_current_date($format = 'Y-m-d H:i:s')
+    {
+        return date($format);
+    }
+}
+
+if (!function_exists('isSystemRole')) {
+    function isSystemRole(): bool
+    {
+        return true;
     }
 }
 
@@ -173,6 +187,46 @@ if (!function_exists('mergeArray')) {
             $result = array_merge($result, $item);
         }
         return $result;
+    }
+}
+if (!function_exists('data_desensitization')) {
+    /**
+     * 数据脱敏
+     *
+     * @param string $string 需要脱敏值
+     * @param int $first_length 保留前n位
+     * @param int $last_length 保留后n位
+     * @param string $re 脱敏替代符号
+     *
+     * @return bool|string
+     * 例子:
+     * data_desensitization('18811113683', 3, 4); //188****3683
+     * data_desensitization('王富贵', 0, 1); //**贵
+     */
+    function data_desensitization($string, $first_length = 0, $last_length = 0, $re = '*')
+    {
+        if (empty($string) || $first_length < 0 || $last_length < 0) {
+            return $string;
+        }
+        $str_length = mb_strlen($string, 'utf-8');
+        $first_str = mb_substr($string, 0, $first_length, 'utf-8');
+        $last_str = mb_substr($string, -$last_length, $last_length, 'utf-8');
+        if ($str_length <= 2 && $first_length > 0) {
+            $replace_length = $str_length - $first_length;
+
+            return $first_str . str_repeat($re, $replace_length > 0 ? $replace_length : 0);
+        } elseif ($str_length <= 2 && $first_length == 0) {
+            $replace_length = $str_length - $last_length;
+
+            return str_repeat($re, $replace_length > 0 ? $replace_length : 0) . $last_str;
+        } elseif ($str_length > 2) {
+            $replace_length = $str_length - $first_length - $last_length;
+
+            return $first_str . str_repeat("*", $replace_length > 0 ? $replace_length : 0) . $last_str;
+        }
+        if (empty($string)) {
+            return $string;
+        }
     }
 }
 

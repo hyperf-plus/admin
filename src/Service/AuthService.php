@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Mzh\Admin\Service;
 
 
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Router\DispatcherFactory;
 use Mzh\Admin\Model\AuthGroup;
 use Mzh\Admin\Model\AuthRule;
@@ -12,6 +13,11 @@ use Mzh\Admin\Model\UserRole;
 class AuthService
 {
 
+    /**
+     * @Inject()
+     * @var MenuService
+     */
+    protected $menuService;
 
     public function getMenuRoleIds($menu_id)
     {
@@ -90,45 +96,51 @@ class AuthService
      * @param int $role_id
      * @return array
      */
-    public function getPermissionOptions($role_id = 0, $module = 'system')
+    public function getPermissionOptions($role_ids = [])
     {
-        // todo 配置化
-        $options = [
-            [
-                'value' => 'default',
-                'label' => '默认',
-                'children' => make(MenuService::class)->tree(['module' => 'default']),
-            ],
-            [
-                'value' => 'system',
-                'label' => '系统',
-                'children' => make(MenuService::class)->tree(['module' => 'system']),
-            ],
-        ];
-        $info = AuthRule::query()->find($role_id);
-        if (empty($info)){
-            return [[], $options];
-        }
-        //  $values = array_merge($values, $this->getRolePermissionValues($router_ids, 'system'));
-        $values = $this->getRolePermissionValues($info['menu_auth'], $info['module']);
-        return [$values, $options];
-    }
-
-    private function getRolePermissionValues($router_ids = 0, $module = 'system')
-    {
-        if (empty($router_ids)) {
-            return [];
-        }
+//        if (!is_array($role_ids)) {
+//            return [[], []];
+//        }
+//        $modules = [];
+//        $data = [];
+//        foreach ($role_ids as $item) {
+//            foreach ($item as $value) if (!is_numeric($value)) $modules[] = $value; //  foreach ($item as $value) if (is_numeric($value)) $ids[] = $value; else $modules[] = $value;
+//        }
+        // $ids = array_values(array_unique($ids));
+        //$modules = array_values(array_unique($modules));
         $data = [];
-        $routers = make(MenuService::class)->tree([
-            'id' => $router_ids,
-        ]);
-        if (!empty($routers)) {
-            $paths = array_keys(tree_2_paths($routers, $module));
-            foreach ($paths as $path) {
-                $data[] = explode('-', $path);
+        $modules = ConfigService::getConfig('namespace');
+        foreach ($modules as $module => $label) {
+//            if (isSystemRole()) { #不是系统角色的话就只能显示自己权限范围内的数据
+//            }
+            $options[] = [
+                'value' => $module,
+                'label' => $label,
+                'children' => $this->menuService->tree(['module' => $module]),
+            ];
+        }
+        foreach ($options as $option) {
+            if (!empty($option['children'])) {
+                $paths = array_keys(tree_2_paths($option['children'], $option['value']));
+                foreach ($paths as $path) {
+                    $data[] = explode('-', $path);
+                }
             }
         }
-        return $data;
+        return [$data, $options];
     }
+
+
+    public function getUserRoleIds($user_id)
+    {
+        if (!$user_id) {
+            return [];
+        }
+        return UserRole::query()
+            ->where('user_id', $user_id)
+            ->get(['role_id'])
+            ->pluck('role_id')
+            ->toArray();
+    }
+
 }

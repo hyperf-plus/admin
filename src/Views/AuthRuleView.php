@@ -6,6 +6,7 @@ namespace Mzh\Admin\Views;
 use Hyperf\Di\Annotation\Inject;
 use Mzh\Admin\Model\AuthRule;
 use Mzh\Admin\Service\AuthService;
+use Mzh\Admin\Service\ConfigService;
 
 class AuthRuleView implements UiViewInterface
 {
@@ -24,6 +25,9 @@ class AuthRuleView implements UiViewInterface
             'filter' => ['name'],
             'where' => [
                 'pid' => 0,
+            ],
+            "formUI" => [
+                'type' => 'card'
             ],
             'form' => [
                 'id' => 'int',
@@ -67,13 +71,26 @@ class AuthRuleView implements UiViewInterface
                         ],
                     ],
                     'render' => function ($field, &$data) {
-                        $id = (int)request()->query('id', 0);
                         [
                             $data['value'],
                             $data['props']['options'],
-                        ] = $this->authService->getPermissionOptions($id);
+                        ] = $this->authService->getPermissionOptions($data['value']);
                     },
                 ],
+//                'module|所属模块' => [
+//                    'rule' => 'required|max:20',
+//                    'type' => 'radio',
+//                    'options' => function ($field, $data) {
+//                        $options = [];
+//                        foreach (ConfigService::getConfig('namespace') as $key => $value) {
+//                            $options[] = [
+//                                'value' => $key,
+//                                'label' => $value,
+//                            ];
+//                        }
+//                        return $options;
+//                    },
+//                ],
                 'user_ids|授权用户' => [
                     'type' => 'select',
                     'props' => [
@@ -101,21 +118,11 @@ class AuthRuleView implements UiViewInterface
                         'edit' => true,
                     ],
                     [
-                        'field' => 'module',
-                        'title' => '所属模块'
-                    ],
-                    [
                         'field' => 'status',
                         'title' => '状态',
+                        'edit' => true,
+                        'type' => 'switch',
                         'sortable' => true,
-                        'options' => [
-                            0 => '已禁用',
-                            1 => '启用',
-                        ],
-                        'enum' => [
-                            0 => 'info',
-                            1 => 'success',
-                        ]
                     ]
                 ],
                 'rowActions' => [

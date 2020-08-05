@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace Mzh\Admin\Controller\Api;
 
+use Hyperf\HttpServer\Router\DispatcherFactory;
 use Hyperf\Utils\Str;
 use Mzh\Admin\Controller\AbstractController;
 use Mzh\Admin\Exception\BusinessException;
 use Mzh\Admin\Model\Admin\FrontRoutes;
 use Mzh\Admin\Model\Admin\FrontRoutes as AdminMenu;
+use Mzh\Admin\Model\Config;
 use Mzh\Admin\Service\MenuService;
 use Mzh\Admin\Traits\GetApiBatchDel;
 use Mzh\Admin\Traits\GetApiCreate;
@@ -81,7 +83,7 @@ class Menu extends AbstractController
 
     public function _form_before(&$data)
     {
-        if (strtolower($this->request->getMethod()) == 'get') {
+        if ($this->isGet()) {
             return;
         }
         if ($data['type'] == 1) {
@@ -127,6 +129,92 @@ class Menu extends AbstractController
             }
         });
         return ['childs' => $list];
+    }
+
+
+    /**
+     * @GetApi(summary="查询开放浏览接口",security=true)
+     * @Query(key="field")
+     * @throws \Exception
+     */
+    public function getOpenApis()
+    {
+        $field = $this->request->input('field', 'open_api');
+        $conf = Config::query()->where([
+                'namespace' => 'system',
+                'name' => 'permissions',
+            ])->value('value')[$field] ?? [];
+        $router = getContainer(DispatcherFactory::class)->getRouter('http');
+        $data = $router->getData();
+        $options = [];
+        foreach ($data as $routes_data) {
+            foreach ($routes_data as $http_method => $routes) {
+                $route_list = [];
+                if (isset($routes[0]['routeMap'])) {
+                    foreach ($routes as $map) {
+                        array_push($route_list, ...$map['routeMap']);
+                    }
+                } else {
+                    $route_list = $routes;
+                }
+                foreach ($route_list as $route => $v) {
+                    $route = is_string($route) ? rtrim($route) : rtrim($v[0]->route);
+                    $route_key = "$http_method::{$route}";
+                    if (in_array($route_key, $conf)) {
+                        continue;
+                    }
+                    // 过滤掉脚手架页面配置方法
+                    $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
+                    if (!is_array($callback)) {
+                        continue;
+                    }
+                    [$controller, $action] = $callback;
+
+                    if (empty($action) || in_array($action, [
+                        'Cconf',
+                        'dbAct',
+                        'tableAct',
+                        'transType',
+                        'validate',
+                        'controller',
+                        'tableSchema',
+                        'form',
+                        'make',
+                        'form_update',
+                        'updateDetail',
+                        'form_create',
+                        'maker',
+                        ])) {
+                        continue;
+                    }
+                    $options[] = [
+                        'id' => $route_key,
+                        'controller' => $controller,
+                        'action' => $action,
+                        'http_method' => $http_method,
+                    ];
+                }
+            }
+        }
+        $right_options = [];
+        foreach ($conf as $route) {
+            [$http_method, $uri] = explode("::", $route, 2);
+            $dispatcher = getContainer(DispatcherFactory::class)->getDispatcher('http');
+            $route_info = $dispatcher->dispatch($http_method, $uri);
+            if (!empty($route_info[1]->callback[0])) {
+                $right_options[] = [
+                    'id' => $route,
+                    'controller' => $route_info[1]->callback[0],
+                    'action' => $route_info[1]->callback[1],
+                    'http_method' => $http_method,
+                ];
+            }
+        }
+
+        return $this->json([
+            'left' => $options,
+            'right' => $right_options,
+        ]);
     }
 
     /**

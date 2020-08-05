@@ -134,7 +134,6 @@ class DevView
                     'GetApiRowChange'
                 ]
             ],
-
             'init_hooks|钩子函数初始化' => [
                 'type' => 'checkbox',
                 'options' => [
