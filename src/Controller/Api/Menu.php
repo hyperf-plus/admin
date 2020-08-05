@@ -101,7 +101,7 @@ class Menu extends AbstractController
         $data['is_scaffold'] = intval($data['is_scaffold'] ?? 0);
 
         $pid = array_pop($data['pid']);
-        if ($pid == $data[$this->getPk()]) {
+        if (isset($data[$this->getPk()]) && $pid == $data[$this->getPk()]) {
             $pid = array_pop($data['pid']);
         }
         $data['pid'] = (int)$pid;
@@ -171,19 +171,19 @@ class Menu extends AbstractController
                     [$controller, $action] = $callback;
 
                     if (empty($action) || in_array($action, [
-                        'Cconf',
-                        'dbAct',
-                        'tableAct',
-                        'transType',
-                        'validate',
-                        'controller',
-                        'tableSchema',
-                        'form',
-                        'make',
-                        'form_update',
-                        'updateDetail',
-                        'form_create',
-                        'maker',
+                            'Cconf',
+                            'dbAct',
+                            'tableAct',
+                            'transType',
+                            'validate',
+                            'controller',
+                            'tableSchema',
+                            'form',
+                            'make',
+                            'form_update',
+                            'updateDetail',
+                            'form_create',
+                            'maker',
                         ])) {
                         continue;
                     }

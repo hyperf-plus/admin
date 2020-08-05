@@ -92,7 +92,7 @@ class AuthMiddleware implements MiddlewareInterface
         $token = $request->getHeaderLine('x-token');
         $token = trim($token);
 
-     return $handler->handle($request);
+       return $handler->handle($request);
 
         #如果不验证权限、token也为空，则直接处理
         if ($security == false && empty($token)) {
