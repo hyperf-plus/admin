@@ -43,6 +43,7 @@ class User extends AbstractController
     protected $userService;
 
     protected $modelClass = \Mzh\Admin\Model\Admin\User::class;
+    protected $serviceClass = UserService::class;
 
     use GetApiUI;
     use GetApiList;
