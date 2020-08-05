@@ -91,8 +91,7 @@ class AuthMiddleware implements MiddlewareInterface
         $security = $this->auth->isSecurity($currUrl);
         $token = $request->getHeaderLine('x-token');
         $token = trim($token);
-
-       return $handler->handle($request);
+        //return $handler->handle($request);
 
         #如果不验证权限、token也为空，则直接处理
         if ($security == false && empty($token)) {
@@ -111,7 +110,7 @@ class AuthMiddleware implements MiddlewareInterface
         try {
             $user = $this->jwt->verifyToken($token);
         } catch (TokenValidException $validException) {
-            throw new UserLoginException(1000, 'token无效');
+            throw new UserLoginException(50012, 'token无效');
         }
         $session = new Session($this->handler, $user->getIssuer() . ':' . (string)$user->getAudience());
         $session->start();
@@ -119,10 +118,10 @@ class AuthMiddleware implements MiddlewareInterface
         /** @var UserInfo $userInfo */
         $userInfo = $session->get(UserInfo::class);
         if (!$userInfo instanceof UserInfo) {
-            throw new UserLoginException(1003, 'token无效！');
+            throw new UserLoginException(50012, 'token无效！');
         }
-        if (!$this->auth->hasPermission($userInfo->getUserId(), $currUrl)) {
-            throw new UserLoginException(1005, '您无权限');
+        if (!$userInfo->isIsAdmin() && $security && !$this->auth->hasPermission($userInfo->getUserId(), $currUrl)) {
+            throw new UserLoginException(1000, '您无权限');
         }
         Context::set(SessionInterface::class, $session);
         try {

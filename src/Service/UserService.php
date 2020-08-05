@@ -35,10 +35,10 @@ class UserService
         // 根据账号获取
         $result = User::query()->where('username', $username)->first();
         if (empty($result)) {
-            throw new UserLoginException(1000, '账号不存在');
+            throw new BusinessException(1000, '账号不存在');
         }
         if ($result->status !== 1) {
-            throw new UserLoginException(1000, '用户已被禁用');
+            throw new BusinessException(1000, '用户已被禁用');
         }
         if (!hash_equals($result->getAttribute('password'), User::passwordHash($password))) {
             throw new BusinessException(1000, '账号或密码错误');

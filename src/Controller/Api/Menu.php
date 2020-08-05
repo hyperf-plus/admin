@@ -163,6 +163,7 @@ class Menu extends AbstractController
                     if (in_array($route_key, $conf)) {
                         continue;
                     }
+
                     // 过滤掉脚手架页面配置方法
                     $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
                     if (!is_array($callback)) {
@@ -189,7 +190,7 @@ class Menu extends AbstractController
                     }
                     $options[] = [
                         'id' => $route_key,
-                        'controller' => $controller,
+                        'controller' => $route,
                         'action' => $action,
                         'http_method' => $http_method,
                     ];

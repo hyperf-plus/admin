@@ -6,6 +6,7 @@ namespace Mzh\Admin\Controller\Api;
 use Exception;
 use Mzh\Admin\Exception\BusinessException;
 use Mzh\Admin\Exception\ValidateException;
+use Mzh\Admin\Library\Auth;
 use Mzh\Admin\Model\Config;
 use Mzh\Admin\Traits\GetApiList;
 use Mzh\Admin\Traits\GetApiUI;
@@ -89,6 +90,20 @@ class Cconf
         if (empty($conf)) {
             throw new BusinessException(1000, '数据不存在！');
         }
+        $newOpenApi = $this->request->post('open_api', []);
+        foreach (array_diff($newOpenApi, $conf->value['open_api']) as $url) {
+            p('新增');
+            p($url);
+            getContainer(Auth::class)->setIgnore($url);
+        }
+        #动态删除
+        foreach (array_diff($conf->value['open_api'], $newOpenApi) as $url) {
+            p('删除');
+            p($url);
+            getContainer(Auth::class)->removeIgnore($url);
+        }
+
+
         $conf->fill(['value' => $this->request->all()])->save();
         return $this->json('保存成功！');
     }
