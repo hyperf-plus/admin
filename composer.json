@@ -11,7 +11,7 @@
   ],
   "description": "无需VUE前端可实现快速开发各种表单 后台可视化生成控制器、模型、验证器、View代码等",
   "require": {
-    "php": ">=7.4",
+    "php": ">=7.1",
     "ext-swoole": ">=4.5",
     "hyperf/command": "~2.0.0",
     "hyperf/config": "~2.0.0",
