@@ -5,7 +5,7 @@
     可以做到无需VUE前端可实现快速开发各种表单
     后台可视化生成控制器、模型、验证器、View代码等
     后台表单、列表生成
-
+# 无需VUE前端可实现快速开发各种表单
 # 本项目暂停维护请查看最新框架 https://github.com/lphkxd/hyperf-admin-plugin 完全开源免费
 
 ##本项目根据careyshop后台管理系统进行开发，前端基于d2admin，原后端基于thinkphp5开发，现全部重构成hyperf  
