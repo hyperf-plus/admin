@@ -21,6 +21,7 @@
         \Hyperf\HttpServer\Router\DispatcherFactory::class => \Mzh\Swagger\DispathcerFactory::class,
     ];
 ```
+
 #### 3 配置异常处理器
     在 config/autoload/exceptions.php 中 增加以下配置
 ```php
@@ -42,12 +43,19 @@ cd admin-demo #进入目录
 
 composer update  #更新依赖
 
-
 ```
-#### Swagger文档地址
- 
-  Swagger文档地址 http://127.0.0.1:9501/swagger/index
+#### 演示地址
 
+演示地址：http://shop.sh.cn/system/index.html
+
+账户名：admin
+
+密码：tongge
+
+Swagger接口文档地址：http://shop.sh.cn/swagger/index#/
+
+#### Swagger文档地址
+  Swagger文档地址 http://127.0.0.1:9501/swagger/index
 
 #### 开发计划
 - [x] 模型、控制器、验证器、UI界面生成  
