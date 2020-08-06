@@ -21,6 +21,18 @@
         \Hyperf\HttpServer\Router\DispatcherFactory::class => \Mzh\Swagger\DispathcerFactory::class,
     ];
 ```
+#### 3 配置异常处理器
+    在 config/autoload/exceptions.php 中 增加以下配置
+```php
+    return [
+        'handler' => [
+            'http' => [
+                Mzh\Admin\Exception\Handler\AppExceptionHandler::class,
+                ...
+            ],
+        ],
+    ];
+```
 
 #### 体验  请点击 https://github.com/lphkxd/admin-demo.git
 ```
