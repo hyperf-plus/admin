@@ -40,6 +40,8 @@ git clone https://github.com/lphkxd/admin-demo.git   #克隆demo代码
 
 cd admin-demo #进入目录
 
+composer update  #更新依赖
+
 
 ```
 #### Swagger文档地址
