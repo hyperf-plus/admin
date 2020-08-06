@@ -43,9 +43,7 @@ class AppExceptionHandler extends ExceptionHandler
             case $throwable instanceof NotFoundException:
                 $response = $response->withStatus(404);
                 break;
-            case $throwable->getCode() == 0:
             case $throwable instanceof BusinessException:
-            case $throwable instanceof \Exception:
                 $response = $response->withStatus(403);
                 break;
             case $throwable instanceof UserLoginException:
@@ -53,6 +51,10 @@ class AppExceptionHandler extends ExceptionHandler
                 break;
             case $throwable instanceof ValidateException:
                 $response = $response->withStatus(422);
+                break;
+            case $throwable->getCode() == 0:
+            case $throwable instanceof \Exception:
+                $response = $response->withStatus(403);
                 break;
         }
         return $response->withBody(new SwooleStream(json_encode([

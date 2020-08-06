@@ -78,7 +78,6 @@ class AuthMiddleware implements MiddlewareInterface
             ->withHeader('Access-Control-Allow-Methods', '*')
             ->withHeader('Access-Control-Allow-Headers', '*');
         Context::set(ResponseInterface::class, $response);
-
         if ($request->getMethod() == 'OPTIONS') {
             return $response;
         }
