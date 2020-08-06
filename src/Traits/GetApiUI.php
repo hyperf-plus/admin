@@ -82,13 +82,12 @@ trait GetApiUI
 //        $form = $this->formOptionsConvert([], false, true, false, $record);
 //        return $this->json(array_merge($this->formResponse($id, $form)));
 //    }
-
-    /**
-     * @PostApi(path="edit",summary="UI界面更新单条信息",security=true)
-     * @Body(scene="update",security=true)
-     * @return ResponseInterface
-     * @throws ValidateException|BusinessException
-     */
+//    /**
+//     * @PostApi(path="edit",summary="UI界面更新单条信息",security=true)
+//     * @Body(scene="update",security=true)
+//     * @return ResponseInterface
+//     * @throws ValidateException|BusinessException
+//     */
 //    public function edit_update()
 //    {
 //        return $this->json($this->_update());
@@ -118,7 +117,7 @@ trait GetApiUI
      * @return ResponseInterface
      * @throws ValidateException|BusinessException
      */
-    public function form_create()
+    public function form_updateOrcreate()
     {
         return $this->json($this->_updateOrCreate());
     }

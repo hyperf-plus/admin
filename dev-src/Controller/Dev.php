@@ -189,7 +189,7 @@ class Dev
         $tool = make(TableSchema::class);
         $schema = $tool->tableSchema($pool, $db, $table);
         $ret = [];
-        $ignores = ['id', 'create_at', 'update_at', 'is_deleted'];
+        $ignores = ['id', 'created_at', 'updated_at', 'is_deleted'];
         foreach ($schema as $item) {
             $newItem = new \stdClass();
             foreach ($item as $key => $value) {

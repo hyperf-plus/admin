@@ -29,37 +29,6 @@ class Cconf
     use GetApiUI;
     use GetApiList;
 
-
-    /**
-     * 表单拉取接口
-     * @GetApi(summary="获取编辑表单配置",security=true)
-     * @return ResponseInterface
-     */
-    public function form()
-    {
-        $id = $this->request->query($this->getPk(), 0);
-        $record = [];
-        $edit = false;
-        if ($id > 0) {
-            $record = $this->_detail($id);
-            $edit = true;
-        }
-        $form = $this->formOptionsConvert([], false, $edit, false, $record);
-        return $this->json(array_merge($this->formResponse($id, $form)));
-    }
-
-    /**
-     * @PostApi(path="form",summary="UI界面更新单条信息",security=true)
-     * @Body(scene="update",security=true)
-     * @return ResponseInterface
-     * @throws ValidateException|BusinessException
-     */
-    public function form_update()
-    {
-        return $this->json($this->_updateOrCreate());
-    }
-
-
     /**
      * @GetApi(path="detail/{name}",summary="获取编辑表单配置",security=true)
      * @Path(key="name")

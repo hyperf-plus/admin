@@ -35,7 +35,7 @@ class AuthRule extends AbstractController
 
     protected function _form_before(&$data)
     {
-        if (strtolower($this->request->getMethod()) == 'get') {
+        if ($this->isGet()) {
             return;
         }
 
