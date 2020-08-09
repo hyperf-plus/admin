@@ -69,7 +69,17 @@ class Upload extends AbstractController
         $device = $factory->get($storage);
         $device->createDir(basename($file_name));
         $device->write($file_name, $file->getStream()->getContents());
-        return ['path' => $file_name, 'domain' => config('file.image_url'), 'url' => config('file.image_url') . $file_name];
+        list($width, $height) = getimagesize($file_name);
+
+        return [
+            'path' => $file_name,
+            'key' => 'file',
+            'size' => $file->getSize(),
+            'domain' => config('file.image_url'),
+            'url' => config('file.image_url') . $file_name,
+            'width' => $width,
+            'height' => $height
+        ];
     }
 
 
