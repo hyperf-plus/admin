@@ -28,7 +28,8 @@
     "hyperf/session": "~2.0",
     "ext-json": "*",
     "hyperf/constants": "~2.0",
-    "nette/php-generator": "~3.3"
+    "nette/php-generator": "~3.3",
+    "hyperf/filesystem": "^2.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.0",
@@ -46,6 +47,7 @@
   "autoload": {
     "psr-4": {
       "Mzh\\Admin\\": "src/",
+      "App\\": "app/",
       "Mzh\\DevTools\\": "dev-src/"
     },
     "files": [
