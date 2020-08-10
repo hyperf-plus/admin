@@ -277,9 +277,11 @@ trait GetApiBase
 
     /**
      * @param string $field
-     * @param string $pk
-     * @param Model $model
+     * @param null $pk
+     * @param null $model
      * @return array|string
+     * @throws BusinessException
+     * @throws ValidateException
      */
     protected function _field($field = 'status', $pk = null, $model = null)
     {
@@ -440,5 +442,87 @@ trait GetApiBase
     protected function isDelete(): bool
     {
         return strtolower($this->request->getMethod()) == 'delete';
+    }
+
+    /**
+     * 列表查询前操作，这里可用于筛选条件添加、也可在此做权数据权限二次验证等
+     */
+    protected function _list_before(\Mzh\Helper\DbHelper\QueryHelper &$query)
+    {
+
+    }
+
+    /**
+     * 列表查询后操作，这里可用于列表数据二次编辑
+     */
+    protected function _list_after(&$list)
+    {
+    }
+
+    /**
+     * 更新前操作，这里可以处理提交的参数
+     * 这里的参数是已经经过验证器验证的
+     * 也可在此做权数据权限二次验证等
+     */
+    protected function _update_before(&$data)
+    {
+    }
+
+    protected function _update_after(&$data)
+    {
+    }
+
+    /**
+     * 创建前操作，这里可以处理提交的参数
+     * 这里的参数是已经经过验证器验证的
+     * 也可在此做权数据权限二次验证等
+     */
+    protected function _create_before(&$data)
+    {
+    }
+
+    /**
+     * 创建后操作，这里可以修改返回的值、例如隐藏字段等操作
+     */
+    protected function _create_after(&$data)
+    {
+    }
+
+    /**
+     * 排序前操作
+     * 也可在此做权数据权限二次验证等
+     */
+    protected function _sort_before(&$data)
+    {
+    }
+
+    /**
+     * 删除前操作
+     * 也可在此做权数据权限二次验证等
+     */
+    protected function _delete_before($id, &$data)
+    {
+    }
+
+    /**
+     * 删除后操作，这里可以修改返回的值
+     */
+    protected function _delete_after(&$data)
+    {
+    }
+
+    /**
+     * 排序前操作
+     * 也可在此做权数据权限二次验证等
+     */
+    protected function _state_before(&$data)
+    {
+    }
+
+    /**
+     * 状态修改后操作，例如删除缓存等
+     */
+    protected function _state_after(&$data)
+    {
     }
 }
