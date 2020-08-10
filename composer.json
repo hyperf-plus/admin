@@ -47,7 +47,6 @@
   "autoload": {
     "psr-4": {
       "Mzh\\Admin\\": "src/",
-      "App\\": "app/",
       "Mzh\\DevTools\\": "dev-src/"
     },
     "files": [
