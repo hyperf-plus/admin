@@ -16,7 +16,9 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\AfterWorkerStart;
+use Mzh\Admin\Library\Auth;
 use Psr\Container\ContainerInterface;
+use Swoole\Timer;
 
 /**
  * @Listener
@@ -30,7 +32,7 @@ class AuthInitListener implements ListenerInterface
     /**
      * @var ContainerInterface
      */
-    private ContainerInterface $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -46,15 +48,13 @@ class AuthInitListener implements ListenerInterface
 
     public function process(object $event)
     {
-//        if ($event instanceof AfterWorkerStart && $event->workerId == 0) {
-//           Timer::after(1000,function (){
-//               $this->logger->info("开始搜集权限注解");
-//               $timer = new RunTimes();
-//               $timer->start();
-//               $auth = getContainer(Auth::class);
-//               $auth->restart();
-//               $this->logger->info("搜集完成，用时" . $timer->spent());
-//           });
-//        }
+        if ($event instanceof AfterWorkerStart && $event->workerId == 0) {
+           Timer::after(1000,function (){
+               //$this->logger->info("开始搜集权限注解");
+               $auth = getContainer(Auth::class);
+               $auth->restart();
+              // $this->logger->info("搜集完成，用时" . $timer->spent());
+           });
+        }
     }
 }
