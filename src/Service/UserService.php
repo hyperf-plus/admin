@@ -8,6 +8,7 @@ use Hyperf\Utils\Context;
 use Mzh\Admin\Entity\UserInfo;
 use Mzh\Admin\Exception\BusinessException;
 use Mzh\Admin\Exception\UserLoginException;
+use Mzh\Admin\Interfaces\UserInfoInterface;
 use Mzh\Admin\Model\Admin\FrontRoutes;
 use Mzh\Admin\Model\Admin\User;
 use Mzh\Admin\Model\UserRole;
@@ -52,7 +53,7 @@ class UserService
         $result['login_ip'] = getClientIp();
         $result->save();
         $userInfo = new UserInfo($result->toArray());
-        Context::set(UserInfo::class, $userInfo);
+        Context::set(UserInfoInterface::class, $userInfo);
 
         $jwtBuilder = new JwtBuilder();
         $jwtBuilder->setIssuer('admin');
@@ -62,7 +63,7 @@ class UserService
         $jwtBuilder->setExpiration(time() + 3600);
         $tokenObj = $this->jwt->createToken($jwtBuilder);
 
-        session(UserInfo::class, $userInfo, $jwtBuilder->getIssuer() . ':' . $userInfo->getUserId());
+        session(UserInfoInterface::class, $userInfo, $jwtBuilder->getIssuer() . ':' . $userInfo->getUserId());
         return [
             'id' => $userInfo->getUserId(),
             'mobile' => $userInfo->getMobile(),

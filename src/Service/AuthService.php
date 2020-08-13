@@ -131,13 +131,14 @@ class AuthService
     }
 
 
-    public function getUserRoleIds($user_id)
+    public function getUserRoleIds($user_id, $iss = 'admin')
     {
         if (!$user_id) {
             return [];
         }
         return UserRole::query()
             ->where('user_id', $user_id)
+            ->where('module', $iss)
             ->get(['role_id'])
             ->pluck('role_id')
             ->toArray();

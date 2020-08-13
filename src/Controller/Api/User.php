@@ -95,6 +95,7 @@ class User extends AbstractController
         foreach ($role_ids as $role_id) {
             $user_roles[] = [
                 'user_id' => $data->id,
+                'module' => \Mzh\Admin\Model\AuthRule::query()->where('id', $data->id)->first(['module'])['module'] ?? 'admin',
                 'role_id' => (int)$role_id,
             ];
         }

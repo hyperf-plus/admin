@@ -77,20 +77,22 @@ class AuthRuleView implements UiViewInterface
                         ] = $this->authService->getPermissionOptions($data['value']);
                     },
                 ],
-//                'module|所属模块' => [
-//                    'rule' => 'required|max:20',
-//                    'type' => 'radio',
-//                    'options' => function ($field, $data) {
-//                        $options = [];
-//                        foreach (ConfigService::getConfig('namespace') as $key => $value) {
-//                            $options[] = [
-//                                'value' => $key,
-//                                'label' => $value,
-//                            ];
-//                        }
-//                        return $options;
-//                    },
-//                ],
+                'module|角色类型' => [
+                    'rule' => 'required|max:20',
+                    'type' => 'radio',
+                    'options' => function ($field, $data) {
+                        $options = [];
+                        $options[] = [
+                            'value' => "admin",
+                            'label' => '后台角色',
+                        ];
+                        $options[] = [
+                            'value' => 'api',
+                            'label' => 'API角色',
+                        ];
+                        return $options;
+                    },
+                ],
                 'user_ids|授权用户' => [
                     'type' => 'select',
                     'props' => [

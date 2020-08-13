@@ -9,16 +9,15 @@ declare(strict_types=1);
 
 namespace Mzh\Admin\Entity;
 
+use Mzh\Admin\Interfaces\UserInfoInterface;
 
 /**
  *
  * Class UserInfo
  * @package App\Entity
  */
-class UserInfo extends EntityBean
+class UserInfo extends EntityBean implements UserInfoInterface
 {
-
-
     /**
      * @var integer
      */
@@ -31,6 +30,12 @@ class UserInfo extends EntityBean
      * @var string
      */
     protected $username;
+
+    /**
+     * @var array
+     */
+    protected $userInfo = [];
+
     /**
      * @var string
      */
@@ -53,6 +58,11 @@ class UserInfo extends EntityBean
      * @var string
      */
     protected $avatar;
+
+    /**
+     * @var array
+     */
+    protected $attribute;
 
 
     /**
@@ -176,5 +186,21 @@ class UserInfo extends EntityBean
         $this->avatar = $avatar;
     }
 
+    public function getAttribute($field = null, $default = null)
+    {
+        if ($field === null) {
+            return $this->attribute;
+        }
+        // TODO: Implement getData() method.
+        return $this->attribute[$field] ?? $default;
+    }
 
+    public function setAttribute($data, $value = null)
+    {
+        if (is_string($data)) {
+            $this->attribute[$data] = $data;
+        } else {
+            $this->attribute = array_merge($this->attribute, $data);
+        }
+    }
 }

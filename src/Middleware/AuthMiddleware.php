@@ -11,6 +11,8 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Utils\Context;
 use Mzh\Admin\Entity\UserInfo;
 use Mzh\Admin\Exception\UserLoginException;
+use Mzh\Admin\Interfaces\TokenInfoInterface;
+use Mzh\Admin\Interfaces\UserInfoInterface;
 use Mzh\Admin\Library\Auth;
 use Mzh\Helper\Session\Session;
 use Mzh\JwtAuth\Exception\TokenValidException;
@@ -88,12 +90,8 @@ class AuthMiddleware implements MiddlewareInterface
         }
         $currUrl = $request->getMethod() . '::' . $router->handler->route;
         $security = $this->auth->isSecurity($currUrl);
-        $token = $request->getHeaderLine('x-token');
-        $token = trim($token);
-        //return $handler->handle($request);
-
-        #如果不验证权限、token也为空，则直接处理
-        if ($security == false && empty($token)) {
+        #如果为开放资源直接处理
+        if (!$security) {
             try {
                 $response = $handler->handle($request);
             } finally {
@@ -105,6 +103,8 @@ class AuthMiddleware implements MiddlewareInterface
             }
             return $response;
         }
+        $token = $request->getHeaderLine('x-token');
+        $token = trim($token);
         #验证TOKEN
         try {
             $user = $this->jwt->verifyToken($token);
@@ -115,18 +115,35 @@ class AuthMiddleware implements MiddlewareInterface
         $session->start();
         #检测用户授权信息
         /** @var UserInfo $userInfo */
-        $userInfo = $session->get(UserInfo::class);
-        if (!$userInfo instanceof UserInfo) {
-            throw new UserLoginException(50012, 'token无效！');
-        }
-        if (!$userInfo->isIsAdmin() && $security && !$this->auth->hasPermission($userInfo->getUserId(), $currUrl)) {
-            throw new UserLoginException(1000, '您无权限');
-        }
-        Context::set(SessionInterface::class, $session);
-        try {
-            $response = $handler->handle($request);
-        } finally {
-            $session->save();
+        $userInfo = $session->get(UserInfoInterface::class);
+        switch (true) {
+            #如果为开放资源直接处理
+            case $this->auth->isUserOpen($currUrl) && $userInfo instanceof UserInfoInterface:
+                try {
+                    $response = $handler->handle($request);
+                } finally {
+                    /** @var SessionInterface $session */
+                    $session = Context::get(SessionInterface::class);
+                    if (!empty($session)) {
+                        $session->save();
+                    }
+                }
+                return $response;
+                break;
+            case  !$userInfo instanceof UserInfoInterface:
+                throw new UserLoginException(50012, '请先登录！');
+                break;
+            case !$userInfo->isIsAdmin() && $security && !$this->auth->hasPermission($userInfo->getUserId(), $user->getIssuer(), $currUrl):
+                throw new UserLoginException(1000, '您无权限');
+                break;
+            default:
+                Context::set(SessionInterface::class, $session);
+                try {
+                    $response = $handler->handle($request);
+                } finally {
+                    $session->save();
+                }
+                break;
         }
         return $response;
     }

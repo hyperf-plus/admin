@@ -4,12 +4,15 @@ namespace Mzh\Admin\Library;
 
 
 use Hyperf\Di\Annotation\AnnotationCollector;
+use Hyperf\Di\ReflectionManager;
 use Hyperf\HttpServer\Annotation\Mapping;
 use Hyperf\HttpServer\Router\DispatcherFactory;
 use Mzh\Admin\Model\Admin\FrontRoutes;
 use Mzh\Admin\Model\AuthRule;
 use Mzh\Admin\Service\AuthService;
 use Mzh\Admin\Service\ConfigService;
+use Mzh\Swagger\Annotation\ApiController;
+use Mzh\Swagger\ApiAnnotation;
 
 class Auth
 {
@@ -17,15 +20,21 @@ class Auth
     private $ignore = [
         'POST::/api/user/login'
     ];
+    private $userOpen = [];
 
     public function __construct()
     {
         $this->restart();
     }
 
-    public function hasPermission($userId, $url)
+    public function isUserOpen($currUrl)
     {
-        $roles = $this->getUserRole($userId);
+        return in_array($currUrl, $this->userOpen);
+    }
+
+    public function hasPermission($userId, $iss, $url)
+    {
+        $roles = $this->getUserRole($userId, $iss);
         $menuAuth = $this->loadMenuAuth();
         foreach ($roles as $role) {
             if (in_array($url, ($menuAuth[$role] ?? []))) {
@@ -73,12 +82,18 @@ class Auth
         }
     }
 
+    public function setUserOpen($url)
+    {
+        if (!in_array($url, $this->userOpen)) {
+            $this->userOpen[] = $url;
+        }
+    }
+
     public function setIgnore($url)
     {
-        if (in_array($url, $this->ignore)) {
-            return;
+        if (!in_array($url, $this->ignore)) {
+            $this->ignore[] = $url;
         }
-        $this->ignore[] = $url;
     }
 
     public function isSecurity($currUrl)
@@ -99,7 +114,6 @@ class Auth
         $this->authMenu = [];
         #更新权限菜单
         $this->loadMenuAuth(true);
-        $security = true;
         foreach ($list->getData() as $routes_data) {
             foreach ($routes_data as $http_method => $routes) {
                 $route_list = [];
@@ -119,16 +133,27 @@ class Auth
                     $route = is_string($route) ? rtrim($route) : rtrim($v[0]->route);
                     list($className, $methodName) = $callback;
                     $metadata = AnnotationCollector::get($className);
-                    $security = true;
-                    foreach ($metadata['_m'][$methodName] ?? [] as $item) {
-                        if ($item instanceof Mapping) {
-                            $security = $item->security;
-                            break;
-                        }
+                    $userOpenAll = false;
+                    $OpenAll = false;
+                    if (isset($metadata['_c'][ApiController::class])) {
+                        $userOpenAll = $metadata['_c'][ApiController::class]->userOpen;
+                        $OpenAll = !$metadata['_c'][ApiController::class]->security;
                     }
-                    if (!$security) {
-                        $url = "$http_method::{$route}";
-                        $this->setIgnore($url);
+                    foreach ($metadata['_m'][$methodName] ?? [] as $item) {
+                        if (!$item instanceof Mapping) continue;
+                        if (property_exists($item, 'security') || $OpenAll) {
+                            $security = $item->security;
+                            if (!$security || $OpenAll) {
+                                $url = "$http_method::{$route}";
+                                $this->setIgnore($url);
+                            }
+                        }
+                        if (property_exists($item, 'userOpen') || $userOpenAll) {
+                            if ($item->userOpen || $userOpenAll) {
+                                $url = "$http_method::{$route}";
+                                $this->setUserOpen($url);
+                            }
+                        }
                     }
                 }
             }
@@ -143,15 +168,17 @@ class Auth
         #从数据库配置中取出必须验证权限的接口
         foreach ($permissions['user_open_api'] ?? [] as $url) {
             $this->removeIgnore($url);
+            $this->setUserOpen($url);
         }
     }
 
-    private function getUserRole($userId)
+    private function getUserRole($userId, $iss = 'admin')
     {
-        $roles = json_decode(redis()->get('userRole:User' . $userId), true);
+        $cacheKey = 'userRole:' . $iss . ':' . $userId;
+        $roles = json_decode(redis()->get($cacheKey), true);
         if (empty($roles)) {
-            $roles = make(AuthService::class)->getUserRoleIds($userId);
-            redis()->set('userRole:User' . $userId, json_encode($roles));
+            $roles = make(AuthService::class)->getUserRoleIds($userId, $iss);
+            redis()->set($cacheKey, json_encode($roles));
         }
         return $roles;
     }
