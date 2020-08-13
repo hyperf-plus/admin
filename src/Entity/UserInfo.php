@@ -32,11 +32,6 @@ class UserInfo extends EntityBean implements UserInfoInterface
     protected $username;
 
     /**
-     * @var array
-     */
-    protected $userInfo = [];
-
-    /**
      * @var string
      */
     protected $realname;
