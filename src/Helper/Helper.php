@@ -5,6 +5,7 @@ use Hyperf\Contract\SessionInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Mzh\Admin\Entity\UserInfo;
+use Mzh\Admin\Interfaces\UserInfoInterface;
 
 if (!function_exists('request')) {
     function request(): RequestInterface
@@ -152,15 +153,15 @@ if (!function_exists('array_change_v2k')) {
 }
 
 if (!function_exists('getUserInfo')) {
-    function getUserInfo(): UserInfo
+    function getUserInfo(): UserInfoInterface
     {
         /** @var SessionInterface $session */
         $session = getSession();
         if ($session == null) {
             return new UserInfo();
         }
-        $userInfo = $session->get(UserInfo::class);
-        if ($userInfo instanceof UserInfo) {
+        $userInfo = $session->get(UserInfoInterface::class);
+        if ($userInfo instanceof UserInfoInterface) {
             return $userInfo;
         }
         return new UserInfo();

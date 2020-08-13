@@ -9,9 +9,7 @@ use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Exception\NotFoundException;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Utils\Context;
-use Mzh\Admin\Entity\UserInfo;
 use Mzh\Admin\Exception\UserLoginException;
-use Mzh\Admin\Interfaces\TokenInfoInterface;
 use Mzh\Admin\Interfaces\UserInfoInterface;
 use Mzh\Admin\Library\Auth;
 use Mzh\Helper\Session\Session;
@@ -114,7 +112,7 @@ class AuthMiddleware implements MiddlewareInterface
         $session = new Session($this->handler, $user->getIssuer() . ':' . (string)$user->getAudience());
         $session->start();
         #检测用户授权信息
-        /** @var UserInfo $userInfo */
+        /** @var UserInfoInterface $userInfo */
         $userInfo = $session->get(UserInfoInterface::class);
         switch (true) {
             #如果为开放资源直接处理
