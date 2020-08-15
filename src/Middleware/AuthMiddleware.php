@@ -117,6 +117,7 @@ class AuthMiddleware implements MiddlewareInterface
         switch (true) {
             #如果为开放资源直接处理
             case $this->auth->isUserOpen($currUrl) && $userInfo instanceof UserInfoInterface:
+                Context::set(SessionInterface::class, $session);
                 try {
                     $response = $handler->handle($request);
                 } finally {
