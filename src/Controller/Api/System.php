@@ -41,7 +41,7 @@ class System extends AbstractController
      */
     public function config()
     {
-        $config = ConfigService::getConfig('system');
+        $config = ConfigService::getConfig('website_config');
         return $this->response->json($config);
     }
 
