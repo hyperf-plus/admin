@@ -107,7 +107,7 @@ class AuthMiddleware implements MiddlewareInterface
         try {
             $user = $this->jwt->verifyToken($token);
         } catch (TokenValidException $validException) {
-            throw new UserLoginException(50012, 'token无效');
+            throw new UserLoginException(50012,$validException->getMessage());
         }
         $session = new Session($this->handler, $user->getIssuer() . ':' . (string)$user->getAudience());
         $session->start();

@@ -7,7 +7,6 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\Utils\Context;
 use Mzh\Admin\Entity\UserInfo;
 use Mzh\Admin\Exception\BusinessException;
-use Mzh\Admin\Exception\UserLoginException;
 use Mzh\Admin\Interfaces\UserInfoInterface;
 use Mzh\Admin\Model\Admin\FrontRoutes;
 use Mzh\Admin\Model\Admin\User;
@@ -62,7 +61,6 @@ class UserService
         $jwtBuilder->setJwtData(['user_id' => $user_id]);
         $jwtBuilder->setExpiration(time() + 3600);
         $tokenObj = $this->jwt->createToken($jwtBuilder);
-
         session(UserInfoInterface::class, $userInfo, $jwtBuilder->getIssuer() . ':' . $userInfo->getUserId());
         return [
             'id' => $userInfo->getUserId(),

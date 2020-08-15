@@ -70,6 +70,6 @@ class User extends Model
 
     public static function passwordHash($password)
     {
-        return sha1(md5($password) . md5(config('password.salt', 'admin')));
+        return sha1(md5($password) . md5(config('admin.password.salt', '#$455admin!@#!2hlgy')));
     }
 }

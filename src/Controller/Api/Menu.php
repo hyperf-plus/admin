@@ -163,13 +163,17 @@ class Menu extends AbstractController
                     if (in_array($route_key, $conf)) {
                         continue;
                     }
-
                     // 过滤掉脚手架页面配置方法
                     $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
                     if (!is_array($callback)) {
-                        continue;
+                        if (strpos($callback, '@') !== false) {
+                            [$controller, $action] = explode('@', $callback);
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        [$controller, $action] = $callback;
                     }
-                    [$controller, $action] = $callback;
 
                     if (empty($action) || in_array($action, [
                             'Cconf',
@@ -203,10 +207,15 @@ class Menu extends AbstractController
             $dispatcher = getContainer(DispatcherFactory::class)->getDispatcher('http');
             $route_info = $dispatcher->dispatch($http_method, $uri);
             if (!empty($route_info[1]->callback[0])) {
+                if (is_string($route_info[1]->callback) && strpos($route_info[1]->callback, '@') !== false) {
+                    [$action] = explode('@', $route_info[1]->callback);
+                } else {
+                    $action = $route_info[1]->callback[1];
+                }
                 $right_options[] = [
                     'id' => $route,
-                    'controller' => $route_info[1]->callback[0],
-                    'action' => $route_info[1]->callback[1],
+                    'controller' => $route,
+                    'action' => $action,
                     'http_method' => $http_method,
                 ];
             }

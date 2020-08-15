@@ -76,7 +76,13 @@ class AuthService
                     // 过滤掉脚手架页面配置方法
                     $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
                     if (!is_array($callback)) {
-                        continue;
+                        if (strpos($callback, '@') !== false) {
+                            [$controller, $action] = explode('@', $callback);
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        [$controller, $action] = $callback;
                     }
                     $route = is_string($route) ? rtrim($route) : rtrim($v[0]->route);
                     $route_key = "$http_method::{$route}";

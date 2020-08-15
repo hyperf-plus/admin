@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50726
- Source Host           : localhost:3306
- Source Schema         : admin
-
- Target Server Type    : MySQL
- Target Server Version : 50726
- File Encoding         : 65001
-
- Date: 06/08/2020 14:09:17
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -46,7 +30,7 @@ CREATE TABLE `auth_rule` (
 -- Records of auth_rule
 -- ----------------------------
 BEGIN;
-INSERT INTO `auth_rule` VALUES (3, 'api', 2, '系统管理员', '[[\"system\",\"1\",\"9\",\"10\"],[\"system\",\"1\",\"9\",\"14\"],[\"system\",\"1\",\"9\",\"11\"],[\"system\",\"1\",\"9\",\"12\"],[\"system\",\"1\",\"9\",\"13\"],[\"system\",\"93\",\"2\",\"3\"],[\"system\",\"93\",\"2\",\"4\"],[\"system\",\"93\",\"2\",\"8\"],[\"system\",\"93\",\"2\",\"5\"],[\"system\",\"93\",\"2\",\"6\"],[\"system\",\"93\",\"2\",\"7\"],[\"system\",\"93\",\"78\",\"79\"],[\"system\",\"93\",\"78\",\"80\"],[\"system\",\"93\",\"78\",\"81\"],[\"system\",\"93\",\"78\",\"82\"],[\"system\",\"93\",\"15\",\"16\"],[\"system\",\"93\",\"15\",\"17\"],[\"system\",\"93\",\"15\",\"18\"],[\"system\",\"93\",\"15\",\"19\"],[\"system\",\"93\",\"15\",\"20\"],[\"system\",\"93\",\"15\",\"21\"],[\"system\",\"32\",\"97\"],[\"system\",\"32\",\"33\"],[\"system\",\"32\",\"96\"],[\"system\",\"88\",\"92\"]]', '[467,500,501,507,508,509,460,497,506]', 4, 1, 0, 0, 0, '2020-08-05 11:41:40', '2020-08-05 11:41:40');
+INSERT INTO `auth_rule` VALUES (3, 'api', 2, '系统管理员', '[[\"system\",\"1\",\"9\",\"98\"],[\"system\",\"1\",\"9\",\"10\"],[\"system\",\"1\",\"9\",\"14\"],[\"system\",\"1\",\"9\",\"11\"],[\"system\",\"1\",\"9\",\"12\"],[\"system\",\"1\",\"9\",\"13\"],[\"system\",\"93\",\"2\",\"3\"],[\"system\",\"93\",\"2\",\"99\"],[\"system\",\"93\",\"2\",\"4\"],[\"system\",\"93\",\"2\",\"8\"],[\"system\",\"93\",\"2\",\"5\"],[\"system\",\"93\",\"2\",\"6\"],[\"system\",\"93\",\"2\",\"7\"],[\"system\",\"93\",\"15\",\"16\"],[\"system\",\"93\",\"15\",\"17\"],[\"system\",\"93\",\"15\",\"18\"],[\"system\",\"93\",\"15\",\"19\"],[\"system\",\"93\",\"15\",\"20\"],[\"system\",\"93\",\"15\",\"21\"],[\"system\",\"93\",\"78\",\"79\"],[\"system\",\"93\",\"78\",\"80\"],[\"system\",\"93\",\"78\",\"81\"],[\"system\",\"93\",\"78\",\"82\"],[\"system\",\"32\",\"97\"],[\"system\",\"32\",\"33\"],[\"system\",\"32\",\"96\"],[\"system\",\"88\",\"92\"]]', '[467,500,501,507,508,509,460,497,506]', 4, 1, 0, 0, 0, '2020-08-13 12:20:25', '2020-08-13 12:20:25');
 INSERT INTO `auth_rule` VALUES (4, 'api', 4, '游客', '[[\"system\",\"1\",\"9\",\"10\"],[\"system\",\"1\",\"9\",\"14\"],[\"system\",\"1\",\"9\",\"11\"],[\"system\",\"1\",\"9\",\"12\"],[\"system\",\"1\",\"9\",\"13\"],[\"system\",\"93\",\"2\",\"3\"],[\"system\",\"93\",\"2\",\"4\"],[\"system\",\"93\",\"2\",\"8\"],[\"system\",\"93\",\"2\",\"5\"],[\"system\",\"93\",\"2\",\"6\"],[\"system\",\"93\",\"2\",\"7\"],[\"system\",\"93\",\"78\",\"79\"],[\"system\",\"93\",\"78\",\"80\"],[\"system\",\"93\",\"78\",\"81\"],[\"system\",\"93\",\"78\",\"82\"],[\"system\",\"93\",\"15\",\"16\"],[\"system\",\"93\",\"15\",\"17\"],[\"system\",\"93\",\"15\",\"18\"],[\"system\",\"93\",\"15\",\"19\"],[\"system\",\"93\",\"15\",\"20\"],[\"system\",\"93\",\"15\",\"21\"],[\"system\",\"32\",\"97\"],[\"system\",\"32\",\"33\"],[\"system\",\"32\",\"96\"],[\"system\",\"88\",\"92\"]]', '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,167,169,170,171,172,774,168,369,370,371,372,373,374,375,376,377,378,379,380,629,453,454,455,456,457,458,459]', 4, 1, 0, 0, 0, '2020-08-05 11:41:40', '2020-08-05 11:41:40');
 INSERT INTO `auth_rule` VALUES (5, 'admin', 1, '超级管理员', '[[\"system\",\"1\",\"9\",\"10\"],[\"system\",\"1\",\"9\",\"14\"],[\"system\",\"1\",\"9\",\"11\"],[\"system\",\"1\",\"9\",\"12\"],[\"system\",\"1\",\"9\",\"13\"],[\"system\",\"93\",\"2\",\"3\"],[\"system\",\"93\",\"2\",\"4\"],[\"system\",\"93\",\"2\",\"8\"],[\"system\",\"93\",\"2\",\"5\"],[\"system\",\"93\",\"2\",\"6\"],[\"system\",\"93\",\"2\",\"7\"],[\"system\",\"93\",\"78\",\"79\"],[\"system\",\"93\",\"78\",\"80\"],[\"system\",\"93\",\"78\",\"81\"],[\"system\",\"93\",\"78\",\"82\"],[\"system\",\"93\",\"15\",\"16\"],[\"system\",\"93\",\"15\",\"17\"],[\"system\",\"93\",\"15\",\"18\"],[\"system\",\"93\",\"15\",\"19\"],[\"system\",\"93\",\"15\",\"20\"],[\"system\",\"93\",\"15\",\"21\"],[\"system\",\"32\",\"97\"],[\"system\",\"32\",\"33\"],[\"system\",\"32\",\"96\"],[\"system\",\"88\",\"92\"]]', '[]', 4, 1, 0, 0, 0, '2020-08-05 11:41:41', '2020-08-05 11:41:41');
 INSERT INTO `auth_rule` VALUES (28, 'home', 2, '普通管理员', '[[\"system\",\"1\",\"9\",\"10\"],[\"system\",\"1\",\"9\",\"14\"],[\"system\",\"1\",\"9\",\"11\"],[\"system\",\"1\",\"9\",\"12\"],[\"system\",\"1\",\"9\",\"13\"],[\"system\",\"93\",\"2\",\"3\"],[\"system\",\"93\",\"2\",\"4\"],[\"system\",\"93\",\"2\",\"8\"],[\"system\",\"93\",\"2\",\"5\"],[\"system\",\"93\",\"2\",\"6\"],[\"system\",\"93\",\"2\",\"7\"],[\"system\",\"93\",\"78\",\"79\"],[\"system\",\"93\",\"78\",\"80\"],[\"system\",\"93\",\"78\",\"81\"],[\"system\",\"93\",\"78\",\"82\"],[\"system\",\"93\",\"15\",\"16\"],[\"system\",\"93\",\"15\",\"17\"],[\"system\",\"93\",\"15\",\"18\"],[\"system\",\"93\",\"15\",\"19\"],[\"system\",\"93\",\"15\",\"20\"],[\"system\",\"93\",\"15\",\"21\"],[\"system\",\"32\",\"97\"],[\"system\",\"32\",\"33\"],[\"system\",\"32\",\"96\"],[\"system\",\"88\",\"92\"]]', '[]', 2, 1, 0, 0, 0, '2020-08-05 11:41:42', '2020-08-05 11:41:42');
@@ -72,16 +56,17 @@ CREATE TABLE `config` (
   UNIQUE KEY `unique` (`name`,`namespace`),
   KEY `namespace` (`namespace`),
   KEY `update_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='通用配置';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='通用配置';
 
 -- ----------------------------
 -- Records of config
 -- ----------------------------
 BEGIN;
-INSERT INTO `config` VALUES (1, 'system', 'namespace', '可用空间', '系统模块', NULL, '{\"system\":\"\\u7cfb\\u7edf\",\"common\":\"\\u901a\\u7528\",\"agent\":\"\\u8fd0\\u8425\\u5546\",\"service\":\"\\u670d\\u52a1\\u5546\",\"supplier\":\"\\u4f9b\\u8d27\\u65b9\",\"merchant\":\"\\u5546\\u6237\",\"seller\":\"\\u9500\\u552e\\u65b9\"}', NULL, '2019-10-18 16:47:52', '2020-08-02 21:42:42', 0);
-INSERT INTO `config` VALUES (2, 'system', 'website_config', '站点配置', '', '{\"open_export|\\u5f00\\u542f\\u5bfc\\u51fa\":{\"type\":\"switch\"},\"navbar_notice|\\u5168\\u5c40\\u63d0\\u9192\":\"\",\"system_module|\\u7cfb\\u7edf\\u6a21\\u5757\":{\"type\":\"sub-form\",\"children\":{\"icon\":{\"type\":\"icon-select\"},\"name\":\"\",\"label\":\"\",\"indexUrl\":\"\"},\"repeat\":true,\"props\":{\"sort\":true}},\"open_screen_lock|\\u95f2\\u7f6e\\u9501\\u5c4f\":{\"type\":\"switch\"},\"screen_autho_lock_time|\\u95f2\\u7f6e\\u9501\\u5c4f\\u65f6\\u957f\":{\"type\":\"number\",\"info\":\"\\u5355\\u4f4d\\u79d2\"}}', '{\"open_export\":0,\"navbar_notice\":\"\\u6b22\\u8fce\\u4f7f\\u7528\",\"system_module\":[{\"icon\":\"el-icon-setting\",\"name\":\"system\",\"label\":\"\\u7cfb\\u7edf\",\"indexUrl\":\"\\/system\\/#\\/dashboard\"},{\"icon\":\"eye-open\",\"name\":\"default\",\"label\":\"\\u9996\\u98751\",\"indexUrl\":\"\\/default\\/#\\/dashboard\"}],\"open_screen_lock\":0,\"screen_autho_lock_time\":36}', NULL, '2020-03-17 08:29:10', '2020-08-02 14:23:31', 1);
+INSERT INTO `config` VALUES (1, 'system', 'namespace', '可用空间', '系统模块', NULL, '{\"system\":\"\\u7cfb\\u7edf\",\"common\":\"\\u901a\\u7528\"}', NULL, '2019-10-18 16:47:52', '2020-08-15 22:58:17', 0);
+INSERT INTO `config` VALUES (2, 'system', 'website_config', '站点配置', '', '{\"open_export|\\u5f00\\u542f\\u5bfc\\u51fa\":{\"type\":\"switch\"},\"navbar_notice|\\u5168\\u5c40\\u63d0\\u9192\":\"\",\"system_module|\\u7cfb\\u7edf\\u6a21\\u5757\":{\"type\":\"sub-form\",\"children\":{\"icon\":{\"type\":\"icon-select\"},\"name\":\"\",\"label\":\"\",\"indexUrl\":\"\"},\"repeat\":true,\"props\":{\"sort\":true}},\"open_screen_lock|\\u95f2\\u7f6e\\u9501\\u5c4f\":{\"type\":\"switch\"},\"screen_autho_lock_time|\\u95f2\\u7f6e\\u9501\\u5c4f\\u65f6\\u957f\":{\"type\":\"number\",\"info\":\"\\u5355\\u4f4d\\u79d2\"}}', '{\"open_export\":0,\"navbar_notice\":\"\\u6b22\\u8fce\\u4f7f\\u7528hyperf-admin\\u540e\\u53f0\\u5feb\\u901f\\u5f00\\u53d1\\u63d2\\u4ef6\",\"system_module\":[{\"icon\":\"el-icon-setting\",\"name\":\"system\",\"label\":\"\\u7cfb\\u7edf\",\"indexUrl\":\"\\/system\\/#\\/dashboard\"},{\"icon\":\"eye-open\",\"name\":\"default\",\"label\":\"\\u9996\\u98751\",\"indexUrl\":\"\\/default\\/#\\/dashboard\"}],\"open_screen_lock\":0,\"screen_autho_lock_time\":36}', NULL, '2020-03-17 08:29:10', '2020-08-15 20:16:30', 1);
 INSERT INTO `config` VALUES (3, 'system', 'permissions', '公共权限', '', '{\"open_api|\\u516c\\u5171\\u8d44\\u6e90\":{\"rule\":\"array\",\"type\":\"table-transfer\",\"props\":{\"tableHeader\":[{\"title\":\"\\u8def\\u7531\\u5730\\u5740\",\"field\":\"controller\"},{\"title\":\"\\u65b9\\u6cd5\",\"field\":\"action\"},{\"title\":\"\\u8bf7\\u6c42\\u65b9\\u5f0f\",\"field\":\"http_method\"}],\"remoteApi\":\"\\/menu\\/getOpenApis?field=open_api\"}},\"user_open_api|\\u7528\\u6237\\u5f00\\u653e\\u8d44\\u6e90\":{\"rule\":\"array\",\"type\":\"table-transfer\",\"props\":{\"tableHeader\":[{\"title\":\"\\u63a7\\u5236\\u5668\",\"field\":\"controller\"},{\"title\":\"\\u65b9\\u6cd5\",\"field\":\"action\"},{\"title\":\"\\u8bf7\\u6c42\\u65b9\\u5f0f\",\"field\":\"http_method\"}],\"remoteApi\":\"\\/menu\\/getOpenApis?field=user_open_api\"}}}', '{\"open_api\":[\"POST::\\/api\\/user\\/login\",\"GET::\\/api\\/system\\/config\",\"GET::\\/api\\/user\\/menu\",\"GET::\\/swagger\\/index\",\"GET::\\/swagger\",\"GET::\\/swagger\\/api\"],\"user_open_api\":[]}', NULL, '2020-03-29 15:47:19', '2020-08-05 15:44:42', 1);
 INSERT INTO `config` VALUES (4, 'agent', 'agent', '运营商配置', '', '{\"open_export|\\u5f00\\u542f\\u5bfc\\u51fa\":{\"type\":\"switch\"},\"navbar_notice|\\u5168\\u5c40\\u63d0\\u9192\":\"\",\"open_screen_lock|\\u95f2\\u7f6e\\u9501\\u5c4f\":{\"type\":\"switch\"},\"screen_autho_lock_time|\\u95f2\\u7f6e\\u9501\\u5c4f\\u65f6\\u957f\":{\"type\":\"number\",\"info\":\"\\u5355\\u4f4d\\u79d2\"}}', '\"\"', NULL, '2020-08-02 15:06:02', '2020-08-02 15:09:10', 1);
+INSERT INTO `config` VALUES (6, 'common', 'system_config', '系统设置', '', '{\"title|\\u7ad9\\u70b9\\u540d\\u79f0\":{\"type\":\"input\"},\"storage|\\u4e0a\\u4f20\\u50a8\\u5b58\\u81f3\":{\"type\":\"select\",\"value\":[\"local\"],\"options\":[{\"value\":\"local\",\"label\":\"\\u672c\\u5730\\u786c\\u76d8\"},{\"value\":\"oss\",\"label\":\"\\u963f\\u91cc\\u4e91OSS\"},{\"value\":\"qiniu\",\"label\":\"\\u4e03\\u725b\\u4e91\"},{\"value\":\"cos\",\"label\":\"\\u817e\\u8baf\\u4e91\\u50a8\\u5b58\"}],\"compute\":[{\"when\":[\"in\",[\"local\",\"qiniu\",\"cos\"]],\"set\":{\"oss_key_id\":{\"type\":\"hidden\"},\"oss_key_secret\":{\"type\":\"hidden\"}}},{\"when\":[\"=\",\"oss\"],\"set\":{\"oss_key_id\":{\"rule\":\"required\"},\"oss_key_secret\":{\"rule\":\"required\"}}}]},\"oss_key_id|KeyID\":{\"type\":\"input\"},\"oss_key_secret|Secret\":{\"type\":\"input\"},\"allow_ext|\\u5141\\u8bb8\\u4e0a\\u4f20\\u540e\\u7f00\":{\"type\":\"select\",\"value\":[\"png\",\"jpg\",\"gif\",\"jpeg\"],\"options\":[{\"value\":\"png\",\"label\":\"png\"},{\"value\":\"jpg\",\"label\":\"jpg\"},{\"value\":\"jpeg\",\"label\":\"jpeg\"},{\"value\":\"gif\",\"label\":\"gif\"}],\"props\":{\"multiple\":true}}}', '{\"title\":\"\\u5feb\\u4e50\\u91d1\\u5e93\",\"storage\":\"local\",\"oss_key_id\":\"\",\"oss_key_secret\":\"\",\"allow_ext\":[\"png\",\"jpg\",\"gif\",\"jpeg\"]}', NULL, '2020-08-09 20:59:43', '2020-08-09 21:52:51', 1);
 COMMIT;
 
 -- ----------------------------
@@ -183,8 +168,8 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 'admin', '管理员', '52ddc278e945f18ea25f9459fd67242b465a70f9', '13422222222', '4213509@qq.com', 1, '2020-08-06 13:45:20', '127.0.0.1', 1, 1, '', '1', '哈哈', 'http://qupinapptest.oss-cn-beijing.aliyuncs.com/1/202002/d81d3c9dc7c3df7590d333f783a97995.jpeg', '', '2017-12-12 10:49:11', '2020-08-06 13:45:20');
-INSERT INTO `user` VALUES (3, 'tongge', '桐哥', '52ddc278e945f18ea25f9459fd67242b465a70f9', '13422222222', '4213509@qq.com', 1, '2020-08-05 15:26:45', '127.0.0.1', 1, 1, '', '10', 'tongge', 'http://qupinapptest.oss-cn-beijing.aliyuncs.com/1/202002/d81d3c9dc7c3df7590d333f783a97995.jpeg', '', '2020-08-05 11:40:06', '2020-08-05 15:26:45');
+INSERT INTO `user` VALUES (1, 'admin', '管理员', 'db32a1c7951afbd106d19c488dbcdb2e9889ea7c', '13422222222', '4213509@qq.com', 1, '2020-08-15 22:57:17', '127.0.0.1', 1, 1, '', '1', '哈哈', 'http://qupinapptest.oss-cn-beijing.aliyuncs.com/1/202002/d81d3c9dc7c3df7590d333f783a97995.jpeg', '', '2017-12-12 10:49:11', '2020-08-15 22:57:17');
+INSERT INTO `user` VALUES (3, 'admin1', '管理员2', 'db32a1c7951afbd106d19c488dbcdb2e9889ea7c', '13422222222', '4213509@qq.com', 1, '2020-08-05 15:26:45', '127.0.0.1', 1, 1, '', '10', 'tongge', 'http://qupinapptest.oss-cn-beijing.aliyuncs.com/1/202002/d81d3c9dc7c3df7590d333f783a97995.jpeg', '', '2020-08-05 11:40:06', '2020-08-05 15:26:45');
 COMMIT;
 
 -- ----------------------------
@@ -195,25 +180,22 @@ CREATE TABLE `user_role` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `role_id` int(11) unsigned NOT NULL DEFAULT '0',
-   `module` char(10) NOT NULL DEFAULT 'admin',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `module` char(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_user_role_id` (`user_id`,`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户角色';
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `user_role` VALUES (18, 3, 5,'admin', '2020-08-05 11:40:06', '2020-08-05 11:40:06');
-INSERT INTO `user_role` VALUES (19, 3, 4,'admin',  '2020-08-05 11:40:06', '2020-08-05 11:40:06');
-INSERT INTO `user_role` VALUES (20, 3, 3,'admin',  '2020-08-05 11:40:06', '2020-08-05 11:40:06');
-INSERT INTO `user_role` VALUES (21, 3, 28,'admin',  '2020-08-05 11:40:06', '2020-08-05 11:40:06');
-INSERT INTO `user_role` VALUES (27, 1, 3,'admin',  '2020-08-05 15:27:00', '2020-08-05 15:27:00');
-INSERT INTO `user_role` VALUES (28, 1, 4,'admin',  '2020-08-05 15:27:00', '2020-08-05 15:27:00');
-INSERT INTO `user_role` VALUES (29, 1, 5,'admin',  '2020-08-05 15:27:00', '2020-08-05 15:27:00');
-INSERT INTO `user_role` VALUES (30, 1, 28, 'admin', '2020-08-05 15:27:00', '2020-08-05 15:27:00');
+INSERT INTO `user_role` VALUES (18, 3, 5, '2020-08-05 11:40:06', '2020-08-13 12:31:05', 'admin');
+INSERT INTO `user_role` VALUES (19, 3, 4, '2020-08-05 11:40:06', '2020-08-13 12:31:09', 'admin');
+INSERT INTO `user_role` VALUES (20, 3, 3, '2020-08-05 11:40:06', '2020-08-13 12:31:10', 'admin');
+INSERT INTO `user_role` VALUES (21, 3, 28, '2020-08-05 11:40:06', '2020-08-13 12:31:12', 'admin');
+INSERT INTO `user_role` VALUES (33, 1, 3, '2020-08-15 22:57:07', '2020-08-15 22:57:07', 'admin');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
