@@ -17,7 +17,7 @@ use Mzh\Admin\Views\AuthRuleView;
 use Mzh\Swagger\Annotation\ApiController;
 
 /**
- * @ApiController(tag="AuthRule模块")
+ * @ApiController(tag="后台-角色管理规则模块")
  */
 class AuthRule extends AbstractController
 {

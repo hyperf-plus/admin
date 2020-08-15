@@ -33,7 +33,7 @@ use Mzh\Swagger\Annotation\PostApi;
 use Mzh\Swagger\Annotation\Query;
 
 /**
- * @ApiController(tag="Upload模块")
+ * @ApiController(tag="公共-Upload模块")
  */
 class Upload extends AbstractController
 {

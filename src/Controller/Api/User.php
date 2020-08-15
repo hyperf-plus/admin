@@ -29,7 +29,7 @@ use Mzh\Swagger\Annotation\Query;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @ApiController(tag="用户模块", description="资讯列表/分类/详情")
+ * @ApiController(tag="后台-用户模块", description="资讯列表/分类/详情")
  * Class IndexController
  * @package Mzh\Admin\Controller
  */

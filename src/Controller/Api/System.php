@@ -16,12 +16,13 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\Utils\Str;
 use Mzh\Admin\Controller\AbstractController;
 use Mzh\Admin\Service\AuthService;
+use Mzh\Admin\Service\ConfigService;
 use Mzh\Swagger\Annotation\ApiController;
 use Mzh\Swagger\Annotation\GetApi;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @ApiController(tag="用户模块", description="系统")
+ * @ApiController(tag="后台-系统配置模块", description="系统")
  * Class IndexController
  * @package Mzh\Admin\Controller
  */
@@ -40,10 +41,8 @@ class System extends AbstractController
      */
     public function config()
     {
-        $json = '
-        {"open_export":0,"navbar_notice":"cccccc","system_module":[{"icon":"el-icon-setting","name":"system","label":"系统","indexUrl":"\/system\/#\/dashboard"},{"icon":"eye-open","name":"default","label":"首页","indexUrl":"\/default\/#\/dashboard"}],"open_screen_lock":0,"screen_autho_lock_time":36}
-        ';
-        return $this->response->json(json_decode($json, true));
+        $config = ConfigService::getConfig('system');
+        return $this->response->json($config);
     }
 
     /**

@@ -19,7 +19,7 @@ use Mzh\Swagger\Annotation\PostApi;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @ApiController(tag="通用配置模块")
+ * @ApiController(tag="后台-通用配置模块")
  */
 class Cconf
 {

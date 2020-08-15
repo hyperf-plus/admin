@@ -28,7 +28,7 @@ use Mzh\Swagger\Annotation\GetApi;
 use Mzh\Swagger\Annotation\Query;
 
 /**
- * @ApiController(tag="Menu模块")
+ * @ApiController(tag="后台-菜单模块")
  */
 class Menu extends AbstractController
 {
