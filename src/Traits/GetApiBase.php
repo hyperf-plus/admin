@@ -10,6 +10,7 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
 use Mzh\Admin\Exception\BusinessException;
 use Mzh\Admin\Exception\ValidateException;
 use Mzh\Admin\Views\UiViewInterface;
+use Mzh\Helper\DbHelper\GetQueryHelper;
 use Mzh\Helper\DbHelper\QueryHelper;
 
 trait GetApiBase
@@ -29,6 +30,7 @@ trait GetApiBase
      */
     protected $response;
 
+    use GetQueryHelper;
 
     public function __construct()
     {

@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace Mzh\Admin\Traits;
 
-use Mzh\Helper\DbHelper\GetQueryHelper;
 use Mzh\Swagger\Annotation\GetApi;
 use Mzh\Swagger\Annotation\Query;
 
 trait GetApiList
 {
     use GetApiBase;
-    use GetQueryHelper;
     /**
      * @GetApi(summary="列表",security=true)
      * @Query(key="page",description="页码")
