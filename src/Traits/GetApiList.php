@@ -12,7 +12,7 @@ trait GetApiList
     use GetApiBase;
     use GetQueryHelper;
     /**
-     * @GetApi(summary="用户列表",security=true)
+     * @GetApi(summary="列表",security=true)
      * @Query(key="page",description="页码")
      * @Query(key="limit",description="每页条数")
      * @Query(scene="list")
