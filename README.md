@@ -61,9 +61,8 @@ composer update  #更新依赖
 
 演示地址：http://shop.sh.cn/system/index.html
 
-账户名：admin
-
-密码：tongge
+账户名：admin、admin1
+密码：admin
 
 Swagger接口文档地址：http://shop.sh.cn/swagger/index#/
 
