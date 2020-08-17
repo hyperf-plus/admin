@@ -121,49 +121,50 @@ class Menu extends AbstractController
         if ($this->isGet()) {
             return;
         }
-        
+
+
 
         $scaffold_action = $this->request->post('scaffold_action');
         // 更新预置的脚手架权限
         $action_keys = $scaffold_action ? array_keys($scaffold_action) : [];
         $need_del_ids = $scaffold_action ? array_values($scaffold_action) : [];
         $router_ids = [];
-
-        if (!empty($data['scaffold_action'])) {
-            $need_del_ids = collect($scaffold_action)->except($data['scaffold_action'])->values()->toArray();
-            $scaffold_action = collect($scaffold_action)->only($data['scaffold_action'])->toArray();
-            $paths = array_filter(explode('/', $data['path']));
-            array_pop($paths);
-            $prefix = implode('/', $paths);
-            foreach ($data['scaffold_action'] as $k => $action) {
-                if (in_array($action, $action_keys)) {
-                    continue;
-                }
-                $action_conf = config("admin.scaffold_permissions.{$action}");
-                $menu = [
-                    'pid' => $data->id,
-                    'label' => $action_conf['label'],
-                    'path' => !empty($action_conf['path']) ? "/{$prefix}" . $action_conf['path'] : '',
-                    'permission' => str_replace('/*/', "/{$prefix}/", $action_conf['permission']),
-                    'is_scaffold' => $action_conf['type'] == 1 ? 1 : 0,
-                    'module' => $data['module'],
-                    'type' => $action_conf['type'],
-                    'sort' => 99 - $k,
-                    'status' => 1,
-                ];
-                $model = make(FrontRoutes::class);
-                $model->fill($menu)->save();
-                $scaffold_action[$action] = $model->id;
-                $router_ids[] = $model->id;
-            }
-        } else {
-            $scaffold_action = '';
-        }
+//
+//        if (!empty($data['scaffold_action'])) {
+//            $need_del_ids = collect($scaffold_action)->except($data['scaffold_action'])->values()->toArray();
+//            $scaffold_action = collect($scaffold_action)->only($data['scaffold_action'])->toArray();
+//            $paths = array_filter(explode('/', $data['path']));
+//            array_pop($paths);
+//            $prefix = implode('/', $paths);
+//            foreach ($data['scaffold_action'] as $k => $action) {
+//                if (in_array($action, $action_keys)) {
+//                    continue;
+//                }
+//                $action_conf = config("admin.scaffold_permissions.{$action}");
+//                $menu = [
+//                    'pid' => $data->id,
+//                    'label' => $action_conf['label'],
+//                    'path' => !empty($action_conf['path']) ? "/{$prefix}" . $action_conf['path'] : '',
+//                    'permission' => str_replace('/*/', "/{$prefix}/", $action_conf['permission']),
+//                    'is_scaffold' => $action_conf['type'] == 1 ? 1 : 0,
+//                    'module' => $data['module'],
+//                    'type' => $action_conf['type'],
+//                    'sort' => 99 - $k,
+//                    'status' => 1,
+//                ];
+//                $model = make(FrontRoutes::class);
+//                $model->fill($menu)->save();
+//                $scaffold_action[$action] = $model->id;
+//                $router_ids[] = $model->id;
+//            }
+//        } else {
+//            $scaffold_action = '';
+//        }
         // 删除路由
-        if (!empty($need_del_ids)) {
-            $this->getModel()->whereIn('id', $need_del_ids)->delete();
-        }
-        getContainer(Auth::class)->restart();
+//        if (!empty($need_del_ids)) {
+//          //  $this->getModel()->whereIn('id', $need_del_ids)->delete();
+//        }
+  //      getContainer(Auth::class)->restart();
     }
 
     /**
