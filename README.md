@@ -1,12 +1,12 @@
 
 # 新插件上线
-    https://github.com/lphkxd/hyperf-admin-plugin
+    https://github.com/lphkxd/hyperf-admin
     以插件形式开箱即用
     可以做到无需VUE前端可实现快速开发各种表单
     后台可视化生成控制器、模型、验证器、View代码等
     后台表单、列表生成
 # 无需VUE前端可实现快速开发各种表单
-# 本项目暂停维护请查看最新框架 https://github.com/lphkxd/hyperf-admin-plugin 完全开源免费
+# 本项目暂停维护请查看最新框架 https://github.com/lphkxd/hyperf-admin 完全开源免费
 
 ##本项目根据careyshop后台管理系统进行开发，前端基于d2admin，原后端基于thinkphp5开发，现全部重构成hyperf  
 thinkphp 版本文档地址 https://www.careyshop.cn/
@@ -14,7 +14,7 @@ thinkphp 版本文档地址 https://www.careyshop.cn/
 ### 演示
 #### 演示地址：https://shop.sh.cn/
 #### 用户名:admin
-#### 密码:admin888
+#### 密码:admin
 #### 请不要更改密码
 
 ## 本项目在php74下开发 因为PHP74增加了新语法和支持定义变量类型，用起来比较方便，所以不打算兼容php7.4以下版本，只把定义的类型给去掉了，如果低版本使用，请自行修改XXXSevice 内的新语法 ??= 的部分
