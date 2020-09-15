@@ -1,0 +1,48 @@
+{
+  "name": "hyperf-plus/admin",
+  "description": "开箱即用的Hyperf后台扩展，laravel-admin用法",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "毛自豪",
+      "email": "4213509@qq.com"
+    }
+  ],
+  "homepage": "https://github.com/lphkxd/hyperf-admin",
+  "keywords": [
+    "hyperf",
+    "Admin",
+    "Vue"
+  ],
+  "require": {
+    "php": ">=7.3",
+    "ext-swoole": ">=4.5",
+    "mzh/hyperf-helper": "^0.1.7",
+    "hyperf-plus/ui": "^1.0.0",
+    "hyperf-plus/route": "^1.0.0"
+
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0"
+  },
+  "suggest": {
+    "hyperf-plus/route": "^1.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mzh\\Admin\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Mzh\\Admin\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "hyperf": {
+      "config": [
+        "Mzh\\Admin\\ConfigProvider"
+      ]
+    }
+  }
+}
