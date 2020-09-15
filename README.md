@@ -11,6 +11,16 @@
     <a href="https://github.com/lphkxd/hyperf-admin-plugin/blob/master/LICENSE"><img src="https://img.shields.io/github/license/lphkxd/hyperf-admin-plugin.svg?maxAge=2592000" alt="HyperfAdmin License"></a>
 </p>
 
+
+### 安装
+```bash
+    composer require hyperf-plus/admin
+
+    php bin/hyperf.php vendor:publish hyperf-plus/admin
+
+```
+### 访问 http://127.0.0.1:9501/admin
+
 #### 以插件形式开箱即用
 #### 可以做到无需VUE前端可实现快速开发各种表单
 #### 喜欢的帮忙点个star

@@ -51,15 +51,11 @@ class Administrator extends Model
         if (is_validURL($avatar)) {
             return $avatar;
         }
-
         $disk = config('admin.upload.disk');
-
         if ($avatar && array_key_exists($disk, config('file.storage'))) {
             return Storage()->route($avatar);
         }
-
         $default = config('admin.default_avatar');
-
         return admin_asset($default);
     }
 
