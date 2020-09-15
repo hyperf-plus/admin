@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Traits;
+namespace HPlus\Admin\Traits;
 use HPlus\UI\Components\Widgets\Html;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;

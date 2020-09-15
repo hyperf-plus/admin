@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
 
-namespace Mzh\Admin\Exception\Handler;
+namespace HPlus\Admin\Exception\Handler;
 
-use Mzh\Admin\Exception\BusinessException;
-use Mzh\Admin\Exception\UserLoginException;
-use Mzh\Admin\Exception\ValidateException;
+use HPlus\Admin\Exception\BusinessException;
+use HPlus\Admin\Exception\UserLoginException;
+use HPlus\Admin\Exception\ValidateException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;

@@ -2,14 +2,14 @@
 
 declare (strict_types=1);
 
-namespace Mzh\Admin\Model\Admin;
+namespace HPlus\Admin\Model\Admin;
 
 use \Hyperf\Database\Model\Model;
 use \Hyperf\Database\Model\Relations\BelongsToMany;
 use Hyperf\DbConnection\Db;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Str;
-use Mzh\Admin\Traits\ModelTree;
+use HPlus\Admin\Traits\ModelTree;
 
 /**
  * Class Menu.

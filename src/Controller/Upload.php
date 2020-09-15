@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use Hyperf\HttpMessage\Upload\UploadedFile as UploadedFileAlias;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
-use Mzh\Admin\Admin;
-use Mzh\Admin\Exception\BusinessException;
+use HPlus\Admin\Admin;
+use HPlus\Admin\Exception\BusinessException;
 
 /**
  * @Controller(prefix="/upload")
  * Class IndexAdminController
- * @package Mzh\Admin\Controller
+ * @package HPlus\Admin\Controller
  */
 class Upload extends AbstractAdminController
 {

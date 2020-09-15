@@ -86,16 +86,16 @@ return [
         'connection' => '',
         // User tables and model.
         'users_table' => 'admin_users',
-        'users_model' => \Mzh\Admin\Model\Admin\Administrator::class,
+        'users_model' => \HPlus\Admin\Model\Admin\Administrator::class,
         // Role table and model.
         'roles_table' => 'admin_roles',
-        'roles_model' => \Mzh\Admin\Model\Admin\Role::class,
+        'roles_model' => \HPlus\Admin\Model\Admin\Role::class,
         // Permission table and model.
         'permissions_table' => 'admin_permissions',
-        'permissions_model' => \Mzh\Admin\Model\Admin\Permission::class,
+        'permissions_model' => \HPlus\Admin\Model\Admin\Permission::class,
         // Menu table and model.
         'menu_table' => 'admin_menu',
-        'menu_model' => \Mzh\Admin\Model\Admin\Menu::class,
+        'menu_model' => \HPlus\Admin\Model\Admin\Menu::class,
         // Pivot table for table above.
         'operation_log_table' => 'admin_operation_log',
         'user_permissions_table' => 'admin_user_permissions',

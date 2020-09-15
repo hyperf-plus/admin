@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Entity;
+namespace HPlus\Admin\Entity;
 
 class EntityBean
 {

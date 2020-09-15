@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Model\Admin;
+namespace HPlus\Admin\Model\Admin;
 
 use Hyperf\Database\Model\Relations\BelongsTo;
-use Mzh\Admin\Model\Model;
+use HPlus\Admin\Model\Model;
 
 class OperationLog extends Model
 {

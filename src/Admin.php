@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin;
+namespace HPlus\Admin;
 
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use Mzh\Admin\Library\Auth;
-use Mzh\Admin\Model\Admin\Menu;
+use HPlus\Admin\Library\Auth;
+use HPlus\Admin\Model\Admin\Menu;
 
 class Admin
 {

@@ -1,9 +1,9 @@
 <?php
 
 declare (strict_types=1);
-namespace Mzh\Admin\Model\Admin;
+namespace HPlus\Admin\Model\Admin;
 
-use Mzh\Admin\Model\Model;
+use HPlus\Admin\Model\Model;
 
 /**
  * @property int $id 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Mzh\Admin\Model\Admin;
+namespace HPlus\Admin\Model\Admin;
 
-use Mzh\Admin\Model\Model;
+use HPlus\Admin\Model\Model;
 use \Hyperf\Database\Model\Relations\BelongsToMany;
 
 class Role extends Model

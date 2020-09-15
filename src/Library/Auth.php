@@ -1,13 +1,13 @@
 <?php
 
-namespace Mzh\Admin\Library;
+namespace HPlus\Admin\Library;
 
 use Hyperf\Di\Annotation\AnnotationCollector;
 use Hyperf\HttpServer\Annotation\Mapping;
 use Hyperf\HttpServer\Router\DispatcherFactory;
-use Mzh\Admin\Contracts\AuthInterface;
-use Mzh\Admin\Service\AuthService;
-use Mzh\Swagger\Annotation\ApiController;
+use HPlus\Admin\Contracts\AuthInterface;
+use HPlus\Admin\Service\AuthService;
+use HPlus\Swagger\Annotation\ApiController;
 
 class Auth implements AuthInterface
 {

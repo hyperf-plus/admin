@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Facades;
+namespace HPlus\Admin\Facades;
 
 
 use HPlus\UI\Form;
@@ -20,7 +20,7 @@ use HPlus\UI\Tree;
  * @method static array menu()
  * @method static void route()
  *
- * @see \Mzh\Admin\Admin
+ * @see \HPlus\Admin\Admin
  */
 class Admin extends Facade
 {
@@ -31,6 +31,6 @@ class Admin extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return \Mzh\Admin\Admin::class;
+        return \HPlus\Admin\Admin::class;
     }
 }

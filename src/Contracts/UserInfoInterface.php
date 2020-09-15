@@ -1,6 +1,6 @@
 <?php
 
-namespace Mzh\Admin\Contracts;
+namespace HPlus\Admin\Contracts;
 
 
 interface UserInfoInterface

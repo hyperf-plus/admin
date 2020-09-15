@@ -1,6 +1,6 @@
 <?php
 
-namespace Mzh\Admin\Traits;
+namespace HPlus\Admin\Traits;
 
 
 use HPlus\Route\Annotation\DeleteApi;

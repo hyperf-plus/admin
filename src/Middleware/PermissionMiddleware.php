@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mzh\Admin\Middleware;
+namespace HPlus\Admin\Middleware;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\SessionInterface;
@@ -12,16 +12,16 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Utils\Context;
-use Mzh\Admin\Admin;
-use Mzh\Admin\Exception\UserLoginException;
-use Mzh\Admin\Contracts\AuthInterface;
-use Mzh\Admin\Contracts\UserInfoInterface;
-use Mzh\Admin\Library\Auth;
-use Mzh\Admin\Model\Admin\OperationLog;
-use Mzh\Helper\RunTimes as RunTimesAlias;
-use Mzh\Helper\Session\Session;
-use Mzh\JwtAuth\Exception\TokenValidException;
-use Mzh\JwtAuth\Jwt;
+use HPlus\Admin\Admin;
+use HPlus\Admin\Exception\UserLoginException;
+use HPlus\Admin\Contracts\AuthInterface;
+use HPlus\Admin\Contracts\UserInfoInterface;
+use HPlus\Admin\Library\Auth;
+use HPlus\Admin\Model\Admin\OperationLog;
+use HPlus\Helper\RunTimes as RunTimesAlias;
+use HPlus\Helper\Session\Session;
+use HPlus\JwtAuth\Exception\TokenValidException;
+use HPlus\JwtAuth\Jwt;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

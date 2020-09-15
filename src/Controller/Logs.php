@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use HPlus\Route\Annotation\AdminController;
 use HPlus\UI\Components\Attrs\SelectOption;
@@ -13,11 +13,11 @@ use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Form;
 use HPlus\UI\Grid;
 use Hyperf\Database\Model\Model;
-use Mzh\Admin\Model\Admin\OperationLog;
+use HPlus\Admin\Model\Admin\OperationLog;
 
 /**
  * @AdminController(prefix="logs",tag="日志管理"))
- * @package Mzh\Admin\Controllers
+ * @package HPlus\Admin\Controllers
  */
 class Logs extends AbstractAdminController
 {

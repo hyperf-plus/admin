@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace Mzh\Admin;
+namespace HPlus\Admin;
 
-use Mzh\Admin\Contracts\AuthInterface;
-use Mzh\Admin\Library\Auth;
+use HPlus\Admin\Contracts\AuthInterface;
+use HPlus\Admin\Library\Auth;
 
 class ConfigProvider
 {

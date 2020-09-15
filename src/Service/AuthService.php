@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Service;
+namespace HPlus\Admin\Service;
 
 use Hyperf\HttpServer\Router\DispatcherFactory;
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\GetApi;
@@ -18,7 +18,7 @@ use Hyperf\Database\Model\Model;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Str;
-use Mzh\Admin\Service\AuthService;
+use HPlus\Admin\Service\AuthService;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -58,7 +58,7 @@ class Menu extends AbstractAdminController
         $form = new Form(new $model());
         $form->size('medium');
         $form->item('parent_id', '上级目录')->component(Select::make(0)->options(function () use ($model) {
-            /** @var \Mzh\Admin\Model\Admin\Menu $model */
+            /** @var \HPlus\Admin\Model\Admin\Menu $model */
             return $model::selectOptions(function ($model) {
                 $model::query()->where('parent_id', 0)->orderBy('order');
             }, '根目录')->map(function ($title, $id) {

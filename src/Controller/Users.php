@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use HPlus\Route\Annotation\AdminController;
 use HPlus\UI\Components\Attrs\SelectOption;
@@ -12,11 +12,11 @@ use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Form;
 use HPlus\UI\Grid;
 use Hyperf\HttpServer\Annotation\Controller;
-use Mzh\Admin\Controller\AbstractAdminController;
+use HPlus\Admin\Controller\AbstractAdminController;
 
 /**
  * @AdminController(prefix="users",tag="管理员管理",ignore=true))
- * @package Mzh\Admin\Controllers
+ * @package HPlus\Admin\Controllers
  */
 class Users extends AbstractAdminController
 {

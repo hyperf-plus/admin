@@ -1,12 +1,12 @@
 <?php
 
-namespace Mzh\Admin\Model\Admin;
+namespace HPlus\Admin\Model\Admin;
 
-use Mzh\Admin\Model\Model;
+use HPlus\Admin\Model\Model;
 use \Hyperf\Database\Model\Relations\BelongsToMany;
 use Hyperf\HttpServer\Request;
 use Hyperf\Utils\Str;
-use Mzh\Admin\Traits\ModelTree;
+use HPlus\Admin\Traits\ModelTree;
 
 
 class Permission extends Model

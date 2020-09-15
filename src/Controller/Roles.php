@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use HPlus\Route\Annotation\AdminController;
 use HPlus\UI\Components\Attrs\TransferData;
@@ -14,10 +14,10 @@ use HPlus\UI\Grid;
 use HPlus\UI\Layout\Content;
 use HPlus\UI\Tree;
 use Hyperf\HttpServer\Annotation\GetMapping;
-use Mzh\Admin\Admin;
-use Mzh\Admin\Model\Admin\Administrator;
-use Mzh\Admin\Model\Admin\Menu;
-use Mzh\Admin\Model\Admin\RoleMenu;
+use HPlus\Admin\Admin;
+use HPlus\Admin\Model\Admin\Administrator;
+use HPlus\Admin\Model\Admin\Menu;
+use HPlus\Admin\Model\Admin\RoleMenu;
 
 /**
  * 角色管理

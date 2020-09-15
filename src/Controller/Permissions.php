@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use HPlus\Route\Annotation\AdminController;
 use HPlus\UI\Components\Attrs\SelectOption;
@@ -11,7 +11,7 @@ use HPlus\UI\Form;
 use HPlus\UI\Grid;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\Utils\Str;
-use Mzh\Admin\Service\AuthService;
+use HPlus\Admin\Service\AuthService;
 
 /**
  * @AdminController(prefix="permissions",tag="权限管理"))

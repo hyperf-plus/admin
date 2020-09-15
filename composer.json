@@ -30,18 +30,18 @@
   },
   "autoload": {
     "psr-4": {
-      "Mzh\\Admin\\": "src/"
+      "HPlus\\Admin\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Mzh\\Admin\\Tests\\": "tests"
+      "HPlus\\Admin\\Tests\\": "tests"
     }
   },
   "extra": {
     "hyperf": {
       "config": [
-        "Mzh\\Admin\\ConfigProvider"
+        "HPlus\\Admin\\ConfigProvider"
       ]
     }
   }

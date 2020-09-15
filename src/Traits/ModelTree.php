@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Mzh\Admin\Traits;
+namespace HPlus\Admin\Traits;
 
 use \Hyperf\Database\Model\Model;
 use Hyperf\DbConnection\Db;

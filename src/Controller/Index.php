@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
 use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\ApiController;
@@ -10,7 +10,7 @@ use HPlus\UI\Entity\MenuEntity;
 use HPlus\UI\Entity\UISettingEntity;
 use HPlus\UI\Entity\UserEntity;
 use HPlus\UI\UI;
-use Mzh\Admin\Facades\Admin;
+use HPlus\Admin\Facades\Admin;
 
 /**
  * @AdminController(tag="入口文件")

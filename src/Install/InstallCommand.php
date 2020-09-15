@@ -1,6 +1,6 @@
 <?php
 
-namespace Mzh\Admin\Install;
+namespace HPlus\Admin\Install;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;

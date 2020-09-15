@@ -10,12 +10,12 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Mzh\Admin\Controller;
+namespace HPlus\Admin\Controller;
 
-use Mzh\Admin\Traits\HasApiCreate;
-use Mzh\Admin\Traits\HasApiDelete;
-use Mzh\Admin\Traits\HasApiList;
-use Mzh\Admin\Traits\HasApiPut;
+use HPlus\Admin\Traits\HasApiCreate;
+use HPlus\Admin\Traits\HasApiDelete;
+use HPlus\Admin\Traits\HasApiList;
+use HPlus\Admin\Traits\HasApiPut;
 
 abstract class AbstractAdminController
 {

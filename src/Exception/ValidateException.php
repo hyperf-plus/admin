@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
 
-namespace Mzh\Admin\Exception;
+namespace HPlus\Admin\Exception;
 
 use App\Constants\ErrorCode;
 use Hyperf\Server\Exception\ServerException;

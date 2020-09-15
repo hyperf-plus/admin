@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Mzh\Admin\Entity;
+namespace HPlus\Admin\Entity;
 
-use Mzh\Admin\Contracts\UserInfoInterface;
+use HPlus\Admin\Contracts\UserInfoInterface;
 
 /**
  *
