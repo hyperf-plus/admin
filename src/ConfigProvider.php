@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
-namespace HPlus\Admin;
 
-use HPlus\Admin\Contracts\AuthInterface;
-use HPlus\Admin\Library\Auth;
+namespace HPlus\Admin;
 
 class ConfigProvider
 {
@@ -20,7 +18,6 @@ class ConfigProvider
                 ],
             ],
             'dependencies' => [
-                AuthInterface::class => Auth::class,
             ],
             'publish' => [
                 [
@@ -28,6 +25,11 @@ class ConfigProvider
                     'description' => 'hyperf-admin',
                     'source' => __DIR__ . '/../publish/admin.php',
                     'destination' => BASE_PATH . '/config/autoload/admin.php',
+                ], [
+                    'id' => 'auth',
+                    'description' => 'hyperf-auth',
+                    'source' => __DIR__ . '/../publish/auth.php',
+                    'destination' => BASE_PATH . '/config/autoload/auth.php',
                 ],
             ],
         ];

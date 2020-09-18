@@ -51,7 +51,6 @@ return [
     'directory' => '', //app_path('Admin'),
     'https' => env('ADMIN_HTTPS', false),
     'auth' => [
-
         // Add "remember me" to login form
         'remember' => true,
         // Redirect to the specified URI when user is not authorized.
