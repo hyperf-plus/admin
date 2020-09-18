@@ -12,7 +12,7 @@ return [
     ],
     'guards' => [ // 开发者可以在这里添加自己的 guard ，guard Qbhy\HyperfAuth\AuthGuard 接口
         'jwt' => [
-            'driver' => Qbhy\HyperfAuth\Guard\JwtGuard::class,
+            'driver' => Qbhy\HyperfAuth\Guard\AdminGuard::class,
             'provider' => 'admin',
             'secret' => env('JWT_SECRET', 'hyperf.plus'),
             'ttl' => 60 * 60, // 单位秒

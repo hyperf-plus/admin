@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace HPlus\Admin\Controller;
 
+use HPlus\Admin\Middleware\AuthMiddleware;
 use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\GetApi;
 use HPlus\UI\Components\Attrs\SelectOption;
@@ -20,8 +21,10 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Str;
 use HPlus\Admin\Service\AuthService;
 use Psr\Container\ContainerInterface;
+use Hyperf\HttpServer\Annotation\Middleware;
 
 /**
+ * @Middleware(AuthMiddleware::class)
  * @AdminController(tag="菜单管理"))
  * @package App\Controller
  */

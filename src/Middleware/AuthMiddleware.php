@@ -18,7 +18,7 @@ use Qbhy\HyperfAuth\Exception\UnauthorizedException;
  */
 class AuthMiddleware implements MiddlewareInterface
 {
-    protected $guards = ['admin'];
+    protected $guards = [null];
 
     /**
      * @var AuthManager
@@ -33,7 +33,6 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        p(123);
         foreach ($this->guards as $name) {
             $guard = $this->auth->guard($name);
             if (!$guard->user() instanceof Authenticatable) {
