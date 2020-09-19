@@ -18,7 +18,7 @@
     "php": ">=7.3",
     "ext-swoole": ">=4.5",
     "mzh/hyperf-helper": "^0.1.7",
-    "hyperf-plus/ui": "^1.0.0",
+    "hyperf-plus/ui": "dev-master",
     "hyperf-plus/route": "^1.0.0",
     "96qbhy/hyperf-auth": "^2.2"
   },
