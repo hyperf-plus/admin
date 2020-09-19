@@ -32,6 +32,9 @@ class InstallCommand extends HyperfCommand
         $this->output->success('hyperf-admin db install success');
         $this->output->text('start make file');
         $content = file_get_contents(__DIR__ . '/stubs/AuthController.stub');
+        if (!is_dir(BASE_PATH . '/app/Controller/Admin/')){
+            @mkdir(BASE_PATH . '/app/Controller/Admin/');
+        }
         file_put_contents(BASE_PATH . '/app/Controller/Admin/AuthController.php', $content);
         $this->output->success('create success!');
         $this->output->success('启动服务后访问：http://127.0.0.1:9501/auth');
