@@ -20,8 +20,8 @@
 2、生成admin auth file配置文件
     php bin/hyperf.php vendor:publish hyperf-plus/admin
 
-3、UI资源安装
-    php bin/hyperf.php ui:install
+3、UI资源初始化
+    php bin/hyperf.php ui:init
 
 4、配置好数据库（必须），然后执行下面安装命令
     php bin/hyperf.php admin:install
@@ -30,6 +30,8 @@
 	php bin/hyperf.php start
 ```
 ### 访问 http://127.0.0.1:9501/auth
+- 账户 admin
+- 密码 admin
 
 #### 以插件形式开箱即用
 #### 可以做到无需VUE前端可实现快速开发各种表单

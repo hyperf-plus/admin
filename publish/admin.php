@@ -61,7 +61,7 @@ return [
         'remember' => true,
         // Redirect to the specified URI when user is not authorized.
         'redirect_to' => 'auth/login',
-        'login_api' => env('ADMIN_ROUTE_API_PREFIX', '/admin').'/auth/login',
+        'login_api' => 'auth/login',
         // The URIs that should be excluded from authorization.
         'excepts' => [
             'auth/login',
