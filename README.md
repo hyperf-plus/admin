@@ -1,5 +1,5 @@
-## 开发中，请勿用于生产使用，全新admin插件 快速开发框架， 兼容laravel-admin用法
-#### 欢迎加入hyperf-admin交流群，群聊号码：512465490
+## HPlus Admin，全新admin插件 快速开发框架， 兼容laravel-admin用法
+#### 欢迎加入HPlus交流群，群聊号码：512465490
 点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
 <p align="center">
     <a href="https://github.com/lphkxd/hyperf-admin/releases"><img src="https://poser.pugx.org/mzh/hyperf-admin-plugin/v/stable" alt="Stable Version"></a>
