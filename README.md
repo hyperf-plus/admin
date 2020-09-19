@@ -1,4 +1,7 @@
 ## HPlus Admin，全新admin插件 快速开发框架， 兼容laravel-admin用法
+### auth组件，目前支持 jwt、session 驱动。用户可以自行扩展。
+### 使用体验大体和 laravel 的 auth 差不多
+
 #### 欢迎加入HPlus交流群，群聊号码：512465490
 点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
 <p align="center">
