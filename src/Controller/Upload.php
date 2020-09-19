@@ -6,7 +6,7 @@ namespace HPlus\Admin\Controller;
 use Hyperf\HttpMessage\Upload\UploadedFile as UploadedFileAlias;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
-use HPlus\Admin\Admin;
+use HPlus\Admin\Facades\Admin;
 use HPlus\Admin\Exception\BusinessException;
 
 /**

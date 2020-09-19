@@ -1,5 +1,10 @@
 <?php
 
+use HPlus\Admin\Model\Admin\Administrator;
+use HPlus\Admin\Model\Admin\Menu;
+use HPlus\Admin\Model\Admin\Permission;
+use HPlus\Admin\Model\Admin\Role;
+
 return [
     //后台名称 null不显示
     'name' => null,
@@ -21,8 +26,8 @@ return [
     'login_background_image' => 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg',
     //登录框默认用户
     'auto_user' => [
-        'username' => 'demo',
-        'password' => 'demo'
+        'username' => 'admin',
+        'password' => 'admin'
     ],
     //底部菜单
     'footerLinks' => [
@@ -43,8 +48,9 @@ return [
     'bootstrap' => '', //app_path('Admin/bootstrap.php'),
     'route' => [
         'domain' => null,
-        'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),
-        'api_prefix' => env('ADMIN_ROUTE_PREFIX', 'admin-api'),
+        'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),       # 默认后台注册路由，可自定义路径，防止后台地址被扫
+        'api_prefix' => env('ADMIN_ROUTE_API_PREFIX', '/'),  # 默认API地址
+        'home' => env('ADMIN_ROUTE_HOME_URL', '/auth/main'),              # 默认后台首页
         'namespace' => 'App\\Admin\\Controllers',
         'middleware' => ['web', 'admin'],
     ],
@@ -55,6 +61,7 @@ return [
         'remember' => true,
         // Redirect to the specified URI when user is not authorized.
         'redirect_to' => 'auth/login',
+        'login_api' => env('ADMIN_ROUTE_API_PREFIX', '/admin').'/auth/login',
         // The URIs that should be excluded from authorization.
         'excepts' => [
             'auth/login',
@@ -85,16 +92,16 @@ return [
         'connection' => '',
         // User tables and model.
         'users_table' => 'admin_users',
-        'users_model' => \HPlus\Admin\Model\Admin\Administrator::class,
+        'users_model' => Administrator::class,
         // Role table and model.
         'roles_table' => 'admin_roles',
-        'roles_model' => \HPlus\Admin\Model\Admin\Role::class,
+        'roles_model' => Role::class,
         // Permission table and model.
         'permissions_table' => 'admin_permissions',
-        'permissions_model' => \HPlus\Admin\Model\Admin\Permission::class,
+        'permissions_model' => Permission::class,
         // Menu table and model.
         'menu_table' => 'admin_menu',
-        'menu_model' => \HPlus\Admin\Model\Admin\Menu::class,
+        'menu_model' => Menu::class,
         // Pivot table for table above.
         'operation_log_table' => 'admin_operation_log',
         'user_permissions_table' => 'admin_user_permissions',
@@ -129,5 +136,4 @@ return [
     'show_environment' => true,
     'menu_bind_permission' => true,
     'which-composer' => 'composer'
-
 ];

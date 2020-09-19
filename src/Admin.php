@@ -5,7 +5,6 @@ namespace HPlus\Admin;
 
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use HPlus\Admin\Library\Auth;
 use HPlus\Admin\Model\Admin\Menu;
 
 class Admin
@@ -30,9 +29,9 @@ class Admin
         return self::$metaTitle ? self::$metaTitle : config('admin.title');
     }
 
-    public function menu()
+    public function menu($isReload = false)
     {
-        if (!empty($this->menu)) {
+        if (!empty($this->menu) && $isReload === false) {
             return $this->menu;
         }
         $menuClass = config('admin.database.menu_model');
@@ -75,7 +74,7 @@ class Admin
     {
         $guard = config('admin.auth.guard') ?: 'admin';
 
-        return Auth::guard($guard);
+        return Auth()->guard($guard);
     }
 
 
@@ -88,7 +87,7 @@ class Admin
         return $validator;
     }
 
-    public static function response($data, $message = '', $code = 200, $headers = [])
+    public function response($data, $message = '', $code = 200, $headers = [])
     {
         $re_data = [
             'code' => $code,
@@ -101,14 +100,14 @@ class Admin
         return $response->withBody(new SwooleStream(json_encode($re_data, 256)));
     }
 
-    public static function responseMessage($message = '', $code = 200)
+    public function responseMessage($message = '', $code = 200)
     {
-        return self::response([], $message, $code);
+        return $this->response([], $message, $code);
     }
 
-    public static function responseError($message = '', $code = 400)
+    public function responseError($message = '', $code = 400)
     {
-        return self::response([], $message, $code);
+        return $this->response([], $message, $code);
     }
 
     /**
@@ -117,9 +116,9 @@ class Admin
      * @param string $message
      * @param string $type info/success/warning/error
      */
-    public static function responseRedirect($url, $isVueRoute = true, $message = null, $type = 'success')
+    public function responseRedirect($url, $isVueRoute = true, $message = null, $type = 'success')
     {
-        return self::response([
+        return $this->response([
             'url' => $url,
             'isVueRoute' => $isVueRoute,
             'type' => $type

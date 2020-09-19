@@ -22,10 +22,6 @@ use Throwable;
 
 class AdminGuard extends AbstractAuthGuard
 {
-    /**
-     * @var JWTManager
-     */
-    protected $jwtManager;
 
     /**
      * @var RequestInterface

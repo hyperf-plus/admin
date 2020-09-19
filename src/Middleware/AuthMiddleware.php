@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HPlus\Admin\Middleware;
 
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\Utils\Context;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -30,9 +31,9 @@ class AuthMiddleware implements MiddlewareInterface
         $this->auth = $auth;
     }
 
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+
         foreach ($this->guards as $name) {
             $guard = $this->auth->guard($name);
             if (!$guard->user() instanceof Authenticatable) {

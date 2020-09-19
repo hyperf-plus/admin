@@ -17,7 +17,7 @@ class InstallCommand extends HyperfCommand
 
     protected function configure()
     {
-        $this->setDescription('install db from hyperf-admin.');
+        $this->setDescription('install db from hyperf-plus-admin.');
     }
 
     public function handle()
@@ -30,7 +30,11 @@ class InstallCommand extends HyperfCommand
         $sql = file_get_contents(__DIR__ . '/install.sql');
         Db::connection('default')->getPdo()->exec($sql);
         $this->output->success('hyperf-admin db install success');
-        //$this->output->text('start copy file');
-
+        $this->output->text('start make file');
+        $content = file_get_contents(__DIR__ . '/stubs/AuthController.stub');
+        file_put_contents(BASE_PATH . '/app/Controller/Admin/AuthController.php', $content);
+        $this->output->success('create success!');
+        $this->output->success('启动服务后访问：http://127.0.0.1:9501/auth');
+        $this->output->success('更多文档请参阅:https://hyperf.plus');
     }
 }

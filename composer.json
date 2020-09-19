@@ -20,7 +20,8 @@
     "mzh/hyperf-helper": "^0.1.7",
     "hyperf-plus/ui": "^1.0.0",
     "hyperf-plus/route": "^1.0.0",
-    "96qbhy/hyperf-auth": "^2.2"
+    "96qbhy/hyperf-auth": "^2.2",
+    "ext-password": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.0"

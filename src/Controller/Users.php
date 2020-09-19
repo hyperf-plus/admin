@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace HPlus\Admin\Controller;
 
+use HPlus\Admin\Library\Auth;
 use HPlus\Route\Annotation\AdminController;
 use HPlus\UI\Components\Attrs\SelectOption;
 use HPlus\UI\Components\Form\Input;
@@ -80,14 +81,13 @@ class Users extends AbstractAdminController
 
         $form->saving(function (Form $form) {
             if ($form->password) {
-                $form->password = md5($form->password);
+                $form->password = password_hash($form->password,PASSWORD_DEFAULT);
             }
         });
-
         $form->deleting(function (Form $form, $id) {
-            //if (Admin::user()->id == $id || $id == 1) {
-               // return Admin::responseError("删除失败");
-           // }
+            if (Auth()->user()->getId() == $id || $id == 1) {
+               return Admin::responseError("删除失败");
+           }
         });
         return $form;
     }

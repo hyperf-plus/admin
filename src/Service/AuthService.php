@@ -45,6 +45,8 @@ class AuthService
                         [$controller, $action] = $callback;
                     }
                     $route = is_string($route) ? rtrim($route) : rtrim($v[0]->route);
+//                    $prefix = trim(config('admin.route.api_prefix') . '/', '/') . '/';
+//                    $route = str_replace($prefix, '', $route);
                     if ($isUrl){
                         $route_key = $route;
                     }else{

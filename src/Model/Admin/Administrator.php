@@ -5,13 +5,14 @@ namespace HPlus\Admin\Model\Admin;
 
 use Hyperf\Database\Model\Relations\BelongsToMany;
 use HPlus\Admin\Model\Model;
+use Qbhy\HyperfAuth\Authenticatable;
 
 /**
  * Class Administrator.
  *
  * @property Role[] $roles
  */
-class Administrator extends Model
+class Administrator extends Model implements Authenticatable
 {
 
     protected $fillable = ['username', 'password', 'name', 'avatar'];
@@ -86,5 +87,18 @@ class Administrator extends Model
 
         return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
     }
+
+    public function getId()
+    {
+        // TODO: Implement getId() method.
+        return $this->id;
+    }
+
+    public static function retrieveById($key): ?Authenticatable
+    {
+        // TODO: Implement retrieveById() method.
+        return Administrator::findFromCache($key);
+    }
+
 }
 

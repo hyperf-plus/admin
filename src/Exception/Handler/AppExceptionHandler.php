@@ -15,6 +15,7 @@ namespace HPlus\Admin\Exception\Handler;
 use HPlus\Admin\Exception\BusinessException;
 use HPlus\Admin\Exception\UserLoginException;
 use HPlus\Admin\Exception\ValidateException;
+use HPlus\UI\Exception\ValidateException as UIValidateException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -46,6 +47,7 @@ class AppExceptionHandler extends ExceptionHandler
                 $response = $response->withStatus(401);
                 break;
             case $throwable instanceof ValidateException:
+            case $throwable instanceof UIValidateException:
                 $response = $response->withStatus(422);
                 break;
         }

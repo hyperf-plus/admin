@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace HPlus\Admin\Controller;
 
+use HPlus\Admin\Facades\Admin;
 use HPlus\Admin\Middleware\AuthMiddleware;
 use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\GetApi;
@@ -73,7 +74,7 @@ class Menu extends AbstractAdminController
         $form->item('uri', "URI")
             ->help('可以输入搜索')
             ->component(Select::make()->filterable()
-                ->remote(route('admin/menu/route')))->inputWidth(450);
+                ->remote(route('menu/route')))->inputWidth(450);
         $form->item('order', '排序')->component(InputNumber::make(1)->min(0));
         $form->item('is_menu', '设为菜单')->component(CSwitch::make(0));
         $form->item('roles', '角色')->component(Select::make()->block()->multiple()->options(function () use ($roleModel) {
@@ -95,6 +96,7 @@ class Menu extends AbstractAdminController
         $form->saved(function (Form $form) {
 
 
+            Admin::menu(true);
         });
         if ((new $model())->withPermission()) {
             $form->item('permission', '权限')->component(Select::make()->clearable()->block()->multiple()->options(function () use ($permissionModel) {
@@ -112,7 +114,6 @@ class Menu extends AbstractAdminController
      */
     public function route()
     {
-
         $kw = $this->request->query('query', '');
         $routes = make(AuthService::class)->getSystemRouteOptions(true);
         $routes = array_filter($routes, function ($item) use ($kw) {
