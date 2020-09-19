@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace HPlus\Admin;
 
+use HPlus\Admin\Exception\ValidateException;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use HPlus\Admin\Model\Admin\Menu;
@@ -77,12 +78,11 @@ class Admin
         return Auth()->guard($guard);
     }
 
-
     public function validatorData(array $all, $rules, $message = [])
     {
         $validator = Validator::make($all, $rules, $message);
         if ($validator->fails()) {
-            abort(400, $validator->errors()->first());
+            throw new ValidateException(422, (string) $validator->errors()->first());
         }
         return $validator;
     }
