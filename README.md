@@ -16,22 +16,41 @@
 
 
 ### 安装
+
+- 1、安装Admin插件
 ```bash
-1、安装Admin插件
     composer require hyperf-plus/admin
-
-2、生成admin auth file配置文件
+```
+- 2、生成admin auth file配置文件
+```bash
     php bin/hyperf.php vendor:publish hyperf-plus/admin
-
-3、UI资源初始化
+```
+- 3、UI资源初始化
+```bash
     php bin/hyperf.php ui:init
-
-4、配置好数据库（必须），然后执行下面安装命令
+```
+- 4、配置好数据库（必须），然后执行下面安装命令
+```bash
     php bin/hyperf.php admin:install
-
-5、启动服务
+```
+- 5、配置异常处理器
+####  在文件 config/autoload/exceptions.php 中添加 \HPlus\Admin\Exception\Handler\AppExceptionHandler::class 异常处理器
+```php
+    <?php
+        return [
+            'handler' => [
+                'http' => [
+                    \HPlus\Admin\Exception\Handler\AppExceptionHandler::class, #放到第一位
+                 # 其他的放到下面
+                ],
+            ],
+        ];
+```
+- 6、启动服务
+```bash
 	php bin/hyperf.php start
 ```
+
 ### 访问 http://127.0.0.1:9501/auth
 - 账户 admin
 - 密码 admin
