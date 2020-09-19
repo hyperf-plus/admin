@@ -22,7 +22,6 @@ use HPlus\Admin\Controller\AbstractAdminController;
  */
 class Users extends AbstractAdminController
 {
-
     protected function grid()
     {
 
