@@ -39,7 +39,7 @@ CREATE TABLE `admin_menu` (
 -- Records of admin_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_menu` VALUES (1, 0, 1, 1, '首页', 'el-icon-monitor', '/admin/auth/main', NULL, NULL, '2020-09-19 16:35:36');
+INSERT INTO `admin_menu` VALUES (1, 0, 1, 1, '首页', 'el-icon-monitor', '/auth/main', NULL, NULL, '2020-09-19 16:35:36');
 INSERT INTO `admin_menu` VALUES (2, 0, 1, 10, '系统', 'el-icon-setting', 'system', NULL, NULL, '2020-09-19 16:54:51');
 INSERT INTO `admin_menu` VALUES (3, 2, 1, 3, '管理员', 'fa-ban', '/admin/users/list', '[1]', NULL, '2020-09-19 16:01:49');
 INSERT INTO `admin_menu` VALUES (4, 2, 1, 4, '角色', 'fa-ban', '/admin/roles/list', NULL, NULL, '2020-09-19 16:01:42');
