@@ -30,6 +30,11 @@ class ConfigProvider
                     'description' => 'hyperf-auth',
                     'source' => __DIR__ . '/../publish/auth.php',
                     'destination' => BASE_PATH . '/config/autoload/auth.php',
+                ], [
+                    'id' => 'file',
+                    'description' => 'hyperf-file',
+                    'source' => __DIR__ . '/../publish/file.php',
+                    'destination' => BASE_PATH . '/config/autoload/file.php',
                 ],
             ],
         ];

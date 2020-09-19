@@ -14,12 +14,22 @@
 
 ### 安装
 ```bash
+	1、安装Admin插件
     composer require hyperf-plus/admin
 
+	2、生成admin auth file配置文件
     php bin/hyperf.php vendor:publish hyperf-plus/admin
 
+	2、UI资源安装
+    php bin/hyperf.php ui:install
+
+	4、配置好数据库（必须），然后执行下面安装命令
+    php bin/hyperf.php admin:install
+
+	5、启动服务
+	php bin/hyperf.php start
 ```
-### 访问 http://127.0.0.1:9501/admin
+### 访问 http://127.0.0.1:9501/auth
 
 #### 以插件形式开箱即用
 #### 可以做到无需VUE前端可实现快速开发各种表单
