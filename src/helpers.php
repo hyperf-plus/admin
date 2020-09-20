@@ -9,14 +9,13 @@ declare(strict_types=1);
  * @license  https://github.com/lphkxd/hyperf-plus/blob/master/LICENSE
  */
 
-use HPlus\Admin\Library\Permission;
 
 if (!function_exists('permission')) {
     /**
-     * @return Permission
+     * @return \HPlus\Admin\Contracts\PermissionInterface
      */
     function permission()
     {
-        return getContainer(Permission::class);
+        return getContainer(\HPlus\Admin\Contracts\PermissionInterface::class);
     }
 }

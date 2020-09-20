@@ -2,7 +2,6 @@
 
 namespace HPlus\Admin\Model\Admin;
 
-use HPlus\Admin\Library\Permission as PermissionAlias;
 use HPlus\Admin\Model\Model;
 use Hyperf\Database\Model\Events\Saved;
 use \Hyperf\Database\Model\Relations\BelongsToMany;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace HPlus\Admin;
 
 
+use HPlus\Admin\Contracts\PermissionInterface;
+use HPlus\Admin\Library\Permission;
 use HPlus\Admin\Listener\PermissionListener;
 
 class ConfigProvider
@@ -21,7 +23,7 @@ class ConfigProvider
                 ],
             ],
             'dependencies' => [
-
+                PermissionInterface::class => Permission::class
             ],
 //            'listeners' => [
 //                PermissionListener::class,

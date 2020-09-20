@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace HPlus\Admin\Middleware;
 
+use HPlus\Admin\Contracts\PermissionInterface;
 use HPlus\Admin\Library\Permission;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\Utils\Context;
@@ -36,7 +37,7 @@ class PermissionMiddleware implements MiddlewareInterface
      */
     protected $permission;
 
-    public function __construct(Permission $permission)
+    public function __construct(PermissionInterface $permission)
     {
         $this->permission = $permission;
     }
@@ -51,7 +52,7 @@ class PermissionMiddleware implements MiddlewareInterface
         }
         $has = $this->permission->can($request->getMethod(), $router->handler->route);
         if (!$has) {
-            throw new UserLoginException(401, '您无权限');
+          //  throw new UserLoginException(401, '您无权限');
         }
         return $handler->handle($request);
     }
