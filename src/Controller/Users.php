@@ -13,10 +13,13 @@ use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Form;
 use HPlus\UI\Layout\Row;
 use HPlus\UI\Grid;
+use HPlus\UI\UI;
 use Hyperf\HttpServer\Annotation\Controller;
-use HPlus\Admin\Controller\AbstractAdminController;
+use HPlus\Admin\Middleware\PermissionMiddleware;
+use Hyperf\HttpServer\Annotation\Middleware;
 
 /**
+ * @Middleware(PermissionMiddleware::class)
  * @AdminController(prefix="users",tag="管理员管理",ignore=true))
  * @package HPlus\Admin\Controllers
  */
@@ -24,7 +27,6 @@ class Users extends AbstractAdminController
 {
     protected function grid()
     {
-
         $userModel = config('admin.database.users_model');
         $grid = new Grid(new $userModel());
         $grid
@@ -49,7 +51,6 @@ class Users extends AbstractAdminController
 
     protected function form()
     {
-
         $userModel = config('admin.database.users_model');
         $permissionModel = config('admin.database.permissions_model');
         $roleModel = config('admin.database.roles_model');
@@ -58,10 +59,10 @@ class Users extends AbstractAdminController
         $userTable = config('admin.database.users_table');
 
         $form->item('avatar', '头像')->component(Upload::make()->avatar()->path('avatar')->uniqueName());
-        $form->row(function (Row $row, Form $form) use ($userTable, $connection) {
+        $form->row(function (Row $row, Form $form) use ($userTable) {
             $row->column(8, $form->rowItem('username', '用户名')
-                ->serveCreationRules(['required', "unique:{$connection}.{$userTable}"])
-                ->serveUpdateRules(['required', "unique:{$connection}.{$userTable},username,{{id}}"])
+                ->serveCreationRules(['required', "unique:{$userTable}"])
+                ->serveUpdateRules(['required', "unique:{$userTable},username,{{id}}"])
                 ->component(Input::make())->required());
             $row->column(8, $form->rowItem('name', '名称')->component(Input::make()->showWordLimit()->maxlength(20))->required());
         });
@@ -92,7 +93,7 @@ class Users extends AbstractAdminController
         });
         $form->deleting(function (Form $form, $id) {
             if (Auth()->user()->getId() == $id || $id == 1) {
-               return Admin::responseError("删除失败");
+               return UI::responseError("删除失败");
            }
         });
         return $form;

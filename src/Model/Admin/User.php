@@ -4,6 +4,8 @@ declare (strict_types=1);
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Model\Model;
+use HPlus\Admin\Traits\HasPermission;
+use Hyperf\Database\Model\Events\Saved;
 
 /**
  * @property int $id 
@@ -17,6 +19,7 @@ use HPlus\Admin\Model\Model;
  */
 class User extends Model
 {
+
     /**
      * The table associated with the model.
      *
@@ -35,4 +38,6 @@ class User extends Model
      * @var array
      */
     protected $casts = ['id' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+
 }

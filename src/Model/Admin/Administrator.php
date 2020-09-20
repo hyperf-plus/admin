@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace HPlus\Admin\Model\Admin;
 
+use Hyperf\Database\Model\Events\Saved;
 use Hyperf\Database\Model\Relations\BelongsToMany;
 use HPlus\Admin\Model\Model;
+use HPlus\Admin\Traits\HasPermissions;
 use Qbhy\HyperfAuth\Authenticatable;
 
 /**
@@ -14,15 +16,17 @@ use Qbhy\HyperfAuth\Authenticatable;
  */
 class Administrator extends Model implements Authenticatable
 {
-
     protected $fillable = ['username', 'password', 'name', 'avatar'];
     protected $hidden = ['password'];
+    protected $primaryKey = 'id';
 
     protected $casts = [
         'images' => 'array',
         'created_at' => "Y-m-d H:i:s",
         'updated_at' => "Y-m-d H:i:s",
     ];
+
+    use HasPermissions;
 
     /**
      * Create a new Eloquent model instance.
@@ -31,12 +35,7 @@ class Administrator extends Model implements Authenticatable
      */
     public function __construct(array $attributes = [])
     {
-        $connection = config('admin.database.connection') ?: config('database.default');
-
-        $this->setConnection($connection);
-
         $this->setTable(config('admin.database.users_table'));
-
         parent::__construct($attributes);
     }
 
@@ -68,7 +67,6 @@ class Administrator extends Model implements Authenticatable
     public function roles(): BelongsToMany
     {
         $pivotTable = config('admin.database.role_users_table');
-
         $relatedModel = config('admin.database.roles_model');
 
         return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'role_id');
@@ -82,9 +80,7 @@ class Administrator extends Model implements Authenticatable
     public function permissions(): BelongsToMany
     {
         $pivotTable = config('admin.database.user_permissions_table');
-
         $relatedModel = config('admin.database.permissions_model');
-
         return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
     }
 
@@ -100,5 +96,10 @@ class Administrator extends Model implements Authenticatable
         return Administrator::findFromCache($key);
     }
 
+    public function saved(Saved $event)
+    {
+        #更新角色后需要清理缓存
+        permission()->reloadUser($event->getModel()->id);
+    }
 }
 

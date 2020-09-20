@@ -2,7 +2,9 @@
 
 namespace HPlus\Admin\Model\Admin;
 
+use HPlus\Admin\Library\Permission as PermissionAlias;
 use HPlus\Admin\Model\Model;
+use Hyperf\Database\Model\Events\Saved;
 use \Hyperf\Database\Model\Relations\BelongsToMany;
 
 class Role extends Model
@@ -10,9 +12,10 @@ class Role extends Model
     protected $fillable = ['name', 'slug'];
 
     protected $casts = [
-        'created_at'=>"Y-m-d H:i:s",
-        'updated_at'=>"Y-m-d H:i:s",
+        'created_at' => "Y-m-d H:i:s",
+        'updated_at' => "Y-m-d H:i:s",
     ];
+
     /**
      * Create a new Eloquent model instance.
      *
@@ -20,12 +23,7 @@ class Role extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $connection = config('admin.database.connection') ?: config('database.default');
-
-        $this->setConnection($connection);
-
         $this->setTable(config('admin.database.roles_table'));
-
         parent::__construct($attributes);
     }
 
@@ -34,7 +32,7 @@ class Role extends Model
      *
      * @return BelongsToMany
      */
-    public function administrators() : BelongsToMany
+    public function administrators(): BelongsToMany
     {
         $pivotTable = config('admin.database.role_users_table');
 
@@ -48,7 +46,7 @@ class Role extends Model
      *
      * @return BelongsToMany
      */
-    public function menu() : BelongsToMany
+    public function menu(): BelongsToMany
     {
         $pivotTable = config('admin.database.role_menu_table');
 
@@ -62,7 +60,7 @@ class Role extends Model
      *
      * @return BelongsToMany
      */
-    public function menus() : BelongsToMany
+    public function menus(): BelongsToMany
     {
         $pivotTable = config('admin.database.role_menu_table');
 
@@ -76,7 +74,7 @@ class Role extends Model
      *
      * @return BelongsToMany
      */
-    public function permissions() : BelongsToMany
+    public function permissions(): BelongsToMany
     {
         $pivotTable = config('admin.database.role_permissions_table');
         $relatedModel = config('admin.database.permissions_model');
@@ -91,7 +89,7 @@ class Role extends Model
      *
      * @return bool
      */
-    public function can(string $permission) : bool
+    public function can(string $permission): bool
     {
         return $this->permissions()->where('slug', $permission)->exists();
     }
@@ -103,7 +101,7 @@ class Role extends Model
      *
      * @return bool
      */
-    public function cannot(string $permission) : bool
+    public function cannot(string $permission): bool
     {
         return !$this->can($permission);
     }
@@ -121,4 +119,12 @@ class Role extends Model
 //          //  $model->permissions()->detach();
 //        });
     }
+
+
+    public function saved(Saved $event)
+    {
+        #更新角色后需要清理缓存
+        permission()->loadRoles(true);
+    }
+
 }

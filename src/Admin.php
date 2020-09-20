@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace HPlus\Admin;
 
 use HPlus\Admin\Exception\ValidateException;
+use HPlus\Admin\Model\Admin\Administrator;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use HPlus\Admin\Model\Admin\Menu;
+use Hyperf\Utils\Arr;
 
 class Admin
 {
 
-    protected $menu = [];
-    protected $menuList = [];
     public static $metaTitle;
 
     public static function setTitle($title)
@@ -30,34 +30,18 @@ class Admin
         return self::$metaTitle ? self::$metaTitle : config('admin.title');
     }
 
-    public function menu($isReload = false)
+    public function menu($user_id = 0)
     {
-        if (!empty($this->menu) && $isReload === false) {
-            return $this->menu;
-        }
         $menuClass = config('admin.database.menu_model');
         /** @var Menu $menuModel */
-        $menuModel = new $menuClass();
+        $menuModel = $menuClass::query();
         $menuModel->where('is_menu', 1);
-        $allNodes = $menuModel->allNodes();
-        return $this->menu = $menuModel->buildNestedArray($allNodes);
-    }
-
-    public function menuList()
-    {
-        if (!empty($this->menuList)) {
-            return $this->menuList;
-        }
-        $menuClass = config('admin.database.menu_model');
-        /** @var Menu $menuModel */
-        $menuModel = new $menuClass();
-        return $this->menuList = collect($menuModel->allNodes())->map(function ($item) {
-            return [
-                'uri' => $item['uri'],
-                'title' => $item['title'],
-                'route' => $item['route'],
-            ];
-        })->all();
+        $menuModel->with('roles:id,name,slug');
+        $user = ($user_id == 0) ? auth()->user() : Administrator::findFromCache($user_id);
+        $list = $menuModel->get()->filter(function ($item) use ($user) {
+            return 1;// $checkRoles || $checkPermission;
+        })->toArray();
+        return generate_tree($list, 'parent_id');
     }
 
     /**
@@ -82,7 +66,7 @@ class Admin
     {
         $validator = Validator::make($all, $rules, $message);
         if ($validator->fails()) {
-            throw new ValidateException(422, (string) $validator->errors()->first());
+            throw new ValidateException(422, (string)$validator->errors()->first());
         }
         return $validator;
     }

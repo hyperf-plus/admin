@@ -14,13 +14,11 @@ use HPlus\UI\Grid;
 use HPlus\UI\Layout\Content;
 use HPlus\UI\Tree;
 use Hyperf\HttpServer\Annotation\GetMapping;
-use HPlus\Admin\Admin;
-use HPlus\Admin\Model\Admin\Administrator;
-use HPlus\Admin\Model\Admin\Menu;
-use HPlus\Admin\Model\Admin\RoleMenu;
-
+use HPlus\Admin\Middleware\PermissionMiddleware;
+use Hyperf\HttpServer\Annotation\Middleware;
 /**
  * 角色管理
+ * @Middleware(PermissionMiddleware::class)
  * @AdminController(prefix="roles"))
  * Class Auth
  * @package App\Controller

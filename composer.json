@@ -20,6 +20,7 @@
     "mzh/hyperf-helper": "^0.1.7",
     "hyperf-plus/ui": "^1.0.0",
     "hyperf-plus/route": "^1.0.0",
+    "hyperf/model-cache": "^2.0.0",
     "96qbhy/hyperf-auth": "^2.2"
   },
   "require-dev": {
@@ -31,7 +32,10 @@
   "autoload": {
     "psr-4": {
       "HPlus\\Admin\\": "src/"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
