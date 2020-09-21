@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller;
 
 use HPlus\Admin\Exception\ValidateException;
+use HPlus\Admin\Facades\Admin;
 use HPlus\Admin\Model\Admin\Administrator;
-use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\ApiController;
 use HPlus\Route\Annotation\GetApi;
 use HPlus\Route\Annotation\PostApi;
@@ -21,22 +22,17 @@ use HPlus\UI\Entity\UserEntity;
 use HPlus\UI\Layout\Content;
 use HPlus\UI\Layout\Row;
 use HPlus\UI\UI;
-use HPlus\Admin\Facades\Admin;
 use Hyperf\Contract\ContainerInterface;
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Qbhy\HyperfAuth\AuthManager;
 
 /**
- * @ApiController(prefix="auth",tag="入口文件")
+ * @ApiController(prefix="auth", tag="入口文件")
  */
 class AuthController
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * @var RequestInterface
      */
@@ -47,11 +43,16 @@ class AuthController
      */
     protected $response;
 
-    public function __construct(ContainerInterface $container, RequestInterface $request, ResponseInterface $response)
+    /**
+     * @var AuthManager
+     */
+    protected $auth;
+
+    public function __construct(AuthManager $auth, ContainerInterface $container, RequestInterface $request, ResponseInterface $response)
     {
         $this->response = $response;
         $this->request = $request;
-        $this->container = $container;
+        $this->auth = $auth;
     }
 
     /**
@@ -62,58 +63,59 @@ class AuthController
     {
         $token = $this->request->cookie($this->getCookieName());
         $userInfo = new UserEntity();
+        $setting = new UISettingEntity();
         try {
-            $user = Auth()->user($token);
+            $user = $this->auth->user($token);
             $userInfo->setUsername($user->username);
             $userInfo->setName($user->name);
             $userInfo->setId($user->getId());
             $userInfo->setAvatar($user->avatar);
             $userInfo->setToken($token);
+            $setting->setMenu(new MenuEntity(Admin::menu($user->getId())));
         } catch (\Throwable $exception) {
         }
-        $setting = new UISettingEntity();
-        $setting->setMenu(new MenuEntity(Admin::menu()));
         $setting->setUser($userInfo);
         $setting->setApiRoot(config('admin.route.api_prefix'));
         $setting->setUrl([
             'logout' => route('/auth/logout'),
-            'setting' => route('/auth/setting')
+            'setting' => route('/auth/setting'),
         ]);
         $setting->setHomeUrl(config('admin.route.home'));
         return UI::view($setting);
     }
 
     /**
-     * @GetApi()
+     * @GetApi
      */
-    public function main(){
+    public function main()
+    {
         $content = new Content();
         $content->className('m-10')
             ->row(function (Row $row) {
                 $row->gutter(10);
-                $row->column(12, Alert::make("你好，同学！！", "欢迎使用 hyperf-plus-admin")->showIcon()->closable(false)->type("success"));
-                $row->column(12, Alert::make("你好，同学！！", "欢迎使用 hyperf-plus-admin")->showIcon()->closable(false)->type("error"));
+                $row->column(12, Alert::make('你好，同学！！', '欢迎使用 hyperf-plus-admin')->showIcon()->closable(false)->type('success'));
+                $row->column(12, Alert::make('你好，同学！！', '欢迎使用 hyperf-plus-admin')->showIcon()->closable(false)->type('error'));
             })->row(function (Row $row) {
                 $row->gutter(10);
                 $row->className('mt-10');
-                $row->column(12, Alert::make("你好，同学！！", "欢迎使用 hyperf-plus-admin")->showIcon()->closable(false)->type("info"));
-                $row->column(12, Alert::make("你好，同学！！", "欢迎使用 hyperf-plus-admin")->showIcon()->closable(false)->type("warning"));
+                $row->column(12, Alert::make('你好，同学！！', '欢迎使用 hyperf-plus-admin')->showIcon()->closable(false)->type('info'));
+                $row->column(12, Alert::make('你好，同学！！', '欢迎使用 hyperf-plus-admin')->showIcon()->closable(false)->type('warning'));
             })->row(function (Row $row) {
                 $row->gutter(10)->className('mt-10');
                 $row->column(12, Card::make()->bodyStyle(['padding' => '0'])->content(
                     Line::make()
                         ->data(function () {
                             $data = collect();
-                            for ($year = 2010; $year <= 2020; $year++) {
+                            for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string)$year,
+                                    'year' => (string) $year,
                                     'type' => '小红',
-                                    'value' => rand(100, 1000)
+                                    'value' => rand(100, 1000),
                                 ]);
                                 $data->push([
-                                    'year' => (string)$year,
+                                    'year' => (string) $year,
                                     'type' => '小白',
-                                    'value' => rand(100, 1000)
+                                    'value' => rand(100, 1000),
                                 ]);
                             }
                             return $data;
@@ -131,7 +133,7 @@ class AuthController
                                 'seriesField' => 'type',
                                 'smooth' => true,
                                 'xField' => 'year',
-                                'yField' => 'value'
+                                'yField' => 'value',
                             ];
                         })
                 ));
@@ -139,16 +141,16 @@ class AuthController
                     Area::make()
                         ->data(function () {
                             $data = collect();
-                            for ($year = 2010; $year <= 2020; $year++) {
+                            for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string)$year,
+                                    'year' => (string) $year,
                                     'type' => '小红面积',
-                                    'value' => rand(100, 1000)
+                                    'value' => rand(100, 1000),
                                 ]);
                                 $data->push([
-                                    'year' => (string)$year,
+                                    'year' => (string) $year,
                                     'type' => '小白面积',
-                                    'value' => rand(100, 1000)
+                                    'value' => rand(100, 1000),
                                 ]);
                             }
                             return $data;
@@ -166,7 +168,7 @@ class AuthController
                                 'seriesField' => 'type',
                                 'smooth' => false,
                                 'xField' => 'year',
-                                'yField' => 'value'
+                                'yField' => 'value',
                             ];
                         })
                 ));
@@ -176,11 +178,11 @@ class AuthController
                     StepLine::make()
                         ->data(function () {
                             $data = collect();
-                            for ($year = 2010; $year <= 2020; $year++) {
+                            for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string)$year,
+                                    'year' => (string) $year,
                                     'type' => '小红面积',
-                                    'value' => rand(100, 1000)
+                                    'value' => rand(100, 1000),
                                 ]);
                             }
                             return $data;
@@ -197,7 +199,7 @@ class AuthController
                                 ],
                                 'smooth' => false,
                                 'xField' => 'year',
-                                'yField' => 'value'
+                                'yField' => 'value',
                             ];
                         })
                 ));
@@ -205,11 +207,11 @@ class AuthController
                     Column::make()
                         ->data(function () {
                             $data = collect();
-                            for ($year = 2010; $year <= 2020; $year++) {
+                            for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string)$year,
+                                    'year' => (string) $year,
                                     'type' => '小红面积',
-                                    'value' => rand(100, 1000)
+                                    'value' => rand(100, 1000),
                                 ]);
                             }
                             return $data;
@@ -226,7 +228,7 @@ class AuthController
                                 ],
                                 'smooth' => false,
                                 'xField' => 'year',
-                                'yField' => 'value'
+                                'yField' => 'value',
                             ];
                         })
                 ));
@@ -235,23 +237,23 @@ class AuthController
     }
 
     /**
-     * @PostApi()
+     * @PostApi
      */
     public function login()
     {
         $data = $this->request->all();
         # 验证器暂无实现，等后期实现后在对此进行改造
-        if (!isset($data['username']) || $data['username'] == '') {
+        if (! isset($data['username']) || $data['username'] == '') {
             throw new ValidateException(400, '用户名不能为空');
         }
-        if (!isset($data['password']) || $data['password'] == '') {
+        if (! isset($data['password']) || $data['password'] == '') {
             throw new ValidateException(400, '密码不能为空');
         }
         $user = Administrator::query()->where('username', $data['username'])->first();
-        if (empty($user) || !password_verify($data['password'], $user->password)) {
+        if (empty($user) || ! password_verify($data['password'], $user->password)) {
             throw new ValidateException(400, '用户名或密码不正确');
         }
-        $token = Auth()->guard()->login($user);
+        $token = $this->auth->login($user);
         $data = [];
         $data['message'] = '登录成功';
         $data['status'] = 200;
@@ -260,11 +262,11 @@ class AuthController
     }
 
     /**
-     * @GetApi()
+     * @GetApi
      */
     public function logout()
     {
-        Auth()->guard()->logout();
+        $this->auth->logout();
         $redirect = route('/auth');
         return $this->response->withCookie(new Cookie($this->getCookieName(), ''))->redirect($redirect);
     }
