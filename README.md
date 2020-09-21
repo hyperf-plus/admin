@@ -53,8 +53,11 @@
 ```
 #### 默认没有安装权限插件，需要手动安装，此为了更好的扩展，可以自行配置项目已有的权限模块
 安装后需要手动将admin.php 配置文件中添加的默认中间件，这样通过注解AdminController注册的路由都会默认加上配置的此中间件
+
   /config/autoload/admin.php
+
   admin配置中route下的 middleware 节点
+
   HPlus\Permission\Middleware\PermissionMiddleware::class
 示例代码如下
 ```php
