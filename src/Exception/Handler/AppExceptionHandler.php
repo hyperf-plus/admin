@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Hyperf.
+ * This file is part of Hyperf.plus
  *
- * @link     https://www.hyperf.io
- * @document https://doc.hyperf.io
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Exception\Handler;
 
 use HPlus\Admin\Exception\BusinessException;
@@ -54,8 +53,8 @@ class AppExceptionHandler extends ExceptionHandler
                 break;
         }
         return $response->withBody(new SwooleStream(json_encode([
-            "code" => $throwable->getCode(),
-            "error" => $throwable->getMessage(),
+            'code' => $throwable->getCode(),
+            'error' => $throwable->getMessage(),
         ], 256)));
     }
 

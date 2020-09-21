@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Model\Model;
-use \Hyperf\Database\Model\Relations\BelongsToMany;
+use HPlus\Admin\Traits\ModelTree;
+use Hyperf\Database\Model\Relations\BelongsToMany;
 use Hyperf\HttpServer\Request;
 use Hyperf\Utils\Str;
-use HPlus\Admin\Traits\ModelTree;
-
 
 class Permission extends Model
 {
-
     //AdminBuilder,
     use ModelTree {
         ModelTree::boot as treeBoot;
@@ -26,15 +33,13 @@ class Permission extends Model
      * @var array
      */
     protected $casts = [
-        'created_at' => "Y-m-d H:i:s",
-        'updated_at' => "Y-m-d H:i:s",
-        'path' => "array",
+        'created_at' => 'Y-m-d H:i:s',
+        'updated_at' => 'Y-m-d H:i:s',
+        'path' => 'array',
     ];
 
     /**
      * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -45,8 +50,6 @@ class Permission extends Model
 
     /**
      * Permission belongs to many roles.
-     *
-     * @return BelongsToMany
      */
     public function roles(): BelongsToMany
     {
@@ -59,10 +62,6 @@ class Permission extends Model
 
     /**
      * If request should pass through the current permission.
-     *
-     * @param Request $request
-     *
-     * @return bool
      */
     public function shouldPassThrough(Request $request): bool
     {
@@ -72,11 +71,10 @@ class Permission extends Model
 
         $method = $this->http_method;
 
-
         $web_matches = array_map(function ($path) use ($method) {
             $path = trim(config('admin.route.prefix'), '/') . $path;
             if (Str::contains($path, ':')) {
-                list($method, $path) = explode(':', $path);
+                [$method, $path] = explode(':', $path);
                 $method = explode(',', $method);
             }
             return compact('method', 'path');
@@ -85,14 +83,13 @@ class Permission extends Model
         $api_matches = array_map(function ($path) use ($method) {
             $path = trim(config('admin.route.api_prefix'), '/') . $path;
             if (Str::contains($path, ':')) {
-                list($method, $path) = explode(':', $path);
+                [$method, $path] = explode(':', $path);
                 $method = explode(',', $method);
             }
             return compact('method', 'path');
         }, explode("\n", $this->http_path));
 
         $matches = array_merge($web_matches, $api_matches);
-
 
         foreach ($matches as $match) {
             if ($this->matchRequest($match, $request)) {
@@ -113,35 +110,6 @@ class Permission extends Model
     public function getHttpPathAttribute($path)
     {
         return str_replace("\r\n", "\n", $path);
-    }
-
-    /**
-     * If a request match the specific HTTP method and path.
-     *
-     * @param array $match
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function matchRequest(array $match, Request $request): bool
-    {
-
-
-        if ($match['path'] == '/') {
-            $path = '/';
-        } else {
-            $path = trim($match['path'], '/');
-        }
-
-        if (!$request->is($path)) {
-            return false;
-        }
-
-        $method = collect($match['method'])->filter()->map(function ($method) {
-            return strtoupper($method);
-        });
-
-        return $method->isEmpty() || $method->contains($request->method());
     }
 
     /**
@@ -169,9 +137,29 @@ class Permission extends Model
     }
 
     /**
+     * If a request match the specific HTTP method and path.
+     */
+    protected function matchRequest(array $match, Request $request): bool
+    {
+        if ($match['path'] == '/') {
+            $path = '/';
+        } else {
+            $path = trim($match['path'], '/');
+        }
+
+        if (! $request->is($path)) {
+            return false;
+        }
+
+        $method = collect($match['method'])->filter()->map(function ($method) {
+            return strtoupper($method);
+        });
+
+        return $method->isEmpty() || $method->contains($request->method());
+    }
+
+    /**
      * Detach models from the relationship.
-     *
-     * @return void
      */
     protected function boot(): void
     {

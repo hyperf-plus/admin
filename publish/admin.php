@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 use HPlus\Admin\Model\Admin\Administrator;
 use HPlus\Admin\Model\Admin\Menu;
 use HPlus\Admin\Model\Admin\Permission;
@@ -27,32 +36,32 @@ return [
     //登录框默认用户
     'auto_user' => [
         'username' => 'admin',
-        'password' => 'admin'
+        'password' => 'admin',
     ],
     //底部菜单
     'footerLinks' => [
         [
             'href' => 'https://github.com/hyperf-plus/admin',
-            'title' => 'hyperf版官网'
+            'title' => 'hyperf版官网',
         ], [
             'href' => 'https://github.com/SmallRuralDog/laravel-vue-admin',
-            'title' => 'laravel版官网'
+            'title' => 'laravel版官网',
         ],
         [
             'href' => 'https://www.yuque.com/hyperf-plus/ui/hplus-ui',
-            'title' => 'UI文档'
-        ]
+            'title' => 'UI文档',
+        ],
     ],
     //是否只保持一个子菜单的展开
     'unique_opened' => false,
     'bootstrap' => '', //app_path('Admin/bootstrap.php'),
     'route' => [
         'domain' => null,
-        'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),       # 默认后台注册路由，可自定义路径，防止后台地址被扫
+        'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),       # 默认后台注册路由，可自定义路径，防止后台地址被扫，修改此项后admin_menu中的链接也需要对应修改
         'api_prefix' => env('ADMIN_ROUTE_API_PREFIX', '/'),  # 默认API地址
         'home' => env('ADMIN_ROUTE_HOME_URL', '/auth/main'),              # 默认后台首页
         'namespace' => 'App\\Admin\\Controllers',
-        'middleware' => [\HPlus\Permission\Middleware\PermissionMiddleware::class],
+        'middleware' => [\HPlus\Permission\Middleware\PermissionMiddleware::class], #默认权限处理器
     ],
     'directory' => '', //app_path('Admin'),
     'https' => env('ADMIN_HTTPS', false),
@@ -60,8 +69,8 @@ return [
         // Add "remember me" to login form
         'remember' => true,
         // Redirect to the specified URI when user is not authorized.
-        'redirect_to' => 'auth/login',
-        'login_api' => 'auth/login',
+        'redirect_to' => '/auth/login',
+        'login_api' => '/auth/login',
         // The URIs that should be excluded from authorization.
         'excepts' => [
             'auth/login',
@@ -126,7 +135,7 @@ return [
             'admin/auth/logs*',
             'admin-api/auth/logs*',
             'admin',
-            'admin-api'
+            'admin-api',
         ],
     ],
     'check_route_permission' => true,
@@ -135,5 +144,5 @@ return [
     'show_version' => true,
     'show_environment' => true,
     'menu_bind_permission' => true,
-    'which-composer' => 'composer'
+    'which-composer' => 'composer',
 ];

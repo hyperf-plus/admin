@@ -1,19 +1,25 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Model\Admin;
 
-use Hyperf\Database\Model\Relations\BelongsTo;
 use HPlus\Admin\Model\Model;
+use Hyperf\Database\Model\Relations\BelongsTo;
 
 class OperationLog extends Model
 {
-    protected $fillable = ['user_id', 'path','runtime', 'method', 'ip', 'input'];
-
     public static $methodColors = [
-        'GET'    => 'green',
-        'POST'   => 'yellow',
-        'PUT'    => 'blue',
+        'GET' => 'green',
+        'POST' => 'yellow',
+        'PUT' => 'blue',
         'DELETE' => 'red',
     ];
 
@@ -22,15 +28,15 @@ class OperationLog extends Model
         'LINK', 'UNLINK', 'COPY', 'HEAD', 'PURGE',
     ];
 
+    protected $fillable = ['user_id', 'path', 'runtime', 'method', 'ip', 'input'];
+
     protected $casts = [
-        'created_at'=>"Y-m-d H:i:s",
-        'updated_at'=>"Y-m-d H:i:s",
+        'created_at' => 'Y-m-d H:i:s',
+        'updated_at' => 'Y-m-d H:i:s',
     ];
 
     /**
      * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -40,10 +46,8 @@ class OperationLog extends Model
 
     /**
      * Log belongs to users.
-     *
-     * @return BelongsTo
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(Administrator::class);
     }

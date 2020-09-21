@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Traits;
-
 
 use HPlus\Route\Annotation\GetApi;
 use HPlus\Route\Annotation\PostApi;
@@ -25,8 +33,8 @@ trait HasApiCreate
      */
     public function create()
     {
-        $content = new Content;
+        $content = new Content();
         //这里必须这样写
-        return $content->body($this->form())->className("m-10");
+        return $content->body($this->form())->className('m-10');
     }
 }

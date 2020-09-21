@@ -1,11 +1,16 @@
 <?php
 
 declare(strict_types=1);
-
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Middleware;
 
-use Hyperf\Di\Annotation\Inject;
-use Hyperf\Utils\Context;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -33,10 +38,9 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-
         foreach ($this->guards as $name) {
             $guard = $this->auth->guard($name);
-            if (!$guard->user() instanceof Authenticatable) {
+            if (! $guard->user() instanceof Authenticatable) {
                 throw new UnauthorizedException("Without authorization from {$guard->getName()} guard", $guard);
             }
         }

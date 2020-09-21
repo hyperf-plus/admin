@@ -1,12 +1,20 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Model\Admin;
 
-use Hyperf\Database\Model\Events\Saved;
-use Hyperf\Database\Model\Relations\BelongsToMany;
 use HPlus\Admin\Model\Model;
 use HPlus\Admin\Traits\HasPermissions;
+use Hyperf\Database\Model\Events\Saved;
+use Hyperf\Database\Model\Relations\BelongsToMany;
 use Qbhy\HyperfAuth\Authenticatable;
 
 /**
@@ -16,22 +24,22 @@ use Qbhy\HyperfAuth\Authenticatable;
  */
 class Administrator extends Model implements Authenticatable
 {
+    use HasPermissions;
+
     protected $fillable = ['username', 'password', 'name', 'avatar'];
+
     protected $hidden = ['password'];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
         'images' => 'array',
-        'created_at' => "Y-m-d H:i:s",
-        'updated_at' => "Y-m-d H:i:s",
+        'created_at' => 'Y-m-d H:i:s',
+        'updated_at' => 'Y-m-d H:i:s',
     ];
-
-    use HasPermissions;
 
     /**
      * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -61,8 +69,6 @@ class Administrator extends Model implements Authenticatable
 
     /**
      * A user has and belongs to many roles.
-     *
-     * @return BelongsToMany
      */
     public function roles(): BelongsToMany
     {
@@ -74,8 +80,6 @@ class Administrator extends Model implements Authenticatable
 
     /**
      * A User has and belongs to many permissions.
-     *
-     * @return BelongsToMany
      */
     public function permissions(): BelongsToMany
     {
@@ -102,4 +106,3 @@ class Administrator extends Model implements Authenticatable
         permission()->reloadUser($event->getModel()->id);
     }
 }
-

@@ -1,6 +1,14 @@
 <?php
 
-
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Traits;
 
 trait HasPermissions
@@ -20,8 +28,6 @@ trait HasPermissions
      *
      * @param $ability
      * @param array $arguments
-     *
-     * @return bool
      */
     public function can($ability, $arguments = []): bool
     {
@@ -44,12 +50,10 @@ trait HasPermissions
      * Check if user has no permission.
      *
      * @param $permission
-     *
-     * @return bool
      */
     public function cannot(string $permission): bool
     {
-        return !$this->can($permission);
+        return ! $this->can($permission);
     }
 
     /**
@@ -65,8 +69,6 @@ trait HasPermissions
     /**
      * Check if user is $role.
      *
-     * @param string $role
-     *
      * @return mixed
      */
     public function isRole(string $role): bool
@@ -77,13 +79,10 @@ trait HasPermissions
     /**
      * Check if user in $roles.
      *
-     * @param array $roles
-     *
      * @return mixed
      */
     public function inRoles(array $roles = []): bool
     {
-
         return $this->roles->pluck('slug')->intersect($roles)->isNotEmpty();
     }
 
@@ -91,12 +90,10 @@ trait HasPermissions
      * If visible for roles.
      *
      * @param $roles
-     *
-     * @return bool
      */
-    public function visible($roles = []): bool
+    public function visible($roles = [])
     {
-        $roles = (array)$roles;
+        $roles = (array) $roles;
         if ($this->isAdministrator()) {
             return true;
         }
@@ -106,5 +103,4 @@ trait HasPermissions
         $roles = array_column($roles, 'slug');
         return $this->inRoles($roles);
     }
-
 }

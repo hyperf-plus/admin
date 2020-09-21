@@ -1,17 +1,35 @@
 <?php
+
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 
 namespace HPlus\Admin;
 
 use HPlus\Admin\Exception\ValidateException;
 use HPlus\Admin\Model\Admin\Administrator;
+use HPlus\Admin\Model\Admin\Menu;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use HPlus\Admin\Model\Admin\Menu;
 use Hyperf\Utils\Arr;
+use Qbhy\HyperfAuth\Authenticatable;
+use Qbhy\HyperfAuth\AuthManager;
 
 class Admin
 {
+
+    protected $authManager;
+
+    public function __construct(AuthManager $authManager)
+    {
+        $this->authManager = $authManager;
+    }
 
     public static $metaTitle;
 
@@ -30,36 +48,49 @@ class Admin
         return self::$metaTitle ? self::$metaTitle : config('admin.title');
     }
 
-    public function menu($user_id = 0)
+    public function menu(Authenticatable $user)
     {
+        if (!$user instanceof Authenticatable) {
+            return [];
+        }
         $menuClass = config('admin.database.menu_model');
         /** @var Menu $menuModel */
         $menuModel = $menuClass::query();
         $menuModel->where('is_menu', 1);
         $menuModel->with('roles:id,name,slug');
-        $user = ($user_id == 0) ? auth()->user() : Administrator::findFromCache($user_id);
-        $list = $menuModel->get()->filter(function ($item) use ($user) {
-            return 1;// $checkRoles || $checkPermission;
+        /** @var Administrator $user */
+        $permissionIds = $user->allPermissions()->pluck('id')->toArray();
+        $userRolesIds = $user->roles()->pluck('id')->toArray();
+        $list = $menuModel->get()->filter(function ($item) use ($user, $permissionIds, $userRolesIds) {
+            $roles = $item->roles->pluck('id')->toArray();
+            foreach ($userRolesIds as $role) {
+                if (in_array($role, $roles)) {
+                    return 1;
+                }
+            }
+            $permissions = (array)$item->permission;
+            foreach ($permissions as $permissionId) {
+                if (in_array($permissionId, $permissionIds)) {
+                    return 1;
+                }
+            }
+            return 0;
         })->toArray();
         return generate_tree($list, 'parent_id');
     }
 
-    /**
-     */
-    public function user()
+    public function user($token = null)
     {
-        return $this->guard()->user();
+        return $this->guard()->user($token);
     }
 
     /**
      * Attempt to get the guard from the local cache.
-     *
      */
     public function guard()
     {
-        $guard = config('admin.auth.guard') ?: 'admin';
-
-        return Auth()->guard($guard);
+        $guard = config('auth.default.guard') ?: 'jwt';
+        return $this->authManager->guard($guard);
     }
 
     public function validatorData(array $all, $rules, $message = [])
@@ -105,7 +136,7 @@ class Admin
         return $this->response([
             'url' => $url,
             'isVueRoute' => $isVueRoute,
-            'type' => $type
+            'type' => $type,
         ], $message, 301);
     }
 }

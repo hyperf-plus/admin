@@ -1,8 +1,17 @@
 <?php
+
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Traits;
 
-use \Hyperf\Database\Model\Model;
+use Hyperf\Database\Model\Model;
 use Hyperf\DbConnection\Db;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Collection;
@@ -37,7 +46,7 @@ trait ModelTree
     /**
      * Get children of current node.
      *
-     * @return \\Hyperf\Database\Model\Relations\HasMany
+     * @return \Hyperf\Database\Model\Relations\HasMany
      */
     public function children()
     {
@@ -47,7 +56,7 @@ trait ModelTree
     /**
      * Get parent of current node.
      *
-     * @return \\Hyperf\Database\Model\Relations\BelongsTo
+     * @return \Hyperf\Database\Model\Relations\BelongsTo
      */
     public function parent()
     {
@@ -115,8 +124,6 @@ trait ModelTree
     /**
      * Set query callback to model.
      *
-     * @param \Closure|null $query
-     *
      * @return $this
      */
     public function withQuery(\Closure $query = null)
@@ -139,7 +146,6 @@ trait ModelTree
     /**
      * Build Nested array.
      *
-     * @param array $nodes
      * @param int $parentId
      *
      * @return array
@@ -186,22 +192,6 @@ trait ModelTree
     }
 
     /**
-     * Set the order of branches in the tree.
-     *
-     * @param array $order
-     *
-     * @return void
-     */
-    protected static function setBranchOrder(array $order)
-    {
-        static::$branchOrder = array_flip(Arr::flatten($order));
-
-        static::$branchOrder = array_map(function ($item) {
-            return ++$item;
-        }, static::$branchOrder);
-    }
-
-    /**
      * Save tree order from a tree like array.
      *
      * @param array $tree
@@ -229,7 +219,6 @@ trait ModelTree
     /**
      * Get options for Select field in form.
      *
-     * @param \Closure|null $closure
      * @param string $rootText
      *
      * @return Collection
@@ -243,9 +232,30 @@ trait ModelTree
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function delete()
+    {
+        $this->where($this->parentColumn, $this->getKey())->delete();
+
+        return parent::delete();
+    }
+
+    /**
+     * Set the order of branches in the tree.
+     */
+    protected static function setBranchOrder(array $order)
+    {
+        static::$branchOrder = array_flip(Arr::flatten($order));
+
+        static::$branchOrder = array_map(function ($item) {
+            return ++$item;
+        }, static::$branchOrder);
+    }
+
+    /**
      * Build options of select field in form.
      *
-     * @param array $nodes
      * @param int $parentId
      * @param string $prefix
      * @param string $space
@@ -279,16 +289,6 @@ trait ModelTree
         }
 
         return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete()
-    {
-        $this->where($this->parentColumn, $this->getKey())->delete();
-
-        return parent::delete();
     }
 
     /**

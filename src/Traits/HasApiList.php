@@ -1,6 +1,14 @@
 <?php
 
-
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Traits;
 
 use HPlus\Route\Annotation\GetApi;
@@ -18,7 +26,7 @@ trait HasApiList
     {
         $content = new Content();
         //可以重写这里，实现自定义布局
-        $content->body($this->grid())->className("p-10");
+        $content->body($this->grid())->className('p-10');
         //这里必须这样写
         return $this->isGetData() ? $this->grid()->jsonSerialize() : $content->jsonSerialize();
     }

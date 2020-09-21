@@ -1,6 +1,14 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Library\Auth;
@@ -12,14 +20,12 @@ use HPlus\UI\Components\Form\Upload;
 use HPlus\UI\Components\Grid\Avatar;
 use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Form;
-use HPlus\UI\Layout\Row;
 use HPlus\UI\Grid;
+use HPlus\UI\Layout\Row;
 use HPlus\UI\UI;
-use Hyperf\HttpServer\Annotation\Controller;
 
 /**
- * @AdminController(prefix="users",tag="管理员管理",ignore=true))
- * @package HPlus\Admin\Controllers
+ * @AdminController(prefix="users", tag="管理员管理", ignore=true))
  */
 class Users extends AbstractAdminController
 {
@@ -29,19 +35,19 @@ class Users extends AbstractAdminController
         $grid = new Grid(new $userModel());
         $grid
             ->quickSearch(['name', 'username'])
-            ->quickSearchPlaceholder("用户名 / 名称")
+            ->quickSearchPlaceholder('用户名 / 名称')
             ->pageBackground()
             ->defaultSort('id', 'asc')
             ->selection()
-            ->stripe(true)->emptyText("暂无用户")
+            ->stripe(true)->emptyText('暂无用户')
             ->perPage(10)
             ->autoHeight();
 
-        $grid->column('id', "ID")->width(80);
+        $grid->column('id', 'ID')->width(80);
         $grid->column('avatar', '头像')->width(80)->align('center')->component(Avatar::make());
-        $grid->column('username', "用户名");
+        $grid->column('username', '用户名');
         $grid->column('name', '用户昵称');
-        $grid->column('roles.name', "角色")->component(Tag::make()->effect('dark'));
+        $grid->column('roles.name', '角色')->component(Tag::make()->effect('dark'));
         $grid->column('created_at');
         $grid->column('updated_at');
         return $grid;
@@ -56,7 +62,7 @@ class Users extends AbstractAdminController
 
         $userTable = config('admin.database.users_table');
 
-        $form->item('avatar', '头像')->component(Upload::make()->avatar()->path('avatar')->uniqueName());
+        $form->item('avatar', '头像')->component(Upload::make()->action("您的文件上传地址")->avatar()->path('avatar')->uniqueName());
         $form->row(function (Row $row, Form $form) use ($userTable) {
             $row->column(8, $form->rowItem('username', '用户名')
                 ->serveCreationRules(['required', "unique:{$userTable}"])
@@ -91,7 +97,7 @@ class Users extends AbstractAdminController
         });
         $form->deleting(function (Form $form, $id) {
             if (Auth()->user()->getId() == $id || $id == 1) {
-                return UI::responseError("删除失败");
+                return UI::responseError('删除失败');
             }
         });
         return $form;

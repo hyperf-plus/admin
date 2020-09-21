@@ -1,24 +1,31 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Model\Model;
 use Hyperf\Database\Model\Events\Saved;
-use \Hyperf\Database\Model\Relations\BelongsToMany;
+use Hyperf\Database\Model\Relations\BelongsToMany;
 
 class Role extends Model
 {
     protected $fillable = ['name', 'slug'];
 
     protected $casts = [
-        'created_at' => "Y-m-d H:i:s",
-        'updated_at' => "Y-m-d H:i:s",
+        'created_at' => 'Y-m-d H:i:s',
+        'updated_at' => 'Y-m-d H:i:s',
     ];
 
     /**
      * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -28,8 +35,6 @@ class Role extends Model
 
     /**
      * A role belongs to many users.
-     *
-     * @return BelongsToMany
      */
     public function administrators(): BelongsToMany
     {
@@ -42,8 +47,6 @@ class Role extends Model
 
     /**
      * A role belongs to many permissions.
-     *
-     * @return BelongsToMany
      */
     public function menu(): BelongsToMany
     {
@@ -56,8 +59,6 @@ class Role extends Model
 
     /**
      * A role belongs to many menus.
-     *
-     * @return BelongsToMany
      */
     public function menus(): BelongsToMany
     {
@@ -70,8 +71,6 @@ class Role extends Model
 
     /**
      * A role belongs to many permissions.
-     *
-     * @return BelongsToMany
      */
     public function permissions(): BelongsToMany
     {
@@ -80,13 +79,10 @@ class Role extends Model
         return $this->belongsToMany($relatedModel, $pivotTable, 'role_id', 'permission_id');
     }
 
-
     /**
      * Check user has permission.
      *
      * @param $permission
-     *
-     * @return bool
      */
     public function can(string $permission): bool
     {
@@ -97,18 +93,20 @@ class Role extends Model
      * Check user has no permission.
      *
      * @param $permission
-     *
-     * @return bool
      */
     public function cannot(string $permission): bool
     {
-        return !$this->can($permission);
+        return ! $this->can($permission);
+    }
+
+    public function saved(Saved $event)
+    {
+        #更新角色后需要清理缓存
+        permission()->loadRoles(true);
     }
 
     /**
      * Detach models from the relationship.
-     *
-     * @return void
      */
     protected function boot(): void
     {
@@ -118,12 +116,4 @@ class Role extends Model
 //          //  $model->permissions()->detach();
 //        });
     }
-
-
-    public function saved(Saved $event)
-    {
-        #更新角色后需要清理缓存
-        permission()->loadRoles(true);
-    }
-
 }

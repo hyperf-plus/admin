@@ -1,14 +1,23 @@
 <?php
+
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 
 namespace HPlus\Admin\Facades;
-
 
 use HPlus\UI\Form;
 use HPlus\UI\Grid;
 use HPlus\UI\Layout\Content;
 use HPlus\UI\Tree;
 use Hyperf\HttpMessage\Server\Response;
+use Qbhy\HyperfAuth\Authenticatable;
 
 /**
  * Class Admin.
@@ -22,7 +31,8 @@ use Hyperf\HttpMessage\Server\Response;
  * @method static Response responseMessage($message = '', $code = 200)
  * @method static Response responseError($message = '', $code = 400)
  * @method static Response responseRedirect($url, $isVueRoute = true, $message = null, $type = 'success')
- * @method static array menu()
+ * @method static array menu($user)
+ * @method static Authenticatable user($token = null)
  * @method static void route()
  *
  * @see \HPlus\Admin\Admin

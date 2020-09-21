@@ -1,8 +1,15 @@
 <?php
+
 declare(strict_types=1);
-
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 namespace HPlus\Admin;
-
 
 use HPlus\Admin\Contracts\PermissionInterface;
 use HPlus\Admin\Library\Permission;
@@ -18,16 +25,16 @@ class ConfigProvider
             'annotations' => [
                 'scan' => [
                     'paths' => [
-                        __DIR__
+                        __DIR__,
                     ],
                 ],
             ],
             'dependencies' => [
-                PermissionInterface::class => Permission::class
+                PermissionInterface::class => Permission::class,
             ],
-//            'listeners' => [
-//                PermissionListener::class,
-//            ],
+            //            'listeners' => [
+            //                PermissionListener::class,
+            //            ],
             'publish' => [
                 [
                     'id' => 'admin',
