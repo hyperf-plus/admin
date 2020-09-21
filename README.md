@@ -26,7 +26,7 @@
 ```bash
     php bin/hyperf.php vendor:publish hyperf-plus/admin
 ```
-- 3、UI资源初始化
+- 3、UI资源初始化（建议有修改vue需求的用户，可以查看UI文档，以插件形式开发，尽量不要修改默认的样式，这样后期UI插件有新功能更新也能实现无痛更新）
 ```bash
     php bin/hyperf.php ui:init
 ```
@@ -68,7 +68,7 @@ return [
     #...省略
     ]
 ```
-    需要验证权限的地方添加中间件PermissionMiddleware中间件即可
+    需要验证权限的地方添加中间件PermissionMiddleware即可
     此插件支持注解路由插件 hyperf-plus-route插件的注解参数
     如：控制器注解：ApiController
     方法注解：GetApi PostApi PutApi DeleteApi （方法上配置级别优先于控制器配置）
