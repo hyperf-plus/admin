@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
  */
 
-namespace App\Controller;
+namespace App\Admin\Controller;
 
 use HPlus\Admin\Exception\ValidateException;
 use HPlus\Admin\Facades\Admin;
