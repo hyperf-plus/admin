@@ -52,13 +52,7 @@
   composer require hyperf-plus/permission
 ```
 #### 默认没有安装权限插件，需要手动安装，此为了更好的扩展，可以自行配置项目已有的权限模块
-安装后需要手动将admin.php 配置文件中添加的默认中间件，这样通过注解AdminController注册的路由都会默认加上配置的此中间件
-
-  /config/autoload/admin.php
-
-  admin配置中route下的 middleware 节点
-
-  HPlus\Permission\Middleware\PermissionMiddleware::class
+可在将admin.php 配置文件中权限验证中间件，这样通过注解AdminController注册的路由都会默认加上配置的此中间件
 示例代码如下
 ```php
 <?php
@@ -66,12 +60,12 @@ return [
     #...省略
     'route' => [
         #...省略
-        'middleware' => [\HPlus\Permission\Middleware\PermissionMiddleware::class],
+        'middleware' => [自己的权限验证中间件],
     ],
     #...省略
     ]
 ```
-    需要验证权限的地方添加中间件PermissionMiddleware即可
+    需要验证权限的地方用AdminController注解路由来定义，或者添加中间件PermissionMiddleware即可
     此插件支持注解路由插件 hyperf-plus-route插件的注解参数
     如：控制器注解：ApiController
     方法注解：GetApi PostApi PutApi DeleteApi （方法上配置级别优先于控制器配置）
