@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Library\Auth;
@@ -15,11 +16,8 @@ use HPlus\UI\Layout\Row;
 use HPlus\UI\Grid;
 use HPlus\UI\UI;
 use Hyperf\HttpServer\Annotation\Controller;
-use HPlus\Admin\Middleware\PermissionMiddleware;
-use Hyperf\HttpServer\Annotation\Middleware;
 
 /**
- * @Middleware(PermissionMiddleware::class)
  * @AdminController(prefix="users",tag="管理员管理",ignore=true))
  * @package HPlus\Admin\Controllers
  */
@@ -88,13 +86,13 @@ class Users extends AbstractAdminController
 
         $form->saving(function (Form $form) {
             if ($form->password) {
-                $form->password = password_hash($form->password,PASSWORD_DEFAULT);
+                $form->password = password_hash($form->password, PASSWORD_DEFAULT);
             }
         });
         $form->deleting(function (Form $form, $id) {
             if (Auth()->user()->getId() == $id || $id == 1) {
-               return UI::responseError("删除失败");
-           }
+                return UI::responseError("删除失败");
+            }
         });
         return $form;
     }

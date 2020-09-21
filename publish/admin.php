@@ -52,7 +52,7 @@ return [
         'api_prefix' => env('ADMIN_ROUTE_API_PREFIX', '/'),  # 默认API地址
         'home' => env('ADMIN_ROUTE_HOME_URL', '/auth/main'),              # 默认后台首页
         'namespace' => 'App\\Admin\\Controllers',
-        'middleware' => ['web', 'admin'],
+        'middleware' => [\HPlus\Permission\Middleware\PermissionMiddleware::class],
     ],
     'directory' => '', //app_path('Admin'),
     'https' => env('ADMIN_HTTPS', false),

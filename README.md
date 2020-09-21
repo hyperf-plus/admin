@@ -50,6 +50,35 @@
 ```bash
 	php bin/hyperf.php start
 ```
+- 7、添加权限控制插件
+```bash
+  composer require hyperf-plus/permission
+```
+#### 默认没有安装权限插件，需要手动安装才有权限控制
+安装后需要手动将admin.php 配置文件中添加的默认中间件
+  /config/autoload/admin.php
+  admin配置中route下的 middleware 节点
+  HPlus\Permission\Middleware\PermissionMiddleware::class
+示例代码如下
+```php
+<?php
+return [
+    #...省略
+    'route' => [
+        #...省略
+        'middleware' => [\HPlus\Permission\Middleware\PermissionMiddleware::class],
+    ],
+    #...省略
+    ]
+```
+    需要验证权限的地方添加中间件PermissionMiddleware中间件即可
+    此插件支持注解路由插件 hyperf-plus-route插件的注解参数
+    如：控制器注解：ApiController
+    方法注解：GetApi PostApi PutApi DeleteApi （方法上配置级别优先于控制器配置）
+    1、userOpen 对用户开放url中的验证，
+    2、security 为true必须验证权限 false公共开放资源
+    路由注解只在启动第一次时扫描并缓存，后续请求不会再做解析，提高性能
+
 
 ### 访问 http://127.0.0.1:9501/auth
 - 账户 admin

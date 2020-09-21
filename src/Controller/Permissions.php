@@ -12,11 +12,8 @@ use HPlus\UI\Grid;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\Utils\Str;
 use HPlus\Admin\Service\AuthService;
-use HPlus\Admin\Middleware\PermissionMiddleware;
-use Hyperf\HttpServer\Annotation\Middleware;
 
 /**
- * @Middleware(PermissionMiddleware::class)
  * @AdminController(prefix="permissions",tag="权限管理"))
  * @package App\Controller
  */

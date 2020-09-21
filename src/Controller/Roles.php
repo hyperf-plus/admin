@@ -14,13 +14,9 @@ use HPlus\UI\Grid;
 use HPlus\UI\Layout\Content;
 use HPlus\UI\Tree;
 use Hyperf\HttpServer\Annotation\GetMapping;
-use HPlus\Admin\Middleware\PermissionMiddleware;
-use Hyperf\HttpServer\Annotation\Middleware;
 /**
  * 角色管理
- * @Middleware(PermissionMiddleware::class)
  * @AdminController(prefix="roles"))
- * Class Auth
  * @package App\Controller
  */
 class Roles extends AbstractAdminController

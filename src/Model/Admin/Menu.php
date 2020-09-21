@@ -98,7 +98,7 @@ class Menu extends Model
         return collect($all_list)->filter(function ($item) {
             $checkRoles = auth()->user()->visible(Arr::get($item, 'roles', []));
             $checkPermission = collect(Arr::get($item, 'permission', []))->filter(function ($permissionSlug) {
-                    return permission()->hasRole($permissionSlug);
+                    '';//return permission()->hasRole($permissionSlug);
                 })->count() > 0;
             return $checkRoles || $checkPermission;
         })->merge([])->toArray();

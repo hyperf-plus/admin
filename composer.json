@@ -32,10 +32,7 @@
   "autoload": {
     "psr-4": {
       "HPlus\\Admin\\": "src/"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {
