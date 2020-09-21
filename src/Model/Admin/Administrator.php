@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Model\Model;
@@ -103,6 +104,8 @@ class Administrator extends Model implements Authenticatable
     public function saved(Saved $event)
     {
         #更新角色后需要清理缓存
-        permission()->reloadUser($event->getModel()->id);
+        if (function_exists('permission')) {
+            permission()->reloadUser($event->getModel()->id);
+        }
     }
 }

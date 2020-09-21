@@ -102,7 +102,9 @@ class Role extends Model
     public function saved(Saved $event)
     {
         #更新角色后需要清理缓存
-        permission()->loadRoles(true);
+        if (function_exists('permission')) {
+            permission()->loadRoles(true);
+        }
     }
 
     /**
