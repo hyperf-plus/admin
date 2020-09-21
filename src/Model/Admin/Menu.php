@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @link     https://www.hyperf.plus
  * @document https://doc.hyperf.plus
  * @contact  4213509@qq.com
- * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
 namespace HPlus\Admin\Model\Admin;
 
@@ -73,7 +73,6 @@ class Menu extends Model
         return $this->belongsToMany($relatedModel, $pivotTable, 'menu_id', 'role_id');
     }
 
-
     public function allNodes(): array
     {
         $orderColumn = DB::connection()->getQueryGrammar()->wrap($this->orderColumn);
@@ -106,7 +105,7 @@ class Menu extends Model
                     return 1;
                 }
             }
-            $permissions = (array)$item['permission'];
+            $permissions = (array) $item['permission'];
             foreach ($permissions as $permissionId) {
                 if (in_array($permissionId, $permissionIds)) {
                     return 1;

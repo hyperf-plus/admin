@@ -7,9 +7,8 @@ declare(strict_types=1);
  * @link     https://www.hyperf.plus
  * @document https://doc.hyperf.plus
  * @contact  4213509@qq.com
- * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Service;
 
 use Hyperf\HttpServer\Router\DispatcherFactory;
@@ -52,7 +51,7 @@ class AuthService
                     //p($route);
                     // 过滤掉脚手架页面配置方法
                     $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
-                    if (!is_array($callback)) {
+                    if (! is_array($callback)) {
                         if (is_callable($callback)) {
                             continue;
                         }
@@ -77,7 +76,7 @@ class AuthService
                         $id = uniqid();
                     } else {
                         $ids[] = $pid;
-                        if (!$isUrl) {
+                        if (! $isUrl) {
                             $arr = explode('/', $route);
                             array_pop($arr);
                             $arr[] = '*';

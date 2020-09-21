@@ -7,9 +7,8 @@ declare(strict_types=1);
  * @link     https://www.hyperf.plus
  * @document https://doc.hyperf.plus
  * @contact  4213509@qq.com
- * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin;
 
 use HPlus\Admin\Exception\ValidateException;
@@ -17,12 +16,12 @@ use HPlus\Admin\Model\Admin\Administrator;
 use HPlus\Admin\Model\Admin\Menu;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use Hyperf\Utils\Arr;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\AuthManager;
 
 class Admin
 {
+    public static $metaTitle;
 
     protected $authManager;
 
@@ -30,8 +29,6 @@ class Admin
     {
         $this->authManager = $authManager;
     }
-
-    public static $metaTitle;
 
     public static function setTitle($title)
     {
@@ -50,7 +47,7 @@ class Admin
 
     public function menu(Authenticatable $user)
     {
-        if (!$user instanceof Authenticatable) {
+        if (! $user instanceof Authenticatable) {
             return [];
         }
         $menuClass = config('admin.database.menu_model');
@@ -68,7 +65,7 @@ class Admin
                     return 1;
                 }
             }
-            $permissions = (array)$item->permission;
+            $permissions = (array) $item->permission;
             foreach ($permissions as $permissionId) {
                 if (in_array($permissionId, $permissionIds)) {
                     return 1;
@@ -97,7 +94,7 @@ class Admin
     {
         $validator = Validator::make($all, $rules, $message);
         if ($validator->fails()) {
-            throw new ValidateException(422, (string)$validator->errors()->first());
+            throw new ValidateException(422, (string) $validator->errors()->first());
         }
         return $validator;
     }

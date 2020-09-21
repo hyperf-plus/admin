@@ -7,11 +7,10 @@ declare(strict_types=1);
  * @link     https://www.hyperf.plus
  * @document https://doc.hyperf.plus
  * @contact  4213509@qq.com
- * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
 namespace HPlus\Admin\Controller;
 
-use HPlus\Admin\Facades\Admin;
 use HPlus\Admin\Service\AuthService;
 use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\GetApi;
@@ -111,7 +110,6 @@ class Menu extends AbstractAdminController
         });
         //编辑后置钩子
         $form->saved(function (Form $form) {
-
         });
         if ((new $model())->withPermission()) {
             $form->item('permission', '权限')->component(Select::make()->clearable()->block()->multiple()->options(function () use ($permissionModel) {

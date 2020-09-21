@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @link     https://www.hyperf.plus
  * @document https://doc.hyperf.plus
  * @contact  4213509@qq.com
- * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
 namespace HPlus\Admin\Controller;
 
@@ -63,7 +63,7 @@ class Users extends AbstractAdminController
         $form->className('m-10');
         $userTable = config('admin.database.users_table');
 
-        $form->item('avatar', '头像')->component(Upload::make()->action("您的文件上传地址")->avatar()->path('avatar')->uniqueName());
+        $form->item('avatar', '头像')->component(Upload::make()->action('您的文件上传地址')->avatar()->path('avatar')->uniqueName());
         $form->row(function (Row $row, Form $form) use ($userTable) {
             $row->column(8, $form->rowItem('username', '用户名')
                 ->serveCreationRules(['required', "unique:{$userTable}"])
