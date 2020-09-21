@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * This file is part of Hyperf.plus
  *
@@ -9,6 +10,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
  */
+
 use HPlus\Admin\Model\Admin\Administrator;
 use HPlus\Admin\Model\Admin\Menu;
 use HPlus\Admin\Model\Admin\Permission;
@@ -16,7 +18,7 @@ use HPlus\Admin\Model\Admin\Role;
 
 return [
     //后台名称 null不显示
-    'name' => null,
+    'name' => 'HPlus',
     //后台标题
     'title' => 'HPlus Admin',
     //登录界面描述
