@@ -1,6 +1,14 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.plus
+ *
+ * @link     https://www.hyperf.plus
+ * @document https://doc.hyperf.plus
+ * @contact  4213509@qq.com
+ * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+ */
 
 namespace App\Controller;
 
@@ -26,6 +34,7 @@ use Hyperf\Contract\ContainerInterface;
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\Arr;
 use Qbhy\HyperfAuth\AuthManager;
 
 /**
@@ -65,13 +74,14 @@ class AuthController
         $userInfo = new UserEntity();
         $setting = new UISettingEntity();
         try {
-            $user = $this->auth->user($token);
+            $user = Admin::user($token);
             $userInfo->setUsername($user->username);
             $userInfo->setName($user->name);
             $userInfo->setId($user->getId());
             $userInfo->setAvatar($user->avatar);
             $userInfo->setToken($token);
-            $setting->setMenu(new MenuEntity(Admin::menu($user->getId())));
+            $menuTree = Admin::menu($user);
+            $setting->setMenu(new MenuEntity($menuTree));
         } catch (\Throwable $exception) {
         }
         $setting->setUser($userInfo);
@@ -80,9 +90,12 @@ class AuthController
             'logout' => route('/auth/logout'),
             'setting' => route('/auth/setting'),
         ]);
+        $setting->setTitle(config('admin.title'));
+        $setting->setName(config('admin.name'));
         $setting->setHomeUrl(config('admin.route.home'));
         return UI::view($setting);
     }
+
     /**
      * @GetApi
      */
@@ -107,12 +120,12 @@ class AuthController
                             $data = collect();
                             for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string) $year,
+                                    'year' => (string)$year,
                                     'type' => '小红',
                                     'value' => rand(100, 1000),
                                 ]);
                                 $data->push([
-                                    'year' => (string) $year,
+                                    'year' => (string)$year,
                                     'type' => '小白',
                                     'value' => rand(100, 1000),
                                 ]);
@@ -142,12 +155,12 @@ class AuthController
                             $data = collect();
                             for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string) $year,
+                                    'year' => (string)$year,
                                     'type' => '小红面积',
                                     'value' => rand(100, 1000),
                                 ]);
                                 $data->push([
-                                    'year' => (string) $year,
+                                    'year' => (string)$year,
                                     'type' => '小白面积',
                                     'value' => rand(100, 1000),
                                 ]);
@@ -179,7 +192,7 @@ class AuthController
                             $data = collect();
                             for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string) $year,
+                                    'year' => (string)$year,
                                     'type' => '小红面积',
                                     'value' => rand(100, 1000),
                                 ]);
@@ -208,7 +221,7 @@ class AuthController
                             $data = collect();
                             for ($year = 2010; $year <= 2020; ++$year) {
                                 $data->push([
-                                    'year' => (string) $year,
+                                    'year' => (string)$year,
                                     'type' => '小红面积',
                                     'value' => rand(100, 1000),
                                 ]);
@@ -242,14 +255,14 @@ class AuthController
     {
         $data = $this->request->all();
         # 验证器暂无实现，等后期实现后在对此进行改造
-        if (! isset($data['username']) || $data['username'] == '') {
+        if (!isset($data['username']) || $data['username'] == '') {
             throw new ValidateException(400, '用户名不能为空');
         }
-        if (! isset($data['password']) || $data['password'] == '') {
+        if (!isset($data['password']) || $data['password'] == '') {
             throw new ValidateException(400, '密码不能为空');
         }
         $user = Administrator::query()->where('username', $data['username'])->first();
-        if (empty($user) || ! password_verify($data['password'], $user->password)) {
+        if (empty($user) || !password_verify($data['password'], $user->password)) {
             throw new ValidateException(400, '用户名或密码不正确');
         }
         $token = $this->auth->login($user);
