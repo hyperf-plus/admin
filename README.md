@@ -46,11 +46,7 @@
             ],
         ];
 ```
-- 6、启动服务
-```bash
-	php bin/hyperf.php start
-```
-- 7、添加权限控制插件
+- 6、添加权限控制插件（如果不启用默认权限控制，可以忽略此步骤）
 ```bash
   composer require hyperf-plus/permission
 ```
@@ -79,7 +75,10 @@ return [
     2、security 为true必须验证权限 false公共开放资源
     路由注解只在启动第一次时扫描并缓存，后续请求不会再做解析，提高性能
 
-
+- 7、启动服务
+```bash
+	php bin/hyperf.php start
+```
 ### 访问 http://127.0.0.1:9501/auth
 - 账户 admin
 - 密码 admin
