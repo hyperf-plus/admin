@@ -83,7 +83,6 @@ class AuthController
         $setting->setHomeUrl(config('admin.route.home'));
         return UI::view($setting);
     }
-
     /**
      * @GetApi
      */
