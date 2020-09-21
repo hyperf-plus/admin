@@ -34,7 +34,7 @@
 ```bash
     php bin/hyperf.php admin:install
 ```
-- 5、配置异常处理器
+- 5、配置异常处理器,可以自行拦截处理，也可以按照以下方式添加异常处理器
 ####  在文件 config/autoload/exceptions.php 中添加 \HPlus\Admin\Exception\Handler\AppExceptionHandler::class 异常处理器
 ```php
     <?php
