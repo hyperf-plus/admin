@@ -41,6 +41,7 @@ class Users extends AbstractAdminController
             ->selection()
             ->stripe(true)->emptyText('暂无用户')
             ->perPage(10)
+            ->dialogForm($this->form()->isDialog()->backButtonName('关闭'))
             ->autoHeight();
 
         $grid->column('id', 'ID')->width(80);
@@ -59,7 +60,7 @@ class Users extends AbstractAdminController
         $permissionModel = config('admin.database.permissions_model');
         $roleModel = config('admin.database.roles_model');
         $form = new Form(new $userModel());
-
+        $form->className('m-10');
         $userTable = config('admin.database.users_table');
 
         $form->item('avatar', '头像')->component(Upload::make()->action("您的文件上传地址")->avatar()->path('avatar')->uniqueName());

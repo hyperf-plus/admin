@@ -81,6 +81,7 @@ class Menu extends AbstractAdminController
         $roleModel = config('admin.database.roles_model');
         $form = new Form(new $model());
         $form->size('medium');
+        $form->className('m-10');
         $form->item('parent_id', '上级目录')->component(Select::make(0)->options(function () use ($model) {
             /* @var \HPlus\Admin\Model\Admin\Menu $model */
             return $model::selectOptions(function ($model) {
@@ -91,7 +92,7 @@ class Menu extends AbstractAdminController
         }));
         $form->item('title', '名称')->required();
         $form->item('icon', '图标')->component(IconChoose::make())->ignoreEmpty();
-        $form->item('uri', 'URI')
+        $form->item('uri', 'URI')->required()
             ->help('可以输入搜索')
             ->component(Select::make()->filterable()
             ->remote(route('menu/route')))->inputWidth(450);

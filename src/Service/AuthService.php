@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Service;
 
 use Hyperf\HttpServer\Router\DispatcherFactory;
@@ -27,6 +28,16 @@ class AuthService
             'value' => '*',
         ];
         $ids = [];
+        if ($isUrl) {
+            unset($options['*']);
+            $route_key = '#/';
+            $options[$route_key] = [
+                'label' => $route_key,
+                'value' => $route_key,
+                'pid' => 0,
+                'id' => 0,
+            ];
+        }
         foreach ($data as $routes_data) {
             foreach ($routes_data as $http_method => $routes) {
                 $route_list = [];
@@ -41,7 +52,7 @@ class AuthService
                     //p($route);
                     // 过滤掉脚手架页面配置方法
                     $callback = is_array($v) ? ($v[0]->callback) : $v->callback;
-                    if (! is_array($callback)) {
+                    if (!is_array($callback)) {
                         if (is_callable($callback)) {
                             continue;
                         }
@@ -66,7 +77,7 @@ class AuthService
                         $id = uniqid();
                     } else {
                         $ids[] = $pid;
-                        if (! $isUrl) {
+                        if (!$isUrl) {
                             $arr = explode('/', $route);
                             array_pop($arr);
                             $arr[] = '*';
