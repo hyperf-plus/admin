@@ -1,6 +1,7 @@
 ## HPlus Admin，全新admin插件 快速开发框架，
 ### Admin插件使用体验和laravel-admin用法差不多
 ### auth组件采用<a href="https://github.com/qbhy/hyperf-auth">hyperf-auth</a>，目前支持 jwt、session 驱动。用户可以自行扩展。使用体验大体和 laravel 的 auth 差不多
+### 灵活可替换的权限验证组件，HPlus提供权限验证，也可以替换自己的权限验证插件
 
 #### 欢迎加入HPlus交流群，群聊号码：512465490
 点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
@@ -50,7 +51,7 @@
 ```bash
   composer require hyperf-plus/permission
 ```
-#### 默认没有安装权限插件，需要手动安装，此为了是更好的扩展，可以自行配置自己已有的权限模块
+#### 默认没有安装权限插件，需要手动安装，此为了更好的扩展，可以自行配置项目已有的权限模块
 安装后需要手动将admin.php 配置文件中添加的默认中间件，这样通过注解AdminController注册的路由都会默认加上配置的此中间件
   /config/autoload/admin.php
   admin配置中route下的 middleware 节点
