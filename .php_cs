@@ -5,7 +5,7 @@ This file is part of Hyperf.plus
 @link     https://www.hyperf.plus
 @document https://doc.hyperf.plus
 @contact  4213509@qq.com
-@license  https://github.com/hyperf/hyperf-plus/blob/master/LICENSE
+@license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
 EOF;
 
 return PhpCsFixer\Config::create()

@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
+
 namespace HPlus\Admin;
 
 use HPlus\Admin\Exception\ValidateException;
@@ -47,7 +48,7 @@ class Admin
 
     public function menu(Authenticatable $user)
     {
-        if (! $user instanceof Authenticatable) {
+        if (!$user instanceof Authenticatable) {
             return [];
         }
         $menuClass = config('admin.database.menu_model');
@@ -56,16 +57,21 @@ class Admin
         $menuModel->where('is_menu', 1);
         $menuModel->with('roles:id,name,slug');
         /** @var Administrator $user */
+
         $permissionIds = $user->allPermissions()->pluck('id')->toArray();
         $userRolesIds = $user->roles()->pluck('id')->toArray();
-        $list = $menuModel->get()->filter(function ($item) use ($user, $permissionIds, $userRolesIds) {
+        $isAdministrator = $user->isAdministrator();
+        $list = $menuModel->get()->filter(function ($item) use ($user, $permissionIds, $userRolesIds, $isAdministrator) {
+            if ($isAdministrator) {
+                return 1;
+            }
             $roles = $item->roles->pluck('id')->toArray();
             foreach ($userRolesIds as $role) {
                 if (in_array($role, $roles)) {
                     return 1;
                 }
             }
-            $permissions = (array) $item->permission;
+            $permissions = (array)$item->permission;
             foreach ($permissions as $permissionId) {
                 if (in_array($permissionId, $permissionIds)) {
                     return 1;
@@ -94,7 +100,7 @@ class Admin
     {
         $validator = Validator::make($all, $rules, $message);
         if ($validator->fails()) {
-            throw new ValidateException(422, (string) $validator->errors()->first());
+            throw new ValidateException(422, (string)$validator->errors()->first());
         }
         return $validator;
     }
