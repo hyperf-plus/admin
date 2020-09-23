@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Service\AuthService;
@@ -19,6 +20,7 @@ use HPlus\UI\Components\Form\CSwitch;
 use HPlus\UI\Components\Form\IconChoose;
 use HPlus\UI\Components\Form\InputNumber;
 use HPlus\UI\Components\Form\Select;
+use HPlus\UI\Components\Grid\Boole;
 use HPlus\UI\Components\Grid\Icon;
 use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Form;
@@ -80,7 +82,7 @@ class Menu extends AbstractAdminController
         $roleModel = config('admin.database.roles_model');
         $form = new Form(new $model());
         $form->size('medium');
-        $form->className('m-10');
+        $form->className('m-15');
         $form->item('parent_id', '上级目录')->component(Select::make(0)->options(function () use ($model) {
             /* @var \HPlus\Admin\Model\Admin\Menu $model */
             return $model::selectOptions(function ($model) {
@@ -94,7 +96,7 @@ class Menu extends AbstractAdminController
         $form->item('uri', 'URI')->required()
             ->help('可以输入搜索')
             ->component(Select::make()->filterable()
-            ->remote(route('menu/route')))->inputWidth(450);
+                ->remote(route('menu/route')))->inputWidth(450);
         $form->item('order', '排序')->component(InputNumber::make(1)->min(0));
         $form->item('is_menu', '设为菜单')->component(CSwitch::make(0));
         $form->item('roles', '角色')->component(Select::make()->block()->multiple()->options(function () use ($roleModel) {

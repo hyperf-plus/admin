@@ -60,10 +60,9 @@ class Users extends AbstractAdminController
         $permissionModel = config('admin.database.permissions_model');
         $roleModel = config('admin.database.roles_model');
         $form = new Form(new $userModel());
-        $form->className('m-10');
+        $form->className('m-15');
         $userTable = config('admin.database.users_table');
-
-        $form->item('avatar', '头像')->component(Upload::make()->action('您的文件上传地址')->avatar()->path('avatar')->uniqueName());
+        $form->item('avatar', '头像')->component(Upload::make()->avatar()->path('avatar')->uniqueName());
         $form->row(function (Row $row, Form $form) use ($userTable) {
             $row->column(8, $form->rowItem('username', '用户名')
                 ->serveCreationRules(['required', "unique:{$userTable}"])
@@ -71,13 +70,11 @@ class Users extends AbstractAdminController
                 ->component(Input::make())->required());
             $row->column(8, $form->rowItem('name', '名称')->component(Input::make()->showWordLimit()->maxlength(20))->required());
         });
-
         $form->row(function (Row $row, Form $form) {
             $row->column(8, $form->rowItem('password', '密码')->serveCreationRules(['required', 'string', 'confirmed'])->serveUpdateRules(['confirmed'])->ignoreEmpty()
                 ->component(function () {
                     return Input::make()->password()->showPassword();
                 }));
-
             $row->column(8, $form->rowItem('password_confirmation', '确认密码')
                 ->copyValue('password')->ignoreEmpty()
                 ->component(function () {

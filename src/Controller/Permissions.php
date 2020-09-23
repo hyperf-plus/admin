@@ -68,6 +68,7 @@ class Permissions extends AbstractAdminController
         $grid->column('name', '名称');
         $grid->column('slug', '标识');
         $grid->column('path', '授权节点')->component(Tag::make());
+        $grid->hidePage();
         $grid->dialogForm($this->form()->isDialog()->className('p-15')->labelWidth('auto'), '600px', ['添加权限', '编辑权限']);
         return $grid;
     }
@@ -75,8 +76,8 @@ class Permissions extends AbstractAdminController
     protected function form($isEdit = false)
     {
         $permissionModel = config('admin.database.permissions_model');
-
         $form = new Form(new $permissionModel());
+        $form->className('m-15');
         $form->item('parent_id', '上级目录')->component(Select::make(0)->options(function () use ($permissionModel) {
             return $permissionModel::selectOptions(function ($permission) {
                 return $permission::query()->where('parent_id', 0)->orderBy('order');
