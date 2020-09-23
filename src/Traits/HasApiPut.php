@@ -13,6 +13,7 @@ namespace HPlus\Admin\Traits;
 
 use HPlus\Route\Annotation\GetApi;
 use HPlus\Route\Annotation\PutApi;
+use HPlus\UI\Form;
 use HPlus\UI\Layout\Content;
 
 trait HasApiPut
