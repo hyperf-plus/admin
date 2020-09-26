@@ -21,7 +21,8 @@ trait HasApiPut
     use HasApiBase;
 
     /**
-     * @GetApi(path="{id:\d+}", summary="修改")
+     * @GetApi(path="{id:\d+}", summary="获取数据")
+     * @HPlus\Route\Annotation\Path(key="id",name="id",required=true);
      * @param $id
      * @return array|mixed
      */
@@ -42,6 +43,7 @@ trait HasApiPut
     /**
      * 修改数据.
      * @PutApi(path="{id:\d+}", summary="修改数据")
+     * @HPlus\Route\Annotation\Path(key="id",name="id",required=true);
      * @param $id
      * @return array|mixed
      */

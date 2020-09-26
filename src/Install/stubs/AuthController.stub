@@ -270,7 +270,7 @@ class AuthController
         $data['message'] = '登录成功';
         $data['status'] = 200;
         $data['redirect'] = route('/auth');
-        return $this->response->withCookie(new Cookie($this->getCookieName(), $token))->json($data);
+        return $this->response->withCookie($this->getCookie($token))->json($data);
     }
 
     /**
@@ -280,7 +280,13 @@ class AuthController
     {
         $this->auth->logout();
         $redirect = route('/auth');
-        return $this->response->withCookie(new Cookie($this->getCookieName(), ''))->redirect($redirect);
+        return $this->response->withCookie($this->getCookie(''))->redirect($redirect);
+    }
+
+    private function getCookie($token)
+    {
+        $secure = $this->request->getUri()->getScheme() == 'https';
+        return new Cookie($this->getCookieName(), $token, 0, '/', $this->request->getUri()->getHost(), $secure, $secure);
     }
 
     protected function getCookieName()

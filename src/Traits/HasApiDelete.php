@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace HPlus\Admin\Traits;
 
 use HPlus\Route\Annotation\DeleteApi;
+use HPlus\Route\Annotation\Path;
 
 trait HasApiDelete
 {
@@ -19,6 +20,7 @@ trait HasApiDelete
 
     /**
      * @DeleteApi(path="{id:\d+}", summary="删除接口")
+     * @Path(key="id",name="id",required=true);
      * @param $id
      * @return array|mixed
      */
