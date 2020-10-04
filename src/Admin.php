@@ -14,7 +14,7 @@ namespace HPlus\Admin;
 
 use HPlus\Admin\Exception\ValidateException;
 use HPlus\Admin\Model\Admin\Administrator;
-use HPlus\Admin\Model\Admin\Menu;
+use Hyperf\Database\Model\Builder;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Qbhy\HyperfAuth\Authenticatable;
@@ -52,12 +52,12 @@ class Admin
             return [];
         }
         $menuClass = config('admin.database.menu_model');
-        /** @var Menu $menuModel */
+        /** @var Builder $menuModel */
         $menuModel = $menuClass::query();
         $menuModel->where('is_menu', 1);
+        $menuModel->orderByDesc('order');
         $menuModel->with('roles:id,name,slug');
         /** @var Administrator $user */
-
         $permissionIds = $user->allPermissions()->pluck('id')->toArray();
         $userRolesIds = $user->roles()->pluck('id')->toArray();
         $isAdministrator = $user->isAdministrator();
