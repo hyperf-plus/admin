@@ -55,7 +55,7 @@ class Admin
         /** @var Builder $menuModel */
         $menuModel = $menuClass::query();
         $menuModel->where('is_menu', 1);
-        $menuModel->orderByDesc('order');
+        $menuModel->orderBy('order');
         $menuModel->with('roles:id,name,slug');
         /** @var Administrator $user */
         $permissionIds = $user->allPermissions()->pluck('id')->toArray();
