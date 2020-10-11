@@ -91,6 +91,7 @@ class Menu extends AbstractAdminController
                 return SelectOption::make($id, $title);
             });
         }));
+
         $form->item('title', '名称')->required();
         $form->item('icon', '图标')->component(IconChoose::make())->ignoreEmpty();
         $form->item('uri', 'URI')->required()
@@ -106,11 +107,12 @@ class Menu extends AbstractAdminController
         }));
         //编辑前置钩子
         $form->editing(function (Form $form) {
+
         });
-        //编辑中钩子
+        //提交后钩子，这里是接收到提交的表单数据，可进行修改，这里回调结束修改后才进入model保存
         $form->saving(function (Form $form) {
         });
-        //编辑后置钩子
+        //编辑后置钩子，model保存提交数据后调用会此方法
         $form->saved(function (Form $form) {
         });
         if ((new $model())->withPermission()) {
