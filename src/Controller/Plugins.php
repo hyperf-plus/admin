@@ -84,11 +84,11 @@ class Plugins extends AbstractAdminController
          * @var Form $form
          */
         $form = $plugin->configForm();
-        $form->action(route('plugin/setting', ['id' => $name]));
-        $form->setFormValue($pluginModel->config);
         if (!$form instanceof Form) {
             return $form;
         }
+        $form->action(route('plugin/setting', ['id' => $name]));
+        $form->setFormValue($pluginModel->config);
         $content = new Content();
         $content->body($form)->className('m-10');
         $content->showHeader(true)->title('插件设置');
