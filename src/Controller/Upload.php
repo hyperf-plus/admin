@@ -13,18 +13,47 @@ namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Exception\BusinessException;
 use HPlus\Admin\Facades\Admin;
+use HPlus\Route\Annotation\ApiController;
+use HPlus\Route\Annotation\FormData;
+use HPlus\Route\Annotation\PostApi;
 use Hyperf\HttpMessage\Upload\UploadedFile as UploadedFileAlias;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\HttpServer\Contract\ResponseInterface;
+use Psr\Container\ContainerInterface;
 
 /**
- * @Controller(prefix="/upload")
+ * @ApiController(prefix="/upload")
  * Class IndexAdminController
  */
-class Upload extends AbstractAdminController
+class Upload
 {
     /**
-     * @PostMapping(path="image")
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
+
+    public function __construct(ContainerInterface $container, RequestInterface $request, ResponseInterface $response)
+    {
+        $this->response = $response;
+        $this->request = $request;
+        $this->container = $container;
+    }
+    /**
+     * @PostApi(path="image")
+     * @FormData(key="file",type="file",rule="file")
+     * @FormData(key="path",default="avatar")
      */
     public function image()
     {
@@ -48,7 +77,9 @@ class Upload extends AbstractAdminController
     }
 
     /**
-     * @PostMapping(path="file")
+     * @PostApi(path="file")
+     * @FormData(key="file",type="file",rule="file")
+     * @FormData(key="path",default="file")
      */
     public function file()
     {

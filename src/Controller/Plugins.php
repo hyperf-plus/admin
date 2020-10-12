@@ -17,8 +17,10 @@ use HPlus\Admin\Contract\AbstractAdminPlugin;
 use HPlus\Admin\Exception\BusinessException;
 use HPlus\Admin\Library\Auth;
 use HPlus\Admin\Model\Plugin;
+use HPlus\Admin\Service\PluginService;
 use HPlus\Route\Annotation\AdminController;
 use HPlus\Route\Annotation\Query;
+use HPlus\UI\Components\Attrs\Button;
 use HPlus\UI\Components\Attrs\SelectOption;
 use HPlus\UI\Components\Attrs\Step;
 use HPlus\UI\Components\Form\CSwitch;
@@ -41,13 +43,27 @@ use HPlus\Route\Annotation\PostApi;
 use Hyperf\Di\Annotation\AnnotationCollector;
 use Hyperf\Di\ReflectionManager;
 use Hyperf\HttpServer\Annotation\RequestMapping;
+use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Collection;
+use Psr\Container\ContainerInterface;
 
 /**
  * @AdminController(prefix="plugin", tag="插件管理", ignore=true))
  */
 class Plugins extends AbstractAdminController
 {
+    /**
+     * @var PluginService
+     */
+    private $pluginService;
+
+    public function __construct(ContainerInterface $container, RequestInterface $request, ResponseInterface $response)
+    {
+        parent::__construct($container, $request, $response);
+        $this->pluginService = $container->get(PluginService::class);
+    }
+
     /**
      * @GetApi(summary="获取列表")
      * @return array|mixed
@@ -190,6 +206,47 @@ class Plugins extends AbstractAdminController
                 $actions->add($action);
                 return;
             }
+            [$check, $error] = $this->pluginService->checkComposer($plugin->composer());
+            if (!$check) {
+                $action = new Grid\Actions\ActionButton('依赖未安装');
+                $action->dialog(function (Dialog $dialog) use ($plugin, $error) {
+                    $dialog->title("检测依赖失败");
+                    $dialog->slot(function (Content $content) use ($plugin, $error) {
+                        /**
+                         * @var Form $form
+                         */
+                        $form = new Form();
+                        $form->isGetData(false);
+                        $form->actions(function (FormActions $actions) {
+                            $actions->hideCancelButton();
+                            $actions->hideSubmitButton();
+                        });
+                        if (!empty($error['noInstall'])) {
+                            $form->item('help_install', '命令')->hideLabel()->defaultValue("以下依赖尚未安装，请复制编辑框内容执行安装")
+                                ->component(Tag::make()->type('warning'));
+                            $i = 0;
+                            foreach ($error['noInstall'] as $item) {
+                                $i++;
+                                $form->item('install' . $i, $i . '、')
+                                    ->defaultValue('composer require ' . $item['package'] . ':' . $item['version']);
+                            }
+                        }
+                        if (!empty($error['versionErr'])) {
+                            $form->item('help', '命令')->hideLabel()->defaultValue("以下依赖版本不正确，请安装")
+                                ->component(Tag::make()->type('warning'));
+                            $i = 0;
+                            foreach ($error['versionErr'] as $item) {
+                                $i++;
+                                $form->item('package' . $i, $i . '、')
+                                    ->defaultValue('composer require ' . $item['package'] . ':' . $item['need_version']);
+                            }
+                        }
+                        $content->body($form);
+                    });
+                });
+                $actions->add($action);
+                return;
+            }
             if (!isset($item['id'])) {
                 $action = new Grid\Actions\ActionButton('安装');
                 $action->dialog(function (Dialog $dialog) use ($plugin, $id) {
@@ -225,6 +282,7 @@ class Plugins extends AbstractAdminController
         });
         return $grid;
     }
+
 
     /**
      * @param null $name

@@ -15,6 +15,8 @@ namespace HPlus\Admin\Contract;
 
 interface  AbstractAdminPlugin
 {
+    public function composer(): array;
+
     public function configForm();
 
     public function install();
