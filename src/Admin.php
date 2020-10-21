@@ -14,10 +14,12 @@ namespace HPlus\Admin;
 
 use HPlus\Admin\Exception\ValidateException;
 use HPlus\Admin\Model\Admin\Administrator;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Database\Model\Builder;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Qbhy\HyperfAuth\Authenticatable;
+use Qbhy\HyperfAuth\AuthGuard;
 use Qbhy\HyperfAuth\AuthManager;
 
 class Admin
@@ -25,10 +27,14 @@ class Admin
     public static $metaTitle;
 
     protected $authManager;
+    /**
+     * @var AuthGuard
+     */
+    protected $guard;
 
-    public function __construct(AuthManager $authManager)
+    public function __construct(AuthManager $authManager, ConfigInterface $config)
     {
-        $this->authManager = $authManager;
+        $this->guard = $authManager->guard($config->get('admin.auth.guard', 'jwt'));
     }
 
     public static function setTitle($title)
@@ -84,16 +90,7 @@ class Admin
 
     public function user($token = null)
     {
-        return $this->guard()->user($token);
-    }
-
-    /**
-     * Attempt to get the guard from the local cache.
-     */
-    public function guard()
-    {
-        $guard = config('auth.default.guard') ?: 'jwt';
-        return $this->authManager->guard($guard);
+        return $this->guard->user($token);
     }
 
     public function validatorData(array $all, $rules, $message = [])

@@ -61,7 +61,7 @@ class AuthController
     {
         $this->response = $response;
         $this->request = $request;
-        $this->auth = $auth;
+        $this->auth = $auth->guard(config('admin.auth.guard', 'jwt'));
     }
 
     /**

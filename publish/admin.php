@@ -15,6 +15,7 @@ use HPlus\Admin\Model\Admin\Administrator;
 use HPlus\Admin\Model\Admin\Menu;
 use HPlus\Admin\Model\Admin\Permission;
 use HPlus\Admin\Model\Admin\Role;
+use HPlus\Admin\Middleware\AuthMiddleware;
 
 return [
     //后台名称 null不显示
@@ -63,11 +64,12 @@ return [
         'api_prefix' => env('ADMIN_ROUTE_API_PREFIX', '/'),  # 默认API地址
         'home' => env('ADMIN_ROUTE_HOME_URL', '/auth/main'),              # 默认后台首页
         'namespace' => 'App\\Admin\\Controllers',
-        'middleware' => [\HPlus\Permission\Middleware\PermissionMiddleware::class], #默认权限处理器
+        'middleware' => [AuthMiddleware::class, HPlus\Permission\Middleware\PermissionMiddleware::class], #默认权限处理器
     ],
-    'directory' => '', //app_path('Admin'),
+    'directory' => '',
     'https' => env('ADMIN_HTTPS', false),
     'auth' => [
+        'guard' => 'jwt', // 对应auth里面的guard
         // Add "remember me" to login form
         'remember' => true,
         // Redirect to the specified URI when user is not authorized.

@@ -28,13 +28,10 @@ class ConfigProvider
                         __DIR__,
                     ],
                 ],
+                'ignore_annotations' => [
+                    'mixin',
+                ],
             ],
-            'dependencies' => [
-                PermissionInterface::class => Permission::class,
-            ],
-            //            'listeners' => [
-            //                PermissionListener::class,
-            //            ],
             'publish' => [
                 [
                     'id' => 'admin',

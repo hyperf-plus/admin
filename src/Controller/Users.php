@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Library\Auth;
@@ -94,7 +95,7 @@ class Users extends AbstractAdminController
             }
         });
         $form->deleting(function (Form $form, $id) {
-            if (Auth()->user()->getId() == $id || $id == 1) {
+            if (Auth(config('admin.auth.guard', 'jwt'))->user()->getId() == $id || $id == 1) {
                 return UI::responseError('删除失败');
             }
         });

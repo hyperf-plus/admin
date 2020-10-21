@@ -181,7 +181,9 @@ class Plugins extends AbstractAdminController
             ->perPage(10)
             ->hidePage();
         $grid->toolbars(function (Grid\Toolbars $toolbars) {
-            $toolbars->hide();
+            $toolbars->hideCreateButton();
+            $tool = Grid\Tools\ToolButton::make("更新插件");
+            $toolbars->addLeft($tool);
         });
         $grid->rowKey('name');
         $grid->column('name', '插件标识');
@@ -215,6 +217,7 @@ class Plugins extends AbstractAdminController
                         /**
                          * @var Form $form
                          */
+                        #todo 暂时先用form做详情查看，后续做view组件的话在进行更改
                         $form = new Form();
                         $form->isGetData(false);
                         $form->actions(function (FormActions $actions) {

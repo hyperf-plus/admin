@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Traits\ModelTree;
@@ -95,7 +96,7 @@ class Menu extends Model
                 return $item;
             })->all();
         }
-        $user = auth()->user();
+        $user = auth(config('admin.auth.guard', 'jwt'))->user();
         $permissionIds = $user->allPermissions()->pluck('id')->toArray();
         $userRolesIds = $user->roles()->pluck('id')->toArray();
         return collect($all_list)->filter(function ($item) use ($permissionIds, $userRolesIds) {
@@ -105,7 +106,7 @@ class Menu extends Model
                     return 1;
                 }
             }
-            $permissions = (array) $item['permission'];
+            $permissions = (array)$item['permission'];
             foreach ($permissions as $permissionId) {
                 if (in_array($permissionId, $permissionIds)) {
                     return 1;
@@ -122,7 +123,7 @@ class Menu extends Model
      */
     public function withPermission()
     {
-        return (bool) config('admin.menu_bind_permission');
+        return (bool)config('admin.menu_bind_permission');
     }
 
     public function getRouteAttribute()

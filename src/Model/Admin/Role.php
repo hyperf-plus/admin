@@ -18,11 +18,11 @@ use Hyperf\Database\Model\Relations\BelongsToMany;
 class Role extends Model
 {
     protected $fillable = ['name', 'slug'];
-
     protected $casts = [
-        'created_at' => 'Y-m-d H:i:s',
-        'updated_at' => 'Y-m-d H:i:s',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
+
 
     /**
      * Create a new Eloquent model instance.
@@ -105,17 +105,5 @@ class Role extends Model
         if (function_exists('permission')) {
             permission()->loadRoles(true);
         }
-    }
-
-    /**
-     * Detach models from the relationship.
-     */
-    protected function boot(): void
-    {
-        parent::boot();
-//        static::deleting(function ($model) {
-//          //  $model->administrators()->detach();
-//          //  $model->permissions()->detach();
-//        });
     }
 }
