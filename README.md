@@ -14,7 +14,7 @@
     <a href="https://github.com/swoole/swoole-src"><img src="https://img.shields.io/badge/swoole-%3E=4.5-brightgreen.svg?maxAge=2592000" alt="Swoole Version"></a>
     <a href="https://github.com/lphkxd/hyperf-admin-plugin/blob/master/LICENSE"><img src="https://img.shields.io/github/license/lphkxd/hyperf-admin-plugin.svg?maxAge=2592000" alt="HyperfAdmin License"></a>
 </p>
-
+#### laravel版本地址  <a href="https://github.com/SmallRuralDog/laravel-vue-admin">laravel-vue-admin</a>
 
 ### 安装
 
