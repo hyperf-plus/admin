@@ -17,7 +17,7 @@ class AuthService
 {
     public function getSystemRouteOptions($isUrl = false)
     {
-        $router = getContainer(DispatcherFactory::class)->getRouter('http');
+        $router = get_container(DispatcherFactory::class)->getRouter('http');
         $data = $router->getData();
         $options = [];
         $options['*'] = [

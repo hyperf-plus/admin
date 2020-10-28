@@ -52,6 +52,7 @@ class AppExceptionHandler extends ExceptionHandler
                 $response = $response->withStatus(422);
                 break;
         }
+        $this->stopPropagation();
         return $response->withBody(new SwooleStream(json_encode([
             'code' => $throwable->getCode(),
             'error' => $throwable->getMessage(),
@@ -60,6 +61,14 @@ class AppExceptionHandler extends ExceptionHandler
 
     public function isValid(Throwable $throwable): bool
     {
-        return true;
+        if (
+            $throwable instanceof BusinessException ||
+            $throwable instanceof UserLoginException ||
+            $throwable instanceof PermissionException ||
+            $throwable instanceof ValidateException ||
+            $throwable instanceof UIValidateException
+        )
+            return true;
+        return false;
     }
 }
