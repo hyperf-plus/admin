@@ -3,10 +3,10 @@
 ### auth组件采用<a href="https://github.com/qbhy/hyperf-auth">hyperf-auth</a>，目前支持 jwt、session 驱动。用户可以自行扩展。使用体验大体和 laravel 的 auth 差不多
 ### 灵活可替换的权限验证组件，HPlus提供权限验证，也可以替换自己的权限验证插件
 
-##演示地址：
-    <a href="http://shop.sh.cn/auth">http://shop.sh.cn/auth</a>
-    账户 admin
-    密码 admin
+## 演示地址：
+##### <a href="http://shop.sh.cn/auth">http://shop.sh.cn/auth</a>
+##### 账户 admin
+##### 密码 admin
 
 #### 欢迎加入HPlus交流群，群聊号码：512465490
 点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
