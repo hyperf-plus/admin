@@ -104,7 +104,7 @@ class Upload
     protected function saveFiles(UploadedFileAlias $file, $fileName = 'image')
     {
         $file_name = config('admin.upload.save_path', '/upload');
-        $file_name = $file_name . '/' . $fileName . '/' . date('Ym') . '/' . date('d') . '/' . uuid(16) . '.' . $file->getExtension();
+        $file_name = $file_name . '/' . $fileName . '/' . date('Ym') . '/' . date('d') . '/' . uuid(16) . '.' . strtolower($file->getExtension());
         Storage()->getDriver()->put($file_name, $file->getStream()->getContents());
         return [
             'path' => $file_name,
