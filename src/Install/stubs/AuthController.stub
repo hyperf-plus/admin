@@ -72,7 +72,7 @@ class AuthController
     {
         $token = $this->request->cookie($this->getCookieName());
         $userInfo = new UserEntity();
-        $setting = new UISettingEntity();
+        $setting = new UISettingEntity(config('admin'));
         try {
             $user = Admin::user($token);
             $userInfo->setUsername($user->username);
@@ -83,15 +83,14 @@ class AuthController
             $menuTree = Admin::menu($user);
             $setting->setMenu(new MenuEntity($menuTree));
         } catch (\Throwable $exception) {
+            p("登录失败，" . $exception->getMessage());
         }
         $setting->setUser($userInfo);
-        $setting->setApiRoot(config('admin.route.api_prefix'));
         $setting->setUrl([
             'logout' => route('/auth/logout'),
             'setting' => route('/auth/setting'),
         ]);
-        $setting->setTitle(config('admin.title'));
-        $setting->setName(config('admin.name'));
+        $setting->setApiRoot(config('admin.route.api_prefix'));
         $setting->setHomeUrl(config('admin.route.home'));
         return UI::view($setting);
     }
