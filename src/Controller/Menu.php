@@ -96,7 +96,7 @@ class Menu extends AbstractAdminController
         $form->item('icon', '图标')->component(IconChoose::make())->ignoreEmpty();
         $form->item('uri', 'URI')->required()
             ->help('可以输入搜索')
-            ->component(Select::make()->filterable()
+            ->component(Select::make()->filterable()->allowCreate("")
                 ->remote(route('menu/route')))->inputWidth(450);
         $form->item('order', '排序')->component(InputNumber::make(1)->min(0));
         $form->item('is_menu', '设为菜单')->component(CSwitch::make(0));
