@@ -25,7 +25,11 @@
 
 - 1、安装Admin插件
 ```bash
-    composer require hyperf-plus/admin
+     Hyperf2.0版本
+    composer require hyperf-plus/admin:2.1
+
+    Hyperf2.1版本
+    composer require hyperf-plus/admin:2.2
 ```
 - 2、生成admin auth file配置文件
 ```bash
