@@ -15,3 +15,11 @@ CREATE TABLE `admin_operation_log` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `admin_operation_log_user_id_index` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+--
+-- 更新一下内容
+-- ALTER TABLE `admin_operation_log`
+-- DROP COLUMN `input`,
+-- ADD COLUMN `request` json NULL COMMENT '请求信息' AFTER `updated_at`,
+-- ADD COLUMN `header` json NULL COMMENT '请求头信息' AFTER `request`,
+-- ADD COLUMN `result` json NULL COMMENT '响应结果信息' AFTER `header`;
+--
