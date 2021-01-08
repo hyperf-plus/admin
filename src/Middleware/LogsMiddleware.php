@@ -14,17 +14,13 @@ namespace HPlus\Admin\Middleware;
 
 use HPlus\Admin\Facades\Admin;
 use HPlus\Admin\Model\Admin\OperationLog;
-use HPlus\Helper\RunTime;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Utils\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Qbhy\HyperfAuth\Authenticatable;
-use Qbhy\HyperfAuth\AuthGuard;
 use Qbhy\HyperfAuth\AuthManager;
-use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 
 /**
  * Class AuthMiddleware.
@@ -33,7 +29,7 @@ class LogsMiddleware implements MiddlewareInterface
 {
     protected $config;
 
-    public function __construct(AuthManager $auth, ConfigInterface $config)
+    public function __construct(ConfigInterface $config)
     {
         $this->config = $config->get('admin.operation_log');
     }
@@ -46,9 +42,9 @@ class LogsMiddleware implements MiddlewareInterface
         ) {
             return $handler->handle($request);
         }
-        $RunTime = new  RunTime;
+        $time = $this->getMicroTime();
         $response = $handler->handle($request);
-        $time = $RunTime->spent();
+        $time = round(($this->getMicroTime() - $time) * 1000, 1);
         try {
             OperationLog::create([
                 'user_id' => Admin::user()->getId(),
@@ -62,9 +58,15 @@ class LogsMiddleware implements MiddlewareInterface
             ]);
         } catch (\Throwable $exception) {
             // pass
-          Logger()->info("可能您的log日志表不是最新的， 请执行 php bin/hyperf.php admin:db -l 查看升级命令");
+            Logger()->info("可能您的log日志表不是最新的， 请执行 php bin/hyperf.php admin:db -l 查看升级命令");
         }
         return $response;
+    }
+
+    private function getMicroTime()
+    {
+        list($usec, $sec) = explode(' ', microtime());
+        return ((float)$usec + (float)$sec);
     }
 
     /**
