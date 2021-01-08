@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Model\Model;
@@ -28,11 +29,14 @@ class OperationLog extends Model
         'LINK', 'UNLINK', 'COPY', 'HEAD', 'PURGE',
     ];
 
-    protected $fillable = ['user_id', 'path', 'runtime', 'method', 'ip', 'input'];
+    protected $fillable = ['user_id', 'path', 'runtime', 'method', 'header', 'result', 'ip', 'request'];
 
     protected $casts = [
         'created_at' => 'Y-m-d H:i:s',
         'updated_at' => 'Y-m-d H:i:s',
+        'result' => 'json',
+        'header' => 'json',
+        'request' => 'json',
     ];
 
     /**
