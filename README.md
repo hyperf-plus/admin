@@ -11,13 +11,12 @@
 #### 欢迎加入HPlus交流群，群聊号码：512465490
 点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
 <p align="center">
-    <a href="https://github.com/lphkxd/hyperf-admin/releases"><img src="https://poser.pugx.org/mzh/hyperf-admin-plugin/v/stable" alt="Stable Version"></a>
-    <a href="https://travis-ci.org/mzh/hyperf-admin-plugin"><img src="https://travis-ci.org/mzh/hyperf-admin-plugin.svg?branch=master" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/mzh/hyperf-admin-plugin"><img src="https://poser.pugx.org/mzh/hyperf-admin-plugin/downloads" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/mzh/hyperf-admin-plugin"><img src="https://poser.pugx.org/mzh/hyperf-admin-plugin/d/monthly" alt="Monthly Downloads"></a>
+    <a href="https://github.com/hyperf-plus/admin/releases"><img src="https://poser.pugx.org/hyperf-plus/admin/v/stable" alt="Stable Version"></a>
+    <a href="https://packagist.org/packages/hyperf-plus/admin"><img src="https://poser.pugx.org/hyperf-plus/admin/downloads" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/hyperf-plus/admin"><img src="https://poser.pugx.org/hyperf-plus/admin/d/monthly" alt="Monthly Downloads"></a>
     <a href="https://www.php.net"><img src="https://img.shields.io/badge/php-%3E=7.3-brightgreen.svg?maxAge=2592000" alt="Php Version"></a>
     <a href="https://github.com/swoole/swoole-src"><img src="https://img.shields.io/badge/swoole-%3E=4.5-brightgreen.svg?maxAge=2592000" alt="Swoole Version"></a>
-    <a href="https://github.com/lphkxd/hyperf-admin-plugin/blob/master/LICENSE"><img src="https://img.shields.io/github/license/lphkxd/hyperf-admin-plugin.svg?maxAge=2592000" alt="HyperfAdmin License"></a>
+    <a href="https://github.com/hyperf-plus/admin/blob/master/LICENSE"><img src="https://img.shields.io/github/license/hyperf-plus/admin.svg?maxAge=2592000" alt="HyperfAdmin License"></a>
 </p>
 #### laravel版本地址  <a href="https://github.com/SmallRuralDog/laravel-vue-admin">laravel-vue-admin</a>
 
@@ -56,7 +55,7 @@
             ],
         ];
 ```
-- 6、添加权限控制插件（如果不启用默认权限控制，可以忽略此步骤）
+- 6、（可选）添加权限控制插件（如果不启用默认权限控制，可以忽略此步骤）
 ```bash
   composer require hyperf-plus/permission
 ```
@@ -69,7 +68,7 @@ return [
     #...省略
     'route' => [
         #...省略
-        'middleware' => [自己的权限验证中间件],
+        'middleware' => [AuthMiddleware::class,自己的权限验证中间件],
     ],
     #...省略
     ]
@@ -82,7 +81,20 @@ return [
     2、security 为true必须验证权限 false公共开放资源
     路由注解只在启动第一次时扫描并缓存，后续请求不会再做解析，提高性能
 
-- 7、启动服务
+- 7、（可选）日志记录，添加日志管理中间件，日志记录功能数据量较大，默认不开启（如需开启在admin配置文件的route节点下middleware添加LogsMiddleware中间件即可 ）
+      或者在需要加日志的接口，注解上LogsMiddleware中间件即可记录
+```php
+<?php
+return [
+    #...省略
+    'route' => [
+        #...省略
+        'middleware' => [AuthMiddleware::class, LogsMiddleware::class, 其他中间件],
+    ],
+    #...省略
+    ]
+```
+- 8、启动服务
 ```bash
 	php bin/hyperf.php start
 ```
@@ -92,4 +104,9 @@ return [
 
 #### 以插件形式开箱即用
 #### 可以做到无需VUE前端可实现快速开发各种表单
-#### 喜欢的帮忙点个star
+
+### 赞助
+#### 1、开源不易，如果此项目能够帮到您，希望点个star
+#### 2、欢迎您的捐赠
+<img src="https://gitee.com/hyperf-plus/image/raw/master/%E6%9C%AA%E6%A0%87%E9%A2%98-1.jpg" width="500" alt="HyperfAdmin License">
+<img src="//ia.51.la/go1?id=21039519&pvFlag=1" style="border:none" />

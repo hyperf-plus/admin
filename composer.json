@@ -21,7 +21,7 @@
     "hyperf/redis": "^2.0.0",
     "hyperf-plus/route": "~2.1.0",
     "96qbhy/hyperf-auth": "^2.3",
-    "hyperf-plus/ui": "~1.0.0",
+    "hyperf-plus/ui": "~1.0.0|dev-master",
     "hyperf/paginator": "~2.1.0"
   },
   "autoload": {

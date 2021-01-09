@@ -16,6 +16,7 @@ use HPlus\Admin\Model\Admin\Menu;
 use HPlus\Admin\Model\Admin\Permission;
 use HPlus\Admin\Model\Admin\Role;
 use HPlus\Admin\Middleware\AuthMiddleware;
+use HPlus\Admin\Middleware\LogsMiddleware;
 
 return [
     //后台名称 null不显示
@@ -124,7 +125,7 @@ return [
     ],
     //操作日志
     'operation_log' => [
-        'enable' => true,
+        'enable' => true,  #开启或关闭日志记录功能
         /*
          * Only logging allowed methods in the list
          */
@@ -136,10 +137,7 @@ return [
          * or specific method to path like: get:admin/auth/logs.
          */
         'except' => [
-            'admin/auth/logs*',
-            'admin-api/auth/logs*',
-            'admin',
-            'admin-api',
+            '/admin/logs*',
         ],
     ],
     'check_route_permission' => true,
