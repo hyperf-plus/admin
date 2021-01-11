@@ -77,6 +77,7 @@ class Permissions extends AbstractAdminController
     {
         $permissionModel = config('admin.database.permissions_model');
         $form = new Form(new $permissionModel());
+        $form->setEdit($isEdit);
         $form->className('m-15');
         $form->item('parent_id', '上级目录')->component(Select::make(0)->options(function () use ($permissionModel) {
             return $permissionModel::selectOptions(function ($permission) {
@@ -90,7 +91,7 @@ class Permissions extends AbstractAdminController
         $form->item('path', '授权节点')
             ->help('可以输入搜索')
             ->component(Select::make()->filterable()
-            ->remote(route('permissions/route'))->multiple())->inputWidth(450);
+                ->remote(route('permissions/route'))->multiple())->inputWidth(450);
         return $form;
     }
 

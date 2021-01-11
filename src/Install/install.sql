@@ -1,10 +1,5 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
---
--- Database: `hyperf`
---
-
 -- --------------------------------------------------------
 
 --
@@ -29,14 +24,13 @@ CREATE TABLE `admin_menu` (
 --
 
 INSERT INTO `admin_menu` (`id`, `parent_id`, `is_menu`, `order`, `title`, `icon`, `uri`, `permission`, `created_at`, `updated_at`) VALUES
-(1, 0, 1, 1, '首页', 'el-icon-monitor', '/auth/main', NULL, NULL, '2020-09-19 08:35:36'),
-(2, 0, 1, 10, '系统', 'el-icon-setting', 'system', NULL, NULL, '2020-09-19 08:54:51'),
-(3, 2, 1, 3, '管理员', 'fa-ban', '/admin/users/list', '[1]', NULL, '2020-09-19 08:01:49'),
-(4, 2, 1, 4, '角色', 'fa-ban', '/admin/roles/list', NULL, NULL, '2020-09-19 08:01:42'),
-(5, 2, 1, 5, '权限', 'fa-ban', '/admin/permissions/list', NULL, NULL, '2020-09-19 07:59:33'),
-(6, 2, 1, 6, '菜单', 'fa-bars', '/admin/menu/list', NULL, NULL, '2020-09-19 08:55:40'),
-(7, 2, 1, 7, '操作日志', 'fa-ban', '/admin/logs/list', NULL, NULL, '2020-09-19 08:34:12');
-
+(1, 0, 1, 1, '首页', 'shouye_o', '/auth/main', NULL, NULL, '2021-01-11 06:55:36'),
+ (2, 0, 1, 10, '系统', 'quanjushezhi_o', 'system', NULL, NULL, '2021-01-11 06:56:10'),
+(3, 2, 1, 3, '管理员', 'guanliyuanrenzheng_o', '/admin/users/list', '[1]', NULL, '2021-01-11 06:56:24'),
+(4, 2, 1, 4, '角色', 'qunzu_o', '/admin/roles/list', NULL, NULL, '2021-01-11 06:57:51'),
+(5, 2, 1, 5, '权限', 'saomafuquan_o', '/admin/permissions/list', NULL, NULL, '2021-01-11 06:56:42'),
+(6, 2, 1, 6, '菜单', 'caidan_o', '/admin/menu/list', NULL, NULL, '2021-01-11 06:56:49'),
+(7, 2, 1, 7, '操作日志', 'bianji_o', '/admin/logs/list', NULL, NULL, '2021-01-11 06:57:09');
 -- --------------------------------------------------------
 
 --
@@ -44,7 +38,7 @@ INSERT INTO `admin_menu` (`id`, `parent_id`, `is_menu`, `order`, `title`, `icon`
 --
 
 CREATE TABLE `admin_operation_log` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
   `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `method` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -54,10 +48,8 @@ CREATE TABLE `admin_operation_log` (
   `header` json NOT NULL,
   `runtime` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `admin_operation_log_user_id_index` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- --------------------------------------------------------
 --
 -- Table structure for table `admin_permissions`

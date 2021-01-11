@@ -47,9 +47,6 @@ return [
         [
             'href' => 'https://github.com/hyperf-plus/admin',
             'title' => 'hyperf版官网',
-        ], [
-            'href' => 'https://github.com/SmallRuralDog/laravel-vue-admin',
-            'title' => 'laravel版官网',
         ],
         [
             'href' => 'https://www.yuque.com/hyperf-plus/ui/hplus-ui',
