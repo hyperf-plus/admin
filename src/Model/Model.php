@@ -9,17 +9,14 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Model;
 
 use Hyperf\DbConnection\Model\Model as BaseModel;
 use Hyperf\ModelCache\Cacheable;
 use Hyperf\ModelCache\CacheableInterface;
-use DateTimeInterface;
 
 /**
- * Class Model
- * @package HPlus\Admin\Model
+ * Class Model.
  * @mixin \HyperfEloquent
  */
 abstract class Model extends BaseModel implements CacheableInterface

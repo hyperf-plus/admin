@@ -18,11 +18,11 @@ use Hyperf\Database\Model\Relations\BelongsToMany;
 class Role extends Model
 {
     protected $fillable = ['name', 'slug'];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
 
     /**
      * Create a new Eloquent model instance.

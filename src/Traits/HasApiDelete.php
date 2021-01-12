@@ -20,7 +20,7 @@ trait HasApiDelete
 
     /**
      * @DeleteApi(path="{id:\d+}", summary="删除接口")
-     * @Path(key="id",name="id",required=true);
+     * @Path(key="id", name="id", required=true);
      * @param $id
      * @return array|mixed
      */

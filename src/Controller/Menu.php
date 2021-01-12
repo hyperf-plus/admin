@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Service\AuthService;
@@ -20,7 +19,6 @@ use HPlus\UI\Components\Form\CSwitch;
 use HPlus\UI\Components\Form\IconChoose;
 use HPlus\UI\Components\Form\InputNumber;
 use HPlus\UI\Components\Form\Select;
-use HPlus\UI\Components\Grid\Boole;
 use HPlus\UI\Components\Grid\Icon;
 use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Form;
@@ -96,8 +94,8 @@ class Menu extends AbstractAdminController
         $form->item('icon', '图标')->component(IconChoose::make())->ignoreEmpty();
         $form->item('uri', 'URI')->required()
             ->help('可以输入搜索')
-            ->component(Select::make()->filterable()->allowCreate("")
-                ->remote(route('menu/route')))->inputWidth(450);
+            ->component(Select::make()->filterable()->allowCreate('')
+            ->remote(route('menu/route')))->inputWidth(450);
         $form->item('order', '排序')->component(InputNumber::make(1)->min(0));
         $form->item('is_menu', '设为菜单')->component(CSwitch::make(0));
         $form->item('roles', '角色')->component(Select::make()->block()->multiple()->options(function () use ($roleModel) {
@@ -107,7 +105,6 @@ class Menu extends AbstractAdminController
         }));
         //编辑前置钩子
         $form->editing(function (Form $form) {
-
         });
         //提交后钩子，这里是接收到提交的表单数据，可进行修改，这里回调结束修改后才进入model保存
         $form->saving(function (Form $form) {

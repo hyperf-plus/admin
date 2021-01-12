@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Middleware;
 
 use Hyperf\Contract\ConfigInterface;
@@ -41,7 +40,7 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$this->guard->user() instanceof Authenticatable) {
+        if (! $this->guard->user() instanceof Authenticatable) {
             throw new UnauthorizedException("Without authorization from {$this->guard->getName()} guard", $guard);
         }
         return $handler->handle($request);

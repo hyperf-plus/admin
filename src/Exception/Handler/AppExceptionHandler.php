@@ -62,13 +62,14 @@ class AppExceptionHandler extends ExceptionHandler
     public function isValid(Throwable $throwable): bool
     {
         if (
-            $throwable instanceof BusinessException ||
-            $throwable instanceof UserLoginException ||
-            $throwable instanceof PermissionException ||
-            $throwable instanceof ValidateException ||
-            $throwable instanceof UIValidateException
-        )
+            $throwable instanceof BusinessException
+            || $throwable instanceof UserLoginException
+            || $throwable instanceof PermissionException
+            || $throwable instanceof ValidateException
+            || $throwable instanceof UIValidateException
+        ) {
             return true;
+        }
         return false;
     }
 }

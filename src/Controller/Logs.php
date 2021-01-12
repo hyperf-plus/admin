@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Model\Admin\OperationLog;
@@ -20,7 +19,6 @@ use HPlus\UI\Components\Form\Select;
 use HPlus\UI\Components\Grid\Avatar;
 use HPlus\UI\Components\Grid\Route;
 use HPlus\UI\Components\Grid\Tag;
-use HPlus\UI\Components\Widgets\Button;
 use HPlus\UI\Components\Widgets\Dialog;
 use HPlus\UI\Components\Widgets\Markdown;
 use HPlus\UI\Form;
@@ -60,9 +58,9 @@ class Logs extends AbstractAdminController
                 $dialog->title('查看请求头信息');
                 $dialog->slot(function (Content $content) use ($row) {
                     $code = "```json\n";
-                    $code .= json_encode($row->header, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+                    $code .= json_encode($row->header, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
                     $code .= "\n```";
-                    $content->body(Markdown::make($code)->style("height:60vh;"));
+                    $content->body(Markdown::make($code)->style('height:60vh;'));
                 });
             });
             $actions->add($action);
@@ -73,9 +71,9 @@ class Logs extends AbstractAdminController
                 $dialog->title('查看提交参数信息');
                 $dialog->slot(function (Content $content) use ($row) {
                     $code = "```json\n";
-                    $code .= json_encode($row->request, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+                    $code .= json_encode($row->request, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
                     $code .= "\n```";
-                    $content->body(Markdown::make($code)->style("height:60vh;"));
+                    $content->body(Markdown::make($code)->style('height:60vh;'));
                 });
             });
             $actions->add($action);
@@ -87,9 +85,9 @@ class Logs extends AbstractAdminController
                 $dialog->title('查看响应结果');
                 $dialog->slot(function (Content $content) use ($row) {
                     $code = "```json\n";
-                    $code .= json_encode($row->result ,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+                    $code .= json_encode($row->result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
                     $code .= "\n```";
-                    $content->body(Markdown::make($code)->style("height:60vh;"));
+                    $content->body(Markdown::make($code)->style('height:60vh;'));
                 });
             });
             $actions->add($action);
@@ -100,7 +98,7 @@ class Logs extends AbstractAdminController
         });
 
         $grid->filter(function (Grid\Filter $filter) {
-            $user_id = (int)request('user_id');
+            $user_id = (int) request('user_id');
             $filter->equal('user_id')->component(Select::make($user_id)->placeholder('请选择用户')->options(function () {
                 $user_ids = OperationLog::query()->groupBy('user_id')->get(['user_id'])->pluck('user_id')->toArray();
                 /*@var Model $userModel */

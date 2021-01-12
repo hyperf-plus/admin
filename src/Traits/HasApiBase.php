@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace HPlus\Admin\Traits;
 
 use HPlus\UI\Components\Widgets\Html;
-use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Container\ContainerInterface;

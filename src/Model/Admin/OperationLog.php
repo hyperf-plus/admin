@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Model\Admin;
 
 use HPlus\Admin\Model\Model;

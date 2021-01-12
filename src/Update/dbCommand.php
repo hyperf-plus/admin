@@ -9,13 +9,11 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Update;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Hyperf\DbConnection\Db;
-use Hyperf\Utils\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -43,12 +41,12 @@ class dbCommand extends HyperfCommand
     public function handle()
     {
         $db_conf = config('databases.default');
-        if (!$db_conf || !$db_conf['host']) {
+        if (! $db_conf || ! $db_conf['host']) {
             $this->output->error('place set db config in env');
             return;
         }
         switch (true) {
-            case !$this->input->getOption('list'):
+            case ! $this->input->getOption('list'):
                 $list = $this->search(__DIR__ . '/db/');
                 $this->output->table([['编号', '升级指令', '升级内容']], $list);
                 break;
@@ -57,7 +55,7 @@ class dbCommand extends HyperfCommand
                 $this->output->info('开始升级版本' . $update);
                 $connection = $this->input->getOption('connection');
                 $path = __DIR__ . '/db/' . $update . '.sql';
-                if (!is_file($path)) {
+                if (! is_file($path)) {
                     $this->output->error($update . '版本不存在,使用 php bin/hyperf.php admin:db -l 查看可升级的版本号');
                     return;
                 }
@@ -77,10 +75,9 @@ class dbCommand extends HyperfCommand
                 return [
                     $version,
                     'php bin/hyperf.php admin:db -u ' . $version,
-                    current(explode(PHP_EOL, $sql))
+                    current(explode(PHP_EOL, $sql)),
                 ];
             }
         }, scandir($dir)));
     }
-
 }

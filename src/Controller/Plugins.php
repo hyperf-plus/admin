@@ -9,43 +9,30 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Controller;
 
 use HPlus\Admin\Annotation\AdminPlugins;
 use HPlus\Admin\Contract\AbstractAdminPlugin;
 use HPlus\Admin\Exception\BusinessException;
-use HPlus\Admin\Library\Auth;
 use HPlus\Admin\Model\Plugin;
 use HPlus\Admin\Service\PluginService;
 use HPlus\Route\Annotation\AdminController;
+use HPlus\Route\Annotation\GetApi;
+use HPlus\Route\Annotation\PostApi;
 use HPlus\Route\Annotation\Query;
-use HPlus\UI\Components\Attrs\Button;
-use HPlus\UI\Components\Attrs\SelectOption;
-use HPlus\UI\Components\Attrs\Step;
 use HPlus\UI\Components\Form\CSwitch;
 use HPlus\UI\Components\Form\Input;
-use HPlus\UI\Components\Form\Select;
-use HPlus\UI\Components\Form\Upload;
-use HPlus\UI\Components\Grid\Avatar;
 use HPlus\UI\Components\Grid\Tag;
 use HPlus\UI\Components\Widgets\Dialog;
-use HPlus\UI\Components\Widgets\Html;
-use HPlus\UI\Components\Widgets\Steps;
 use HPlus\UI\Form;
 use HPlus\UI\Form\FormActions;
 use HPlus\UI\Grid;
 use HPlus\UI\Layout\Content;
-use HPlus\UI\Layout\Row;
 use HPlus\UI\UI;
-use HPlus\Route\Annotation\GetApi;
-use HPlus\Route\Annotation\PostApi;
 use Hyperf\Di\Annotation\AnnotationCollector;
-use Hyperf\Di\ReflectionManager;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Hyperf\Utils\Collection;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -87,8 +74,8 @@ class Plugins extends AbstractAdminController
     {
         $name = $this->request->query('id');
         $pluginModel = Plugin::find($name);
-        if (!$pluginModel) {
-            throw new BusinessException(403, "插件未安装");
+        if (! $pluginModel) {
+            throw new BusinessException(403, '插件未安装');
         }
         $plugin = $this->getPlugin($pluginModel->name);
         if ($this->isPost()) {
@@ -100,7 +87,7 @@ class Plugins extends AbstractAdminController
          * @var Form $form
          */
         $form = $plugin->configForm();
-        if (!$form instanceof Form) {
+        if (! $form instanceof Form) {
             return $form;
         }
         $form->action(route('plugin/setting', ['id' => $name]));
@@ -123,10 +110,10 @@ class Plugins extends AbstractAdminController
         $pluginClass = $this->getPlugin($id);
         $plugin = Plugin::find($id);
         if ($plugin) {
-            throw new BusinessException(403, "该插件已安装");
+            throw new BusinessException(403, '该插件已安装');
         }
-        if (!$pluginClass->install()) {
-            throw new BusinessException(403, "安装失败");
+        if (! $pluginClass->install()) {
+            throw new BusinessException(403, '安装失败');
         }
         $pluginInfo = AnnotationCollector::getClassAnnotation(get_class($pluginClass), AdminPlugins::class);
         $Plugin = new Plugin();
@@ -141,7 +128,7 @@ class Plugins extends AbstractAdminController
         unset($config['plugin_status']);
         $Plugin->config = $config;
         $Plugin->save();
-        return UI::responseMessage("安装成功");
+        return UI::responseMessage('安装成功');
     }
 
     /**
@@ -153,15 +140,15 @@ class Plugins extends AbstractAdminController
     {
         $id = $this->request->query('id');
         $plugin = Plugin::find($id);
-        if (!$plugin) {
-            throw new BusinessException(403, "该插件未安装");
+        if (! $plugin) {
+            throw new BusinessException(403, '该插件未安装');
         }
         $pluginClass = $this->getPlugin($plugin->name);
-        if (!$pluginClass->uninstall()) {
-            throw new BusinessException(403, "卸载失败,插件文件不存在");
+        if (! $pluginClass->uninstall()) {
+            throw new BusinessException(403, '卸载失败,插件文件不存在');
         }
         $plugin->delete();
-        return UI::responseMessage("卸载成功");
+        return UI::responseMessage('卸载成功');
     }
 
     public function data()
@@ -173,6 +160,27 @@ class Plugins extends AbstractAdminController
         return $list->toArray();
     }
 
+    /**
+     * @param null $name
+     * @throws BusinessException
+     * @return AbstractAdminPlugin
+     */
+    public function getPlugin($name = null)
+    {
+        if ($name === null) {
+            $name = $this->request->query('id');
+        }
+        if (empty($name)) {
+            throw new BusinessException(403, 'id不能为空！');
+        }
+        $name = ucfirst($name);
+        $class_name = 'App\\Plugins\\' . $name . '\\' . $name . 'Plugin';
+        if (class_exists($class_name)) {
+            return new $class_name();
+        }
+        throw new BusinessException(403, '插件不存在！');
+    }
+
     protected function grid()
     {
         $grid = new Grid();
@@ -182,7 +190,7 @@ class Plugins extends AbstractAdminController
             ->hidePage();
         $grid->toolbars(function (Grid\Toolbars $toolbars) {
             $toolbars->hideCreateButton();
-            $tool = Grid\Tools\ToolButton::make("更新插件");
+            $tool = Grid\Tools\ToolButton::make('更新插件');
             $toolbars->addLeft($tool);
         });
         $grid->rowKey('name');
@@ -209,11 +217,11 @@ class Plugins extends AbstractAdminController
                 return;
             }
             [$check, $error] = $this->pluginService->checkComposer($plugin->composer());
-            if (!$check) {
+            if (! $check) {
                 $action = new Grid\Actions\ActionButton('依赖未安装');
-                $action->dialog(function (Dialog $dialog) use ($plugin, $error) {
-                    $dialog->title("检测依赖失败");
-                    $dialog->slot(function (Content $content) use ($plugin, $error) {
+                $action->dialog(function (Dialog $dialog) use ($error) {
+                    $dialog->title('检测依赖失败');
+                    $dialog->slot(function (Content $content) use ($error) {
                         /**
                          * @var Form $form
                          */
@@ -224,22 +232,22 @@ class Plugins extends AbstractAdminController
                             $actions->hideCancelButton();
                             $actions->hideSubmitButton();
                         });
-                        if (!empty($error['noInstall'])) {
-                            $form->item('help_install', '命令')->hideLabel()->defaultValue("以下依赖尚未安装，请复制编辑框内容执行安装")
+                        if (! empty($error['noInstall'])) {
+                            $form->item('help_install', '命令')->hideLabel()->defaultValue('以下依赖尚未安装，请复制编辑框内容执行安装')
                                 ->component(Tag::make()->type('warning'));
                             $i = 0;
                             foreach ($error['noInstall'] as $item) {
-                                $i++;
+                                ++$i;
                                 $form->item('install' . $i, $i . '、')
                                     ->defaultValue('composer require ' . $item['package'] . ':' . $item['version']);
                             }
                         }
-                        if (!empty($error['versionErr'])) {
-                            $form->item('help', '命令')->hideLabel()->defaultValue("以下依赖版本不正确，请安装")
+                        if (! empty($error['versionErr'])) {
+                            $form->item('help', '命令')->hideLabel()->defaultValue('以下依赖版本不正确，请安装')
                                 ->component(Tag::make()->type('warning'));
                             $i = 0;
                             foreach ($error['versionErr'] as $item) {
-                                $i++;
+                                ++$i;
                                 $form->item('package' . $i, $i . '、')
                                     ->defaultValue('composer require ' . $item['package'] . ':' . $item['need_version']);
                             }
@@ -250,10 +258,10 @@ class Plugins extends AbstractAdminController
                 $actions->add($action);
                 return;
             }
-            if (!isset($item['id'])) {
+            if (! isset($item['id'])) {
                 $action = new Grid\Actions\ActionButton('安装');
                 $action->dialog(function (Dialog $dialog) use ($plugin, $id) {
-                    $dialog->title("安装插件");
+                    $dialog->title('安装插件');
                     $dialog->slot(function (Content $content) use ($plugin, $id) {
                         /**
                          * @var Form $form
@@ -266,7 +274,7 @@ class Plugins extends AbstractAdminController
                         });
                         $form->action(route('plugin/install', ['id' => $id]));
                         $form->item('plugin_status', '插件状态')->component(CSwitch::make(1));
-                        $form->successRefData("tableReload");
+                        $form->successRefData('tableReload');
                         $content->body($form);
                     });
                 });
@@ -284,26 +292,5 @@ class Plugins extends AbstractAdminController
             }
         });
         return $grid;
-    }
-
-
-    /**
-     * @param null $name
-     * @return AbstractAdminPlugin
-     * @throws BusinessException
-     */
-    public function getPlugin($name = null)
-    {
-        if ($name === null) $name = $this->request->query('id');
-        if (empty($name)) {
-            throw new BusinessException(403, 'id不能为空！');
-        }
-        $name = ucfirst($name);
-        $class_name = 'App\\Plugins\\' . $name . '\\' . $name . "Plugin";
-        if (class_exists($class_name)) {
-            return new $class_name;
-        } else {
-            throw new BusinessException(403, '插件不存在！');
-        }
     }
 }

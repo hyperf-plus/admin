@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Middleware;
 
 use HPlus\Admin\Facades\Admin;
@@ -20,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Qbhy\HyperfAuth\AuthManager;
 
 /**
  * Class AuthMiddleware.
@@ -36,8 +34,8 @@ class LogsMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$this->config['enable']
-            || !$this->inAllowedMethods($request->getMethod())
+        if (! $this->config['enable']
+            || ! $this->inAllowedMethods($request->getMethod())
             || $this->inExceptArray($request)
         ) {
             return $handler->handle($request);
@@ -53,20 +51,25 @@ class LogsMiddleware implements MiddlewareInterface
                 'ip' => get_client_ip(),
                 'runtime' => $time,
                 'header' => $request->getHeaders(),
-                'request' => array_merge($request->getQueryParams(), (array)$request->getParsedBody()),
+                'request' => array_merge($request->getQueryParams(), (array) $request->getParsedBody()),
                 'result' => json_decode($response->getBody()->getContents(), true),
             ]);
         } catch (\Throwable $exception) {
             // pass
-            Logger()->info("可能您的log日志表不是最新的， 请执行 php bin/hyperf.php admin:db -l 查看升级命令");
+            Logger()->info('可能您的log日志表不是最新的， 请执行 php bin/hyperf.php admin:db -l 查看升级命令');
         }
         return $response;
     }
 
-    private function getMicroTime()
+    public function is(...$except)
     {
-        list($usec, $sec) = explode(' ', microtime());
-        return ((float)$usec + (float)$sec);
+        $path = request()->path();
+        foreach ($except as $pattern) {
+            if (Str::is($pattern, rawurldecode($path))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -102,26 +105,21 @@ class LogsMiddleware implements MiddlewareInterface
             }
             $methods = [];
             if (Str::contains($except, ':')) {
-                list($methods, $except) = explode(':', $except);
+                [$methods, $except] = explode(':', $except);
                 $methods = explode(',', $methods);
             }
             $methods = array_map('strtoupper', $methods);
-            if ($this->is($except) &&
-                (empty($methods) || in_array($request->getMethod(), $methods))) {
+            if ($this->is($except)
+                && (empty($methods) || in_array($request->getMethod(), $methods))) {
                 return true;
             }
         }
         return false;
     }
 
-    public function is(...$except)
+    private function getMicroTime()
     {
-        $path = request()->path();
-        foreach ($except as $pattern) {
-            if (Str::is($pattern, rawurldecode($path))) {
-                return true;
-            }
-        }
-        return false;
+        [$usec, $sec] = explode(' ', microtime());
+        return (float) $usec + (float) $sec;
     }
 }

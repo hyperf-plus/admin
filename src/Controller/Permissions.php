@@ -91,7 +91,7 @@ class Permissions extends AbstractAdminController
         $form->item('path', '授权节点')
             ->help('可以输入搜索')
             ->component(Select::make()->filterable()
-                ->remote(route('permissions/route'))->multiple())->inputWidth(450);
+            ->remote(route('permissions/route'))->multiple())->inputWidth(450);
         return $form;
     }
 

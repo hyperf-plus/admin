@@ -11,10 +11,6 @@ declare(strict_types=1);
  */
 namespace HPlus\Admin;
 
-use HPlus\Admin\Contracts\PermissionInterface;
-use HPlus\Admin\Library\Permission;
-use HPlus\Admin\Listener\PermissionListener;
-
 class ConfigProvider
 {
     public function __invoke(): array

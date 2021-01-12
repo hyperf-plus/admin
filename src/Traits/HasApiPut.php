@@ -13,7 +13,6 @@ namespace HPlus\Admin\Traits;
 
 use HPlus\Route\Annotation\GetApi;
 use HPlus\Route\Annotation\PutApi;
-use HPlus\UI\Form;
 use HPlus\UI\Layout\Content;
 
 trait HasApiPut
@@ -22,7 +21,7 @@ trait HasApiPut
 
     /**
      * @GetApi(path="{id:\d+}", summary="获取数据")
-     * @HPlus\Route\Annotation\Path(key="id",name="id",required=true);
+     * @HPlus\Route\Annotation\Path(key="id", name="id", required=true);
      * @param $id
      * @return array|mixed
      */
@@ -43,7 +42,7 @@ trait HasApiPut
     /**
      * 修改数据.
      * @PutApi(path="{id:\d+}", summary="修改数据")
-     * @HPlus\Route\Annotation\Path(key="id",name="id",required=true);
+     * @HPlus\Route\Annotation\Path(key="id", name="id", required=true);
      * @param $id
      * @return array|mixed
      */

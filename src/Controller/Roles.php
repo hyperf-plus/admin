@@ -24,7 +24,7 @@ use HPlus\UI\Grid;
  */
 class Roles extends AbstractAdminController
 {
-    public function form()
+    public function form(): Form
     {
         $permissionModel = config('admin.database.permissions_model');
         $roleModel = config('admin.database.roles_model');
@@ -40,7 +40,7 @@ class Roles extends AbstractAdminController
         return $form;
     }
 
-    protected function grid()
+    protected function grid(): Grid
     {
         $roleModel = config('admin.database.roles_model');
 

@@ -9,10 +9,8 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Controller;
 
-use HPlus\Admin\Library\Auth;
 use HPlus\Route\Annotation\AdminController;
 use HPlus\UI\Components\Attrs\SelectOption;
 use HPlus\UI\Components\Form\Input;

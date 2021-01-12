@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
-
 namespace HPlus\Admin\Install;
 
 use Hyperf\Command\Annotation\Command;
@@ -27,7 +26,7 @@ class InstallCommand extends HyperfCommand
     public function handle()
     {
         $db_conf = config('databases.default');
-        if (!$db_conf || !$db_conf['host']) {
+        if (! $db_conf || ! $db_conf['host']) {
             $this->output->error('place set db config in env');
             return;
         }
@@ -36,7 +35,7 @@ class InstallCommand extends HyperfCommand
         $this->output->success('hyperf-admin db install success');
         $this->output->success('start make file');
         $content = file_get_contents(__DIR__ . '/stubs/AuthController.stub');
-        if (!is_dir(BASE_PATH . '/app/Controller/Admin/')) {
+        if (! is_dir(BASE_PATH . '/app/Controller/Admin/')) {
             @mkdir(BASE_PATH . '/app/Controller/Admin/');
         }
         file_put_contents(BASE_PATH . '/app/Controller/Admin/AuthController.php', $content);
