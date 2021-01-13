@@ -65,6 +65,7 @@ return [
     'https' => env('ADMIN_HTTPS', false),
     'auth' => [
         'guard' => 'jwt', // 对应auth里面的guard
+        'cookie_name' => 'HPLUSSESSIONID', // 对应auth里面的guard
         // Add "remember me" to login form
         'remember' => true,
         // Redirect to the specified URI when user is not authorized.

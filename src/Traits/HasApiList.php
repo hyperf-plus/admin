@@ -9,11 +9,18 @@ declare(strict_types=1);
  * @contact  4213509@qq.com
  * @license  https://github.com/hyperf-plus/admin/blob/master/LICENSE
  */
+
 namespace HPlus\Admin\Traits;
 
+use HPlus\Admin\Exception\BusinessException;
 use HPlus\Route\Annotation\GetApi;
+use HPlus\UI\Grid;
 use HPlus\UI\Layout\Content;
 
+/**
+ * Trait HasApiList
+ * @package HPlus\Admin\Traits
+ */
 trait HasApiList
 {
     use HasApiBase;
@@ -24,10 +31,14 @@ trait HasApiList
      */
     public function list()
     {
-        $content = new Content();
-        //可以重写这里，实现自定义布局
-        $content->body($this->grid())->className('p-10');
-        //这里必须这样写
-        return $this->isGetData() ? $this->grid()->jsonSerialize() : $content->jsonSerialize();
+        /**
+         * @var Grid $grid
+         */
+        $grid = $this->grid();
+        $response = $grid->handleExportRequest();
+        if ($response instanceof \Hyperf\HttpServer\Response) {
+            return $response;
+        }
+        return $this->isGetData() ? $this->grid()->jsonSerialize() : Content::make()->body($grid)->className('p-10')->jsonSerialize();
     }
 }
