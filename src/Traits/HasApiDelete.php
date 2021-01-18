@@ -19,7 +19,7 @@ trait HasApiDelete
     use HasApiBase;
 
     /**
-     * @DeleteApi(path="{id:\d+}", summary="删除接口")
+     * @DeleteApi(path="{id:[0-9|,|%2C]+}", summary="删除接口")
      * @Path(key="id", name="id", required=true);
      * @param $id
      * @return array|mixed
