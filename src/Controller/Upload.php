@@ -22,7 +22,7 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Container\ContainerInterface;
 
 /**
- * @ApiController(prefix="/upload")
+ * @ApiController(prefix="/upload",tag="上传")
  * Class IndexAdminController
  */
 class Upload
@@ -64,7 +64,7 @@ class Upload
         if ($file->getSize() > $fileSize) {
             throw new BusinessException(1000, '文件不能大于！' . ($fileSize / 1024 / 1024) . 'MB');
         }
-        $imageMimes = explode(',', $config['image_mimes'] ?? 'jpeg,bmp,png,gif,jpg');
+        $imageMimes = explode(',', config('admin.upload.image_mimes') ?? 'jpeg,bmp,png,gif,jpg');
         if (! in_array(strtolower($file->getExtension()), $imageMimes)) {
             throw new BusinessException(1000, '后缀不允许！');
         }
@@ -91,7 +91,7 @@ class Upload
             throw new BusinessException(1000, '文件不能大于！' . ($fileSize / 1024 / 1024) . 'MB');
         }
         #检测类型
-        $imageMimes = explode(',', $config['file_mimes'] ?? 'txt,sql,zip,rar,ppt,word,xls,xlsx,doc,docx');
+        $imageMimes = explode(',', config('admin.upload.file_mimes') ?? 'txt,sql,zip,rar,ppt,word,xls,xlsx,doc,docx');
         if (! in_array(strtolower($file->getExtension()), $imageMimes)) {
             throw new BusinessException(1000, '类型不允许！');
         }

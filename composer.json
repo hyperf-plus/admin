@@ -19,7 +19,7 @@
     "ext-swoole": ">=4.5",
     "hyperf/model-cache": "^2.0.0",
     "hyperf/redis": "^2.0.0",
-    "hyperf-plus/route": "~2.1.0",
+    "hyperf-plus/route": "~2.1.0|dev-master",
     "96qbhy/hyperf-auth": "^2.3",
     "hyperf-plus/ui": "~1.0.0|dev-master",
     "hyperf/paginator": "~2.1.0"
