@@ -99,6 +99,9 @@ return [
         'file_mimes' => 'txt,sql,zip,rar,ppt,word,xls,xlsx,doc,docx',
         //文件上传类型
         'image_mimes' => 'jpeg,bmp,png,gif,jpg',
+        'media_types' => [
+            'image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/pjpeg', 'image/x-png'
+        ],
     ],
     'database' => [
         // Database connection for following tables.
