@@ -63,16 +63,16 @@ class Upload
         if (empty($file) || !$file->isValid()) {
             throw new BusinessException(400, '请选择正确的文件！');
         }
-        $fileSize = config('admin.upload.image_size', 1024 * 1024 * 5);
-        if ($file->getSize() > $fileSize) {
+        $uploadConfig = config('admin.upload');
+        if ($file->getSize() > ($uploadConfig['image_size'] ?? 1024 * 1024 * 5)) {
             throw new BusinessException(1000, '文件不能大于！' . ($fileSize / 1024 / 1024) . 'MB');
         }
-        $imageMimes = explode(',', $config['image_mimes'] ?? 'jpeg,bmp,png,gif,jpg');
+        $imageMimes = explode(',', $uploadConfig['image_mimes'] ?? 'jpeg,bmp,png,gif,jpg');
         if (!in_array(strtolower($file->getExtension()), $imageMimes)) {
             throw new BusinessException(1000, '后缀不允许！');
         }
         #检测类型
-        if (!in_array(strtolower($file->getClientMediaType()), ['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/pjpeg', 'image/x-png'])) {
+        if (!in_array(strtolower($file->getClientMediaType()), $uploadConfig['media_types'] ?? ['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/pjpeg', 'image/x-png'])) {
             throw new BusinessException(1000, '不允许上传此文件！');
         }
         return Admin::response($this->saveFiles($file, 'image'));
