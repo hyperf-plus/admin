@@ -13,7 +13,7 @@
 ##### 密码 admin
 
 #### 欢迎加入HPlus交流群
-点击链接加入群聊【hyperf-admin交流群】：群聊号码：512465490<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
+点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
 <p align="center">
     <a href="https://github.com/hyperf-plus/admin/releases"><img src="https://poser.pugx.org/hyperf-plus/admin/v/stable" alt="Stable Version"></a>
     <a href="https://packagist.org/packages/hyperf-plus/admin"><img src="https://poser.pugx.org/hyperf-plus/admin/downloads" alt="Total Downloads"></a>
