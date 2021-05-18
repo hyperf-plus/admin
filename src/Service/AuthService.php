@@ -79,6 +79,10 @@ class AuthService
                         if (! $isUrl) {
                             $arr = explode('/', $route);
                             array_pop($arr);
+                            $prefix = config('admin.route.prefix'); //修复前缀admin/bug
+                            if (! in_array($prefix, $arr)) {
+                                array_pop($arr);
+                            }
                             $arr[] = '*';
                             $route = implode('/', $arr);
                             $route_key = "ANY::{$route}";
