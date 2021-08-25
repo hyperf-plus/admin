@@ -24,7 +24,7 @@ trait HasApiCreate
      */
     public function _self_path()
     {
-        return $this->form(true)->store();
+        return $this->form(false)->store();
     }
 
     /**
@@ -35,6 +35,6 @@ trait HasApiCreate
     {
         $content = new Content();
         //这里必须这样写
-        return $content->body($this->form())->className('m-10');
+        return $content->body($this->form(false))->className('m-10');
     }
 }
