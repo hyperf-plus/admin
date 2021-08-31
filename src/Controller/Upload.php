@@ -20,6 +20,7 @@ use Hyperf\HttpMessage\Upload\UploadedFile as UploadedFileAlias;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Container\ContainerInterface;
+use Hyperf\Filesystem\Version;
 
 /**
  * @ApiController(prefix="/upload",tag="上传")
@@ -102,7 +103,11 @@ class Upload
     {
         $file_name = config('admin.upload.save_path', '/upload');
         $file_name = $file_name . '/' . $fileName . '/' . date('Ym') . '/' . date('d') . '/' . uuid(16) . '.' . strtolower($file->getExtension());
-        Storage()->getDriver()->put($file_name, $file->getStream()->getContents());
+        if(Version::isV2()){
+            Storage()->getDriver()->write($file_name, $file->getStream()->getContents());
+        }else{
+            Storage()->getDriver()->put($file_name, $file->getStream()->getContents());
+        }
         return [
             'path' => $file_name,
             'name' => $file->getClientFilename(),
