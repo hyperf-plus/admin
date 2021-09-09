@@ -103,11 +103,8 @@ class Upload
     {
         $file_name = config('admin.upload.save_path', '/upload');
         $file_name = $file_name . '/' . $fileName . '/' . date('Ym') . '/' . date('d') . '/' . uuid(16) . '.' . strtolower($file->getExtension());
-        if(Version::isV2()){
-            Storage()->getDriver()->write($file_name, $file->getStream()->getContents());
-        }else{
-            Storage()->getDriver()->put($file_name, $file->getStream()->getContents());
-        }
+        $action = Version::isV2() ? 'write' : 'put';
+        Storage()->getDriver()->{$action}($file_name, $file->getStream()->getContents());
         return [
             'path' => $file_name,
             'name' => $file->getClientFilename(),
