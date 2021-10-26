@@ -7,7 +7,7 @@
 ## 文档地址
 ##### <a href="https://doc.hyperf.plus/">https://doc.hyperf.plus/</a>
 
-## 演示地址：
+## 演示地址：（备案问题暂未开放）
 ##### <a href="http://shop.sh.cn/auth">http://shop.sh.cn/auth</a>
 ##### 账户 admin
 ##### 密码 admin

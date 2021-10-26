@@ -52,7 +52,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         if (!$this->guard->user() instanceof Authenticatable) {
-            throw new UnauthorizedException("Without authorization from {$this->guard->getName()} guard", $guard);
+            throw new UnauthorizedException("Without authorization from {$this->guard->getName()} guard", $this->guard);
         }
         return $handler->handle($request);
     }
