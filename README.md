@@ -8,7 +8,7 @@
 ##### <a href="https://doc.hyperf.plus/">https://doc.hyperf.plus/</a>
 
 ## 演示地址：
-##### <a href="http://shop.sh.cn/auth">http://shop.sh.cn/auth</a>
+##### <a href="https://demo.hyperf.plus/auth">https://demo.hyperf.plus/auth</a>
 ##### 账户 admin
 ##### 密码 admin
 
