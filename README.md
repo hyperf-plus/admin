@@ -116,3 +116,11 @@ return [
 #### 2、欢迎您的捐赠
 <img src="https://gitee.com/hyperf-plus/image/raw/master/%E6%9C%AA%E6%A0%87%E9%A2%98-1.jpg" width="500" alt="HyperfAdmin License">
 <img src="//ia.51.la/go1?id=21039519&pvFlag=1" style="border:none" />
+
+## 鸣谢
+
+[![](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://www.jetbrains.com/?from=https://github.com/guanguans)
+
+## 协议
+
+MIT 许可证（MIT）。有关更多信息，请参见[协议文件](LICENSE)。
