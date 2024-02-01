@@ -5,12 +5,8 @@
 ##### 灵活可替换的权限验证组件，HPlus提供权限验证，也可以替换自己的权限验证插件
 
 ## 文档地址
-##### <a href="https://doc.hyperf.plus/">https://doc.hyperf.plus/</a>
+##### [<a href="https://doc.hyperf.plus/">https://doc.hyperf.plus/</a>](https://hyperf-plus.gitee.io/wiki/#/)
 
-## 演示地址：
-##### <a href="https://demo.hyperf.plus/auth">https://demo.hyperf.plus/auth</a>
-##### 账户 admin
-##### 密码 admin
 
 #### 欢迎加入HPlus交流群
 点击链接加入群聊【hyperf-admin交流群】：<a href="https://qm.qq.com/cgi-bin/qm/qr?k=pCkT8bLR-scfzGhiLYAu2AuEu5pzOfdD&authKey=0L9w5QrmZJQpDdaH9R5WpPK5mUPyh1RiM3nqcRggpMpM8heAgBBXWdzuk9zkyRko&noverify=0">群聊号码：512465490</a>
