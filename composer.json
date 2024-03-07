@@ -1,0 +1,44 @@
+{
+  "name": "hyperf-plus/admin",
+  "description": "开箱即用的Hyperf后台扩展，amis最强后台管理系统",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "毛自豪",
+      "email": "4213509@qq.com"
+    }
+  ],
+  "homepage": "https://github.com/lphkxd/hyperf-admin",
+  "keywords": [
+    "hyperf",
+    "Admin",
+    "amis"
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-swoole": ">=5",
+    "96qbhy/hyperf-auth": "^3.1",
+    "hyperf-plus/helper": "^3.0",
+    "hyperf-plus/route": "^3.1",
+    "hyperf-plus/swagger": "^3.1",
+    "hyperf-plus/validate": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "HPlus\\Admin\\": "src/"
+    },
+    "files": [
+      "src/Support/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "HPlus\\Admin\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "hyperf": {
+      "config": "\\HPlus\\Admin\\ConfigProvider"
+    }
+  }
+}
