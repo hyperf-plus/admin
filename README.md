@@ -64,7 +64,7 @@ HPlus Admin V3是一个革命性的后台管理框架，专为追求高性能、
 - Hyperf >= 3.0
 
 ### 安装步骤
-
+<span color="red">【开发中暂未发布】</span>
 1. 创建Hyperf项目：
 
 ```bash
